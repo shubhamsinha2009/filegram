@@ -1,0 +1,28 @@
+name: main
+
+on: [pull_request, push]
+
+jobs:
+  build:
+    name: Run flutter build apk
+    runs-on: ubuntu_latest 
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v2
+
+      - name: Install Dependencies
+        run: flutter packages get
+
+      - name: Flutter Clean
+      - run: flutter clean 
+
+      - name: Flutter getting packages
+      - run: flutter pub get
+
+      - name: Building Apk
+      - run: flutter build apk
+
+      - name: App Bundle 
+      - run: flutter build appbundle
+
