@@ -1,4 +1,4 @@
-package com.example.filegram
+package com.sks.filegram
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.filegram">
+    package="com.sks.filegram">
    <application
-        android:label="filegram"
+        android:label="Filegram"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/filegram">
         <activity
             android:name=".MainActivity"
             android:exported="true"
