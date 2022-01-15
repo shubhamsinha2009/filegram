@@ -1,20 +1,19 @@
+import '../../../data/model/user_model.dart';
+import '../../../data/provider/firestore_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  final user = UserModel().obs;
+  final auth = FirebaseAuth.instance;
+  final firestoreData = FirestoreData();
 
-  final count = 0.obs;
   @override
-  void onInit() {
+  void onInit() async {
+    if (auth.currentUser?.uid != null) {
+      final String _uid = auth.currentUser?.uid ?? '';
+      user(await firestoreData.getUser(_uid));
+    }
     super.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {}
-  void increment() => count.value++;
 }
