@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:filegram/app/core/services/firebase_analytics.dart';
-import 'package:filegram/app/data/model/user_model.dart';
-import 'package:filegram/app/data/provider/firestore_data.dart';
+import '../../../core/services/firebase_analytics.dart';
+import '../../../data/model/user_model.dart';
+import '../../../data/provider/firestore_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';

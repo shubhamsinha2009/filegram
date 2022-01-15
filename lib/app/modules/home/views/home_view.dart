@@ -1,4 +1,5 @@
-import 'package:filegram/app/modules/encrypt_decrypt/views/encrypt_decrypt_view.dart';
+import '../../app_drawer/views/app_drawer_view.dart';
+import '../../encrypt_decrypt/views/encrypt_decrypt_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -19,7 +20,7 @@ class HomeView extends GetView<HomeController> {
           'HomeView is working',
         ),
       ),
-      drawer: const Drawer(),
+      drawer: const AppDrawerView(),
       floatingActionButton: const EncryptDecryptView(),
     );
   }

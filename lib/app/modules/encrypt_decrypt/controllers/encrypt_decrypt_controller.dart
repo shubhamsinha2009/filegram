@@ -1,11 +1,9 @@
 import 'dart:io';
-
-import 'package:filegram/app/core/services/firebase_analytics.dart';
-import 'package:filegram/app/data/model/documents_model.dart';
-import 'package:filegram/app/data/model/user_model.dart';
-import 'package:filegram/app/data/provider/firestore_data.dart';
-import 'package:filegram/app/modules/encrypt_decrypt/services/file_encrypter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../../core/services/firebase_analytics.dart';
+import '../../../data/model/documents_model.dart';
+import '../../../data/provider/firestore_data.dart';
+import '../services/file_encrypter.dart';
+import '../../home/controllers/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -16,9 +14,7 @@ class EncryptDecryptController extends GetxController {
   String? pickedFile;
   final _documentModel = DocumentModel().obs;
   final analytics = AnalyticsService.analytics;
-  final user = UserModel().obs;
-  final auth = FirebaseAuth.instance;
-  final firestoreData = FirestoreData();
+  final homeController = Get.find<HomeController>();
 
   Future<void> pickFile() async {
     try {
@@ -187,7 +183,7 @@ class EncryptDecryptController extends GetxController {
   ) async {
     final _secretKey = await FileEncrypter.generatekey();
     final _iv = await FileEncrypter.generateiv();
-    final _userId = auth.currentUser?.uid;
+    final _userId = homeController.auth.currentUser?.uid;
 
     if (_secretKey != null && _iv != null) {
       _isEncDone = await FileEncrypter.encrypt(
@@ -269,16 +265,6 @@ class EncryptDecryptController extends GetxController {
           );
         }
       }
-    }
-  }
-
-  @override
-  void onInit() async {
-    if (auth.currentUser?.uid != null) {
-      final String _uid = auth.currentUser?.uid ?? '';
-      user(await firestoreData.getUser(_uid));
-
-      super.onInit();
     }
   }
 }

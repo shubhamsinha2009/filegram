@@ -1,4 +1,4 @@
-import 'package:filegram/app/modules/login/controllers/login_controller.dart';
+import '../controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
