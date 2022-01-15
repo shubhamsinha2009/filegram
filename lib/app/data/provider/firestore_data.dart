@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:filegram/app/data/model/documents_model.dart';
-import 'package:filegram/app/data/model/user_model.dart';
+import '../model/documents_model.dart';
+import '../model/user_model.dart';
 
 class FirestoreData {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -61,19 +61,18 @@ class FirestoreData {
       rethrow;
     }
   }
-
-  Future<void> updatePhoneNumber(
-      {required int phoneNumber, required String id}) async {
-    try {
-      await _firestore.collection("users").doc(id).update(
-        {
-          "phoneNumber": phoneNumber,
-        },
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
+  // Future<void> updatePhoneNumber(
+  //     {required int phoneNumber, required String id}) async {
+  //      try {
+  //     await _firestore.collection("users").doc(id).update(
+  //       {
+  //         "phoneNumber": phoneNumber,
+  //       },
+  //     );
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   static Future<bool> userNotExists(String? uid) async {
     try {
