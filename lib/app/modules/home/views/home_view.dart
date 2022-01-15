@@ -21,7 +21,6 @@ class HomeView extends GetView<HomeController> {
       ),
       drawer: const Drawer(),
       floatingActionButton: const EncryptDecryptView(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
