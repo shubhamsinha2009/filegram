@@ -11,7 +11,7 @@
    <application
         android:label="Filegram"
         android:name="${applicationName}"
-        android:icon="@mipmap/filegram">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

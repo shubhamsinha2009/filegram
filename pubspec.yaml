@@ -10,7 +10,6 @@ dependencies:
   get: 4.6.1
   flutter: 
     sdk: flutter
-  get_test: ^4.0.1
   google_fonts: ^2.2.0
   flutter_file_dialog: ^2.3.0
   firebase_core: ^1.11.0
@@ -21,11 +20,19 @@ dependencies:
   google_sign_in: ^5.2.2
   firebase_auth: ^3.3.5
   cached_network_image: ^3.2.0
+  flutter_native_splash: ^1.3.3
+  shimmer: ^2.0.0
 
 dev_dependencies: 
   flutter_lints: ^1.0.0
   flutter_test: 
     sdk: flutter
+
+flutter_native_splash:
+  color: "#000000"
+  #background_image: "assets/protect.png"
+  image: assets/filegram_splash.png
+  android: true    
 
 flutter: 
   uses-material-design: true
