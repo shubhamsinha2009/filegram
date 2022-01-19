@@ -1,6 +1,6 @@
-import 'package:filegram/app/data/model/documents_model.dart';
-import 'package:filegram/app/data/provider/firestore_data.dart';
-import 'package:filegram/app/modules/home/controllers/home_controller.dart';
+import '../../../data/model/documents_model.dart';
+import '../../../data/provider/firestore_data.dart';
+import '../../home/controllers/home_controller.dart';
 import 'package:get/get.dart';
 
 class EncryptedFileListController extends GetxController

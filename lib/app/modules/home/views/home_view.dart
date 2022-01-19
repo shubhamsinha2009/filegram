@@ -1,4 +1,4 @@
-import 'package:filegram/app/modules/encrypted_file_list/views/encrypted_file_list_view.dart';
+import '../../encrypted_file_list/views/encrypted_file_list_view.dart';
 
 import '../../app_drawer/views/app_drawer_view.dart';
 import '../../encrypt_decrypt/views/encrypt_decrypt_view.dart';

@@ -1,4 +1,4 @@
-import 'package:filegram/app/data/model/documents_model.dart';
+import '../../../data/model/documents_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
