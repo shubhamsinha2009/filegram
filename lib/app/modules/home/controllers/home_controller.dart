@@ -14,6 +14,7 @@ class HomeController extends GetxController {
       final String _uid = auth.currentUser?.uid ?? '';
       user(await firestoreData.getUser(_uid));
     }
+
     super.onInit();
   }
 }
