@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import '../../../core/services/firebase_analytics.dart';
 import '../../../data/model/documents_model.dart';
 import '../../../data/provider/firestore_data.dart';
@@ -110,6 +111,7 @@ class EncryptDecryptController extends GetxController {
           _isEncDone = await doEncryption(_fileOut, _isEncDone, _result);
         }
       } catch (e) {
+        isLoading.toggle();
         Get.showSnackbar(GetSnackBar(
           messageText: Text(e.toString()),
           icon: const Icon(Icons.error_outline),
@@ -183,7 +185,10 @@ class EncryptDecryptController extends GetxController {
   ) async {
     final _secretKey = await FileEncrypter.generatekey();
     final _iv = await FileEncrypter.generateiv();
-    final _userId = homeController.auth.currentUser?.uid;
+    final _userId = homeController.user.value.id;
+    final _fizeSize = getFileSize(bytes: File(_result).lengthSync());
+    final _ownerName = homeController.user.value.name;
+    final _ownerPhotoUrl = homeController.user.value.photoUrl;
 
     if (_secretKey != null && _iv != null) {
       _isEncDone = await FileEncrypter.encrypt(
@@ -197,7 +202,13 @@ class EncryptDecryptController extends GetxController {
         secretKey: _secretKey,
         iv: _iv,
         ownerId: _userId,
+        documentSize: _fizeSize,
+        ownerName: _ownerName,
+        ownerPhotoUrl: _ownerPhotoUrl,
       )));
+
+      // await FirestoreData.getDocumentsListFromServer(_userId);
+      await FirestoreData.getSecretKey(_iv);
     }
     return _isEncDone;
   }
@@ -230,6 +241,7 @@ class EncryptDecryptController extends GetxController {
         final params = SaveFileDialogParams(sourceFilePath: _fileOut);
         _fileSavedPath = await FlutterFileDialog.saveFile(params: params);
       } catch (e) {
+        isLoading.toggle();
         Get.showSnackbar(GetSnackBar(
           duration: const Duration(seconds: 5),
           messageText: Text(e.toString()),
@@ -266,5 +278,20 @@ class EncryptDecryptController extends GetxController {
         }
       }
     }
+  }
+  // String getSubtitle({required int bytes, required DateTime time}) {
+  //   if (bytes <= 0) return "0 B";
+  //   const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  //   var i = (log(bytes) / log(1024)).floor();
+  //   return '${DateFormat.yMMMMd('en_US').add_jm().format(time)} - ${((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i]}';
+  // }
+
+  String getFileSize({
+    required int bytes,
+  }) {
+    if (bytes <= 0) return "0 B";
+    const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    var i = (log(bytes) / log(1024)).floor();
+    return ((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i];
   }
 }
