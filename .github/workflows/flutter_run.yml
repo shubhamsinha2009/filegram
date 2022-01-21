@@ -1,14 +1,10 @@
 name: flutter_run
 
-on:
-  pull_request:
-    branches:
-      - master
+on: push
 
 jobs:
-  build_appbundle:
+  build:
     name: Build Flutter (Android)
-    needs: [flutter_test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,4 +13,4 @@ jobs:
           channel: "stable"
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build appbundle
+      - run: flutter run
