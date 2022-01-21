@@ -22,7 +22,7 @@ jobs:
         run: flutter clean
 
       - name: FLUTTER DEVELOPMENT BUILD APK 
-        run: flutter build apk --debug --split-per-abi  –flavor development -t lib/main_development.dart
+        run: flutter build apk --debug --split-per-abi –flavor development -t lib/main_development.dart
 
       - name: FLUTTER DEVELOPEMENT BUILD BUNDLE
         run: flutter build appbundle --debug –flavor development -t lib/main_development.dart
