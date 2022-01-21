@@ -1,3 +1,5 @@
+import 'package:lottie/lottie.dart';
+
 import '../../../data/model/documents_model.dart';
 import 'package:flutter/material.dart';
 
@@ -10,14 +12,14 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        controller.documents.clear();
+    return controller.obx(
+      (state) => RefreshIndicator(
+        onRefresh: () async {
+          controller.documents.clear();
 
-        await controller.findAllEncryptedFiles();
-      },
-      child: controller.obx(
-        (state) => ListView.builder(
+          await controller.findAllEncryptedFiles();
+        },
+        child: ListView.builder(
           controller: controller.scroll,
           itemCount: state?.length,
           itemBuilder: (context, index) {
@@ -33,24 +35,36 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
             );
           },
         ),
-
-        //TODO : Shimmer Effect
-        onLoading: const Center(child: LinearProgressIndicator()),
-        onEmpty: const Center(
-          child: Text(
-            'Repositories no found',
-            style: TextStyle(fontSize: 18),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        onError: (error) => Center(
-          child: Text(
-            'Error: Cannot get repositories \n$error',
-            style: const TextStyle(fontSize: 18),
-            textAlign: TextAlign.center,
-          ),
+      ),
+      onLoading: const Center(child: CircularProgressIndicator()),
+      onEmpty: Center(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 100,
+            ),
+            const Text(
+              "No encrypted Files Found ! ",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.amber,
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.fade,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 100,
+            ),
+            Lottie.asset(
+              "assets/empty.json",
+            ),
+          ],
         ),
       ),
+      onError: (error) => Center(child: Lottie.asset('assets/error.json')),
     );
   }
 }

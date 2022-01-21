@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Themes {
   static final ThemeData appDarkTheme = ThemeData(
@@ -54,12 +53,11 @@ class Themes {
     popupMenuTheme: const PopupMenuThemeData(
       color: Colors.black,
     ),
-    textTheme: TextTheme(
-      headline6: GoogleFonts.averiaSerifLibre(
+    textTheme: const TextTheme(
+      headline6: TextStyle(
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      button: GoogleFonts.averiaSerifLibre(),
     ),
   );
 
@@ -104,16 +102,16 @@ class Themes {
     // drawerTheme: DrawerThemeData(
 
     // ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       elevation: 4,
       color: Colors.red,
       centerTitle: true,
-      titleTextStyle: GoogleFonts.averiaSerifLibre(
+      titleTextStyle: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      actionsIconTheme: const IconThemeData(
+      actionsIconTheme: IconThemeData(
         color: Colors.black,
       ),
     ),
@@ -125,58 +123,58 @@ class Themes {
     popupMenuTheme: const PopupMenuThemeData(
       color: Colors.black,
     ),
-    textTheme: TextTheme(
-      bodyText1: GoogleFonts.averiaSerifLibre(
+    textTheme: const TextTheme(
+      bodyText1: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      bodyText2: GoogleFonts.averiaSerifLibre(
+      bodyText2: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      subtitle1: GoogleFonts.averiaSerifLibre(
+      subtitle1: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      subtitle2: GoogleFonts.averiaSerifLibre(
+      subtitle2: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      headline6: GoogleFonts.averiaSerifLibre(
+      headline6: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      headline1: GoogleFonts.averiaSerifLibre(
+      headline1: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      headline2: GoogleFonts.averiaSerifLibre(
+      headline2: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      headline3: GoogleFonts.averiaSerifLibre(
+      headline3: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      headline4: GoogleFonts.averiaSerifLibre(
+      headline4: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      headline5: GoogleFonts.averiaSerifLibre(
+      headline5: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 25,
       ),
-      button: GoogleFonts.averiaSerifLibre(),
+      button: TextStyle(),
     ),
   );
 

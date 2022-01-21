@@ -6,6 +6,7 @@ abstract class Routes {
   static const onBOARDING = _Paths.onBOARDING;
   static const login = _Paths.login;
   // static const ENCRYPTED_FILE_LIST = _Paths.ENCRYPTED_FILE_LIST;
+  //static const NO_INTERNET = _Paths.NO_INTERNET;
 }
 
 abstract class _Paths {
@@ -14,4 +15,5 @@ abstract class _Paths {
   static const onBOARDING = '/onboarding';
   static const login = '/login';
   //static const ENCRYPTED_FILE_LIST = '/encrypted-file-list';
+  // static const NO_INTERNET = '/no-internet';
 }
