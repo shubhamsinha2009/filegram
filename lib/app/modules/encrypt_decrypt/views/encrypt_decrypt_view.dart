@@ -11,13 +11,12 @@ class EncryptDecryptView extends GetView<EncryptDecryptController> {
   Widget build(BuildContext context) {
     return Obx(() => FloatingActionButton(
           onPressed: controller.isLoading.value ? null : controller.pickFile,
-          //  label: Text('Loading'),
           child: controller.isLoading.value
               ? const CircularProgressIndicator(
                   color: Colors.black,
                 )
               : const Icon(
-                  Icons.enhanced_encryption_rounded,
+                  Icons.file_upload_sharp,
                   size: 35,
                 ),
         ));
