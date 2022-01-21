@@ -1,22 +1,11 @@
-name: CI
+name: flutter_run
+
 on:
   pull_request:
     branches:
       - master
 
 jobs:
-  flutter_test:
-    name: Run flutter test and analyze
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: "stable"
-      - run: flutter pub get
-      - run: flutter analyze
-      - run: flutter test
-
   build_appbundle:
     name: Build Flutter (Android)
     needs: [flutter_test]
