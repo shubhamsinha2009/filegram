@@ -3,14 +3,11 @@ class UserModel {
   final String? name;
   final String? emailId;
   final String? photoUrl;
-  
-
-
 
   UserModel({
-   this.name,
+    this.name,
     this.id,
     this.emailId,
-     this.photoUrl,
+    this.photoUrl,
   });
 }
