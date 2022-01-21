@@ -1,4 +1,4 @@
-name: flutter_run
+name: flutter_build
 
 on: push
 
@@ -18,5 +18,7 @@ jobs:
       - name: FLUTTER CLEAN
         run: flutter clean
 
-      - name: FLUTTER DEVELOPMENT RUN 
-        run: flutter run –flavor development -t lib/main_development.dart
+      - name: FLUTTER DEBUG DEVELOPMENT BUILD APK 
+        run: flutter build apk --split-per-abi –flavor development -t lib/main_development.dart
+
+
