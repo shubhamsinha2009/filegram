@@ -13,10 +13,10 @@ jobs:
           channel: "stable"
 
       - name: FLUTTER PUB GET    
-      - run: flutter pub get
+        run: flutter pub get
 
       - name: FLUTTER CLEAN
-      - run: flutter clean
+        run: flutter clean
 
       - name: FLUTTER DEVELOPMENT RUN 
-      - run: flutter run –flavor development -t lib/main_development.dart
+        run: flutter run –flavor development -t lib/main_development.dart
