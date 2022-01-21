@@ -1,0 +1,25 @@
+name: flutter_build_production
+
+on: pull_request
+
+jobs:
+  build:
+    name: Flutter Build Production (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+
+      - name: FLUTTER PUB GET    
+        run: flutter pub get
+
+      - name: FLUTTER CLEAN
+        run: flutter clean
+
+      - name: FLUTTER PRODUCTION BUILD APK 
+        run: flutter build apk --split-per-abi –flavor development -t lib/main_production.dart
+
+      - name: FLUTTER PRODUCTION BUILD BUNDLE
+        run: flutter build appbundle –flavor production -t lib/main_production.dart
