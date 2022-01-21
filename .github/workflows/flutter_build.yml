@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build:
-    name: Flutter Run (Android)
+    name: Flutter Build (Android)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +18,14 @@ jobs:
       - name: FLUTTER CLEAN
         run: flutter clean
 
-      - name: FLUTTER DEBUG DEVELOPMENT BUILD APK 
+      - name: FLUTTER DEVELOPMENT BUILD APK 
         run: flutter build apk --split-per-abi –flavor development -t lib/main_development.dart
 
+      - name: FLUTTER DEVELOPEMENT BUILD BUNDLE
+        run: flutter build appbundle –flavor development -t lib/main_development.dart
 
+      - name: FLUTTER PRODUCTION BUILD APK 
+        run: flutter build apk --split-per-abi –flavor development -t lib/main_production.dart
+
+      - name: FLUTTER PRODUCTION BUILD BUNDLE
+        run: flutter build appbundle –flavor production -t lib/main_production.dart
