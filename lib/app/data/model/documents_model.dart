@@ -1,4 +1,6 @@
 class DocumentModel {
+  // TODO : Permissions like share,private & public
+
   final String? ownerId;
   final String? documentName;
   final String? ownerName;
@@ -8,6 +10,7 @@ class DocumentModel {
   final String? documentSize;
   final String? documentId;
   final DateTime? createdOn;
+
   // final String? documentPermission;
   // final List<String>? sharedIds;
 

@@ -8,9 +8,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:filegram/main.dart';
+import 'package:filegram/app/app.dart';
 
 void main() {
+  // TODO : Learn Testing
+  // TODO: Unit Tests
+  // TODO: Widget Tests
+  // TODO: Integration Tests
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const Filegram());

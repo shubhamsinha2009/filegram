@@ -38,18 +38,19 @@ class FirestoreData {
     try {
       Query _query = _firestore
           .collection("files")
-          .where("ownerId", isEqualTo: ownerId)
           .orderBy("createdOn", descending: true)
+          .where("ownerId", isEqualTo: ownerId)
           .limit(limit);
       QuerySnapshot _docList;
       if (startAfter == null) {
         _docList = await _query.get(const GetOptions(source: Source.cache));
-        // if (_docList.docs.isEmpty) {
-        //   _docList = await _firestore
-        //       .collection("files")
-        //       .orderBy("createdOn", descending: true)
-        //       .get(const GetOptions(source: Source.serverAndCache));
-        // }
+        if (_docList.docs.isEmpty) {
+          _docList = await _firestore
+              .collection("files")
+              .orderBy("createdOn", descending: true)
+              .where("ownerId", isEqualTo: ownerId)
+              .get(const GetOptions(source: Source.serverAndCache));
+        }
       } else {
         final Timestamp _startAfter = Timestamp.fromDate(startAfter);
         _docList = await _query.startAfter([_startAfter]).get(
@@ -81,10 +82,10 @@ class FirestoreData {
     try {
       QuerySnapshot _docList = await _firestore
           .collection("files")
-          .where("ownerId", isEqualTo: ownerId)
           .orderBy("createdOn", descending: true)
+          .where("ownerId", isEqualTo: ownerId)
           .limit(1)
-          .get(const GetOptions(source: Source.server));
+          .get(const GetOptions(source: Source.serverAndCache));
 
       return _docList.docs.map((DocumentSnapshot document) {
         Map<String, dynamic> _data = document.data()! as Map<String, dynamic>;
