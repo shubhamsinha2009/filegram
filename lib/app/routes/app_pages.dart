@@ -8,6 +8,7 @@ import '../modules/home/middlewares/homemiddleware.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/no_internet/bindings/no_internet_binding.dart';
 
 part 'app_routes.dart';
 
@@ -25,18 +26,27 @@ class AppPages {
         EncryptDecryptBinding(),
         AppDrawerBinding(),
         EncryptedFileListBinding(),
+        NoInternetBinding(),
       ],
       middlewares: [HomeMiddleware()],
     ),
     GetPage(
       name: _Paths.login,
       page: () => const LoginView(),
-      binding: LoginBinding(),
+      bindings: [
+        LoginBinding(),
+        NoInternetBinding(),
+      ],
     ),
     // GetPage(
     //   name: _Paths.ENCRYPTED_FILE_LIST,
     //   page: () => EncryptedFileListView(),
     //   binding: EncryptedFileListBinding(),
+    // ),
+    // GetPage(
+    //   name: _Paths.NO_INTERNET,
+    //   page: () => NoInternetView(),
+    //   binding: NoInternetBinding(),
     // ),
   ];
 }

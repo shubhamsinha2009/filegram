@@ -1,3 +1,5 @@
+import 'package:filegram/app/modules/no_internet/views/no_internet_view.dart';
+
 import '../../encrypted_file_list/views/encrypted_file_list_view.dart';
 
 import '../../app_drawer/views/app_drawer_view.dart';
@@ -13,13 +15,15 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Filegram'),
-      ),
-      body: const EncryptedFileListView(),
-      drawer: const AppDrawerView(),
-      floatingActionButton: const EncryptDecryptView(),
-    );
+    return Obx(() => controller.isInternetConnected.isTrue
+        ? Scaffold(
+            appBar: AppBar(
+              title: const Text('Filegram'),
+            ),
+            body: const EncryptedFileListView(),
+            drawer: const AppDrawerView(),
+            floatingActionButton: const EncryptDecryptView(),
+          )
+        : const NoInternetView());
   }
 }
