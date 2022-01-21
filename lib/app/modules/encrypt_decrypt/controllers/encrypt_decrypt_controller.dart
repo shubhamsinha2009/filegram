@@ -229,6 +229,13 @@ class EncryptDecryptController extends GetxController {
           outFileName: _fileOut,
         );
       }
+      // TODO: Decrypt not working
+      // TODO: Github Actions
+      // TODO: See Methods to be exposed in public apis
+      // ! google-services.json exposing in github
+      // TODO: Debugging Tools
+      // TODO: Handling Erros Properly
+
     }
     return _isEncDone;
   }
