@@ -12,6 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Decoding firebase google-services.json
+        run: echo "${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEV }}" | base64 --decode > android/app/src/development/google-services.json  
+
+
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
@@ -28,14 +32,3 @@ jobs:
       - name: FLUTTER DEVELOPMENT BUILD BUNDLE
         run: flutter build appbundle --debug --flavor development -t lib/main_development.dart
 
-      - name: Create github artifact debug # disable this to save storage
-        uses: ncipollo/debug-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/debug/*.apk,build/app/outputs/bundle/debug/*.aab"
-          token: ${{secrets.TOKEN}} # this is automatically provided by github
-  
-      - name: Upload app bundle artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: appbundle
-          path: build/app/outputs/bundle/debug/app-debug.aab
