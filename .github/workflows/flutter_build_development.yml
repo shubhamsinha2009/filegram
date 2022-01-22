@@ -1,0 +1,41 @@
+name: flutter_build_development
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Flutter Build DEVELOPMENT (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: FLUTTER PUB GET    
+        run: flutter pub get
+
+      - name: FLUTTER CLEAN
+        run: flutter clean
+
+      - name: Build APK
+        run: flutter build apk --debug --split-per-abi --flavor development -t lib/main_development.dart  
+        
+      - name: FLUTTER DEVELOPMENT BUILD BUNDLE
+        run: flutter build appbundle --debug --flavor development -t lib/main_development.dart
+
+      - name: Create github artifact debug # disable this to save storage
+        uses: ncipollo/debug-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/debug/*.apk,build/app/outputs/bundle/debug/*.aab"
+          token: ${{secrets.TOKEN}} # this is automatically provided by github
+  
+      - name: Upload app bundle artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: appbundle
+          path: build/app/outputs/bundle/debug/app-debug.aab

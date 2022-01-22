@@ -3,7 +3,7 @@ name: flutter_build_production
 on: 
   push:
     tags:
-      - "v*.*.*" 
+      - "v*" 
 
 jobs:
   build:
@@ -20,12 +20,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          channel: "stable"
-
-      - name: Replace YAML version with tag version
-        run: |
-          sed -i 's/99.99.99+99/'$GIT_TAG_NAME'/g' pubspec.yaml|
-          echo "Tag used version:"$GIT_TAG_NAME    
+          channel: "stable"  
 
       - name: FLUTTER PUB GET    
         run: flutter pub get
