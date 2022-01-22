@@ -26,7 +26,7 @@ jobs:
         run: flutter clean
         
       - name: FLUTTER PRODUCTION BUILD BUNDLE
-        run: flutter build appbundle flavor production -t lib/main_production.dart
+        run: flutter build appbundle --flavor production -t lib/main_production.dart
 
       - name: Create github artifact release # disable this to save storage
         uses: ncipollo/release-action@v1
