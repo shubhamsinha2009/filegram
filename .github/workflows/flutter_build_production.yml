@@ -19,7 +19,7 @@ jobs:
         run: echo "${{ secrets.KEY_PROD }}" | base64 --decode > android/key.properties
 
       - name: Decoding android/keystore.jks
-        run: echo "${{ secrets.KEY_JKS }}" | base64 --decode > android/upload-keystore.jks
+        run: echo "${{ secrets.KEY_JKS }}" | base64 --decode > android/app/upload-keystore.jks
 
       - uses: subosito/flutter-action@v2
         with:
