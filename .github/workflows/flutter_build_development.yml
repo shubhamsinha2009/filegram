@@ -1,7 +1,7 @@
 name: flutter_build_production
 
 on: 
-  pull_request:
+  push:
     tags:
       - "v*.*.*" 
 
@@ -22,11 +22,6 @@ jobs:
         with:
           channel: "stable"
 
-      - name: Replace YAML version with tag version
-        run: |
-          sed -i 's/99.99.99+99/'$GIT_TAG_NAME'/g' pubspec.yaml|
-          echo "Tag used version:"$GIT_TAG_NAME    
-
       - name: FLUTTER PUB GET    
         run: flutter pub get
 
@@ -34,19 +29,19 @@ jobs:
         run: flutter clean
 
       - name: Build APK
-        run: flutter build apk --split-per-abi --flavor production -t lib/main_production.dart  
+        run: flutter build apk --debug --split-per-abi --flavor development -t lib/main_development.dart  
         
       - name: FLUTTER PRODUCTION BUILD BUNDLE
-        run: flutter build appbundle --flavor production -t lib/main_production.dart
+        run: flutter build appbundle --debug --flavor development -t lib/main_development.dart
 
       - name: Create github artifact release # disable this to save storage
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/*.aab"
+          artifacts: "build/app/outputs/apk/debug/*.apk,build/app/outputs/bundle/debug/*.aab"
           token: ${{secrets.TOKEN}} # this is automatically provided by github
   
       - name: Upload app bundle artifact
         uses: actions/upload-artifact@v2
         with:
           name: appbundle
-          path: build/app/outputs/bundle/release/app-release.aab  
+          path: build/app/outputs/bundle/debug/app-debug.aab  
