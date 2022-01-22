@@ -1,0 +1,27 @@
+name: flutter_build_development
+
+on: pull_request
+
+jobs:
+  build:
+    name: Flutter Build DEVELOPMENT (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: FLUTTER PUB GET    
+        run: flutter pub get
+
+      - name: FLUTTER CLEAN
+        run: flutter clean
+
+      - name: Build APK
+        run: flutter build apk --debug --split-per-abi --flavor development -t lib/main_development.dart  
+        
+      - name: FLUTTER DEVELOPMENT BUILD BUNDLE
+        run: flutter build appbundle --debug --flavor development -t lib/main_development.dart
+
