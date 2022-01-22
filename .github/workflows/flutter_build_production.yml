@@ -1,23 +1,26 @@
 name: flutter_build_production
 
-on: pull_request
+on: [pull_request ,push ]
 
 jobs:
   build:
     name: Flutter Build Production (Android)
     runs-on: ubuntu-latest
-    env: # ADD environment variables
-      KEY_JKS: ${{!secrets!}}
-      KEY_PATH: ${{!github!}}/key.jks
-      KEY_PASSWORD: ${{!secrets!}}
-      ALIAS_PASSWORD: ${{!secrets!}}
     steps:
       - uses: actions/checkout@v2
 
-      - name: Create key file
-        run: echo $KEY_JKS | base64 -di > key.jks
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "12.x"
 
-      - uses: subosito/flutter-action@v1
+      - name: Decoding android/key.properties
+        run: echo "${{ secrets.KEY_PROD }}" | base64 --decode > android/key.properties
+
+      - name: Decoding android/keystore.jks
+        run: echo "${{ secrets.KEY_JKS }}" | base64 --decode > android/upload-keystore.jks
+
+      - uses: subosito/flutter-action@v2
         with:
           channel: "stable"
 
@@ -33,9 +36,9 @@ jobs:
       - name: Create github artifact release # disable this to save storage
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
-          token: ${{!secrets!}} # this is automatically provided by github
-          commit: ${{!github!}}
+          artifacts: "build/app/outputs/bundle/release/app-release.aab"
+          token: ${{secrets.TOKEN}} # this is automatically provided by github
+  
       - name: Upload app bundle artifact
         uses: actions/upload-artifact@v2
         with:
