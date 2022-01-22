@@ -1,9 +1,6 @@
 name: flutter_build_development
 
-on:
-  pull_request:
-    branches:
-      - master
+on: push
 
 jobs:
   build:
