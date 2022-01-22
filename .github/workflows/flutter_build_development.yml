@@ -29,7 +29,7 @@ jobs:
         run: flutter build appbundle --debug --flavor development -t lib/main_development.dart
 
       - name: Create github artifact debug # disable this to save storage
-        uses: ncipollo/debug-action@v1
+        uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*.apk,build/app/outputs/bundle/debug/*.aab"
           token: ${{secrets.TOKEN}} # this is automatically provided by github
