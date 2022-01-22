@@ -1,4 +1,4 @@
-name: flutter_build_production
+name: flutter_build_development
 
 on: 
   push:
@@ -11,12 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: Decoding android/key.properties
-        run: echo "${{ secrets.KEY_PROD }}" | base64 --decode > android/key.properties
-
-      - name: Decoding android/keystore.jks
-        run: echo "${{ secrets.KEY_JKS }}" | base64 --decode > android/app/upload-keystore.jks
 
       - uses: subosito/flutter-action@v2
         with:
