@@ -1,6 +1,4 @@
 class DocumentModel {
-  // TODO : Permissions like share,private & public
-
   final String? ownerId;
   final String? documentName;
   final String? ownerName;
@@ -10,9 +8,8 @@ class DocumentModel {
   final String? documentSize;
   final String? documentId;
   final DateTime? createdOn;
-
-  // final String? documentPermission;
-  // final List<String>? sharedIds;
+  final bool? documentPermission;
+  final List<String>? sharedIds;
 
   DocumentModel({
     this.ownerId,
@@ -24,7 +21,7 @@ class DocumentModel {
     this.documentSize,
     this.documentId,
     this.createdOn,
-    // this.documentPermission,
-    // this.sharedIds,
+    this.documentPermission,
+    this.sharedIds,
   });
 }
