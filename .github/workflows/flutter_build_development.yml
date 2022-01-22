@@ -1,9 +1,6 @@
 name: flutter_build_development
 
-on: 
-  push:
-    tags:
-      - "v*.*.*" 
+on: push 
 
 jobs:
   build:
