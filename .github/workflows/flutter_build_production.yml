@@ -40,6 +40,6 @@ jobs:
       - name: Create github artifact release # disable this to save storage
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/flutter-apk/release/*.apk,build/app/outputs/bundle/productionRelease/*.aab"
+          artifacts: "build/app/outputs/flutter-apk/*.apk,build/app/outputs/bundle/productionRelease/*.aab"
           token: ${{secrets.TOKEN}} # this is automatically provided by github
   
