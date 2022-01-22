@@ -6,8 +6,17 @@ jobs:
   build:
     name: Flutter Build Production (Android)
     runs-on: ubuntu-latest
+    env: # ADD environment variables
+      KEY_JKS: ${{!secrets!}}
+      KEY_PATH: ${{!github!}}/key.jks
+      KEY_PASSWORD: ${{!secrets!}}
+      ALIAS_PASSWORD: ${{!secrets!}}
     steps:
       - uses: actions/checkout@v2
+
+      - name: Create key file
+        run: echo $KEY_JKS | base64 -di > key.jks
+
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
@@ -17,9 +26,18 @@ jobs:
 
       - name: FLUTTER CLEAN
         run: flutter clean
-
-      - name: FLUTTER PRODUCTION BUILD APK 
-        run: flutter build apk –flavor production -t lib/main_production.dart
-
+        
       - name: FLUTTER PRODUCTION BUILD BUNDLE
         run: flutter build appbundle –flavor production -t lib/main_production.dart
+
+      - name: Create github artifact release # disable this to save storage
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
+          token: ${{!secrets!}} # this is automatically provided by github
+          commit: ${{!github!}}
+      - name: Upload app bundle artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: appbundle
+          path: build/app/outputs/bundle/release/app-release.aab  
