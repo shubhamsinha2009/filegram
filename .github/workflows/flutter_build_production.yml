@@ -1,0 +1,41 @@
+name: flutter_build_production
+
+on: pull_request
+
+jobs:
+  build:
+    name: Flutter Build Production (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Decoding android/key.properties
+        run: echo "${{ secrets.KEY_PROD }}" | base64 --decode > android/key.properties
+
+      - name: Decoding android/keystore.jks
+        run: echo "${{ secrets.KEY_JKS }}" | base64 --decode > android/app/upload-keystore.jks
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: FLUTTER PUB GET    
+        run: flutter pub get
+
+      - name: FLUTTER CLEAN
+        run: flutter clean
+        
+      - name: FLUTTER PRODUCTION BUILD BUNDLE
+        run: flutter build appbundle –flavor production -t lib/main_production.dart
+
+      - name: Create github artifact release # disable this to save storage
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/bundle/release/app-release.aab"
+          token: ${{secrets.TOKEN}} # this is automatically provided by github
+  
+      - name: Upload app bundle artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: appbundle
+          path: build/app/outputs/bundle/release/app-release.aab  
