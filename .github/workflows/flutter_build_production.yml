@@ -9,12 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: "11"
-
       - name: Decoding android/key.properties
         run: echo "${{ secrets.KEY_PROD }}" | base64 --decode > android/key.properties
 
