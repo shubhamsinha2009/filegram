@@ -1,11 +1,10 @@
 name: flutter_build_development
 
-on: push
-
+on: pull_request
 
 jobs:
   build:
-    name: Flutter Build Production (Android)
+    name: Flutter Build DEVELOPMENT (Android)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,11 +22,6 @@ jobs:
       - name: Build APK
         run: flutter build apk --debug --split-per-abi --flavor development -t lib/main_development.dart  
         
-      - name: FLUTTER PRODUCTION BUILD BUNDLE
+      - name: FLUTTER DEVELOPMENT BUILD BUNDLE
         run: flutter build appbundle --debug --flavor development -t lib/main_development.dart
-  
-      - name: Upload app bundle artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: appbundle
-          path: build/app/outputs/bundle/debug/app-debug.aab  
+
