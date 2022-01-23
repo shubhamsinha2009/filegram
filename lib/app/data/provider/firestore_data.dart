@@ -163,6 +163,42 @@ class FirestoreData {
     }
   }
 
+  static Future<void> createViews(String? documentId) async {
+    try {
+      await _firestore.collection("views").doc(documentId).set(
+        {
+          "views": 0,
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> updateViews(String? documentID) async {
+    try {
+      await _firestore.collection("views").doc(documentID).update(
+        {
+          "views": FieldValue.increment(1),
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<int> readViews(String? documentID) async {
+    try {
+      DocumentSnapshot _doc =
+          await _firestore.collection("views").doc(documentID).get();
+
+      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+      return _data["views"] as int;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   static Future<void> deleteUser(String? uid) async {
     try {
       await _firestore.collection("contentCreators").doc(uid).delete();

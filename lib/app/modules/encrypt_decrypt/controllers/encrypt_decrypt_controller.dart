@@ -208,7 +208,8 @@ class EncryptDecryptController extends GetxController {
       )));
 
       // await FirestoreData.getDocumentsListFromServer(_userId);
-      await FirestoreData.getSecretKey(_iv);
+      _documentModel(await FirestoreData.getSecretKey(_iv));
+      await FirestoreData.createViews(_documentModel.value.documentId);
     }
     return _isEncDone;
   }
@@ -229,13 +230,10 @@ class EncryptDecryptController extends GetxController {
           outFileName: _fileOut,
         );
       }
-      // TODO: Decrypt not working
-      // TODO: Github Actions
-      // TODO: See Methods to be exposed in public apis
-      // ! google-services.json exposing in github
-      // TODO: Debugging Tools
-      // TODO: Handling Erros Properly
+      FirestoreData.updateViews(_document?.documentId);
 
+      // ! Use of Cloud Function
+      // *Using Cloud Firestore temporarily
     }
     return _isEncDone;
   }
