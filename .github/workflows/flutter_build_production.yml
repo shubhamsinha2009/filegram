@@ -42,4 +42,29 @@ jobs:
         with:
           artifacts: "build/app/outputs/flutter-apk/*.apk,build/app/outputs/bundle/productionRelease/*.aab"
           token: ${{secrets.TOKEN}} # this is automatically provided by github
+
+      - name: Save APPBUNDLE to Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: APPBUNDLE
+          path: build/app/outputs/bundle/productionRelease/app-production-release.aab
+
+  release_internal:
+    name: Release Artifacts to internal track
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Get APPBUNDLE from Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: APPBUNDLE
+      - name: Release APPBUNDLE to internal track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_CONSOLE_JSON_KEY }}
+          packageName: com.sks.filegram
+          releaseFile: app-production-release.aab
+          track: internal
+          whatsNewDirectory: distribution/whatsnew          
   
