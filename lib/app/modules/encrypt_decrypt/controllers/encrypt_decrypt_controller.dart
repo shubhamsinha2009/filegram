@@ -22,15 +22,15 @@ class EncryptDecryptController extends GetxController {
       isLoading.toggle();
       final String? _result = await FlutterFileDialog.pickFile();
       pickedFile = _result;
+      isLoading.toggle();
+      confirmDialog();
     } on PlatformException catch (e) {
+      isLoading.toggle();
       Get.showSnackbar(GetSnackBar(
         messageText: Text(e.message ?? e.details),
         icon: const Icon(Icons.error_outline),
         snackPosition: SnackPosition.TOP,
       ));
-    } finally {
-      isLoading.toggle();
-      confirmDialog();
     }
   }
 
@@ -39,7 +39,7 @@ class EncryptDecryptController extends GetxController {
     if (_result != null) {
       String _fileName = _result.split('/').last;
       final String _dialogTitle =
-          _result.endsWith('.enc') ? 'decrypt' : 'encrypt';
+          _result.contains('.enc') ? 'decrypt' : 'encrypt';
       Get.dialog(
         WillPopScope(
           onWillPop: () async => false,
@@ -99,26 +99,18 @@ class EncryptDecryptController extends GetxController {
     bool? _isEncDone;
 
     if (_result != null) {
-      String _fileOut = _result.endsWith('.enc')
+      String _fileOut = _result.contains('.enc')
           ? _result.replaceAll('.enc', '').trim()
           : '$_result.enc';
       pickedFile = _fileOut;
 
       try {
-        if (_result.endsWith('.enc')) {
+        if (_result.contains('.enc')) {
           _isEncDone = await doDecryption(_result, _isEncDone, _fileOut);
         } else {
           _isEncDone = await doEncryption(_fileOut, _isEncDone, _result);
         }
-      } catch (e) {
-        isLoading.toggle();
-        Get.showSnackbar(GetSnackBar(
-          messageText: Text(e.toString()),
-          icon: const Icon(Icons.error_outline),
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.TOP,
-        ));
-      } finally {
+
         if (File(_result).existsSync()) {
           File(_result).deleteSync();
         }
@@ -174,6 +166,14 @@ class EncryptDecryptController extends GetxController {
             barrierDismissible: false,
           );
         }
+      } catch (e) {
+        isLoading.toggle();
+        Get.showSnackbar(GetSnackBar(
+          messageText: Text(e.toString()),
+          icon: const Icon(Icons.error_outline),
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.TOP,
+        ));
       }
     }
   }
@@ -189,27 +189,40 @@ class EncryptDecryptController extends GetxController {
     final _fizeSize = getFileSize(bytes: File(_result).lengthSync());
     final _ownerName = homeController.user.value.name;
     final _ownerPhotoUrl = homeController.user.value.photoUrl;
+    final _ownerEmailId = homeController.user.value.emailId;
 
-    if (_secretKey != null && _iv != null) {
-      _isEncDone = await FileEncrypter.encrypt(
-        key: _secretKey,
-        iv: _iv,
-        inFilename: _result,
-        outFileName: _fileOut,
-      );
-      await FirestoreData.createDocument(_documentModel(DocumentModel(
-        documentName: _fileOut.split('/').last,
-        secretKey: _secretKey,
-        iv: _iv,
-        ownerId: _userId,
-        documentSize: _fizeSize,
-        ownerName: _ownerName,
-        ownerPhotoUrl: _ownerPhotoUrl,
-      )));
+    try {
+      if (_secretKey != null && _iv != null) {
+        _isEncDone = await FileEncrypter.encrypt(
+          key: _secretKey,
+          iv: _iv,
+          inFilename: _result,
+          outFileName: _fileOut,
+        );
+        final _documentReference =
+            await FirestoreData.createDocument(_documentModel(DocumentModel(
+          documentName: _fileOut.split('/').last,
+          secretKey: _secretKey,
+          iv: _iv,
+          ownerId: _userId,
+          documentSize: _fizeSize,
+          ownerName: _ownerName,
+          ownerPhotoUrl: _ownerPhotoUrl,
+          ownerEmailId: _ownerEmailId,
+        )));
 
-      // await FirestoreData.getDocumentsListFromServer(_userId);
-      _documentModel(await FirestoreData.getSecretKey(_iv));
-      await FirestoreData.createViews(_documentModel.value.documentId);
+        // await FirestoreData.getDocumentsListFromServer(_userId);
+        _documentModel(await FirestoreData.getDocument(_documentReference));
+        await FirestoreData.createViews(_documentModel.value.documentId);
+      }
+    } on Exception catch (e) {
+      isLoading.value = false;
+      Get.showSnackbar(GetSnackBar(
+        duration: const Duration(seconds: 5),
+        messageText: Text(e.toString()),
+        icon: const Icon(Icons.error_outline),
+        snackPosition: SnackPosition.TOP,
+      ));
     }
     return _isEncDone;
   }
@@ -219,21 +232,34 @@ class EncryptDecryptController extends GetxController {
     bool? _isEncDone,
     String _fileOut,
   ) async {
-    final _checkKey = await FileEncrypter.getFileIv(inFilename: _result);
-    if (_checkKey != null) {
-      final _document = await FirestoreData.getSecretKey(_checkKey);
-      final _secretKey = _document?.secretKey;
-      if (_secretKey != null) {
-        _isEncDone = await FileEncrypter.decrypt(
-          inFilename: _result,
-          key: _secretKey,
-          outFileName: _fileOut,
+    try {
+      final _checkKey = await FileEncrypter.getFileIv(inFilename: _result);
+      if (_checkKey != null) {
+        final _document = await FirestoreData.getSecretKey(
+          _checkKey,
+          homeController.user.value.emailId,
         );
-      }
-      FirestoreData.updateViews(_document?.documentId);
+        final _secretKey = _document?.secretKey;
+        if (_secretKey != null) {
+          _isEncDone = await FileEncrypter.decrypt(
+            inFilename: _result,
+            key: _secretKey,
+            outFileName: _fileOut,
+          );
+        }
+        await FirestoreData.updateViews(_document?.documentId);
 
-      // ! Use of Cloud Function
-      // *Using Cloud Firestore temporarily
+        // ! Use of Cloud Function
+        // *Using Cloud Firestore temporarily
+      }
+    } on Exception catch (e) {
+      isLoading.value = false;
+      Get.showSnackbar(GetSnackBar(
+        duration: const Duration(seconds: 5),
+        messageText: Text(e.toString()),
+        icon: const Icon(Icons.error_outline),
+        snackPosition: SnackPosition.TOP,
+      ));
     }
     return _isEncDone;
   }
@@ -245,15 +271,6 @@ class EncryptDecryptController extends GetxController {
       try {
         final params = SaveFileDialogParams(sourceFilePath: _fileOut);
         _fileSavedPath = await FlutterFileDialog.saveFile(params: params);
-      } catch (e) {
-        isLoading.toggle();
-        Get.showSnackbar(GetSnackBar(
-          duration: const Duration(seconds: 5),
-          messageText: Text(e.toString()),
-          icon: const Icon(Icons.error_outline),
-          snackPosition: SnackPosition.TOP,
-        ));
-      } finally {
         isLoading.toggle();
         if (File(_fileOut).existsSync()) {
           File(_fileOut).deleteSync();
@@ -281,6 +298,14 @@ class EncryptDecryptController extends GetxController {
             ),
           );
         }
+      } catch (e) {
+        isLoading.toggle();
+        Get.showSnackbar(GetSnackBar(
+          duration: const Duration(seconds: 5),
+          messageText: Text(e.toString()),
+          icon: const Icon(Icons.error_outline),
+          snackPosition: SnackPosition.TOP,
+        ));
       }
     }
   }

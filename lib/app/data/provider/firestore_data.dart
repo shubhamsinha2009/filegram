@@ -5,15 +5,28 @@ import '../model/user_model.dart';
 class FirestoreData {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  static Future<DocumentModel?> getSecretKey(String iv) async {
+  static Future<DocumentModel?> getSecretKey(
+      String iv, String? userEmail) async {
     try {
       QuerySnapshot _doc = await _firestore
           .collection("files")
           .where("iv", isEqualTo: iv)
+          .where("documentPermission",
+              isEqualTo: DocumentPermission.public.name)
           .limit(1)
           .get(const GetOptions(
             source: Source.server,
           ));
+      if (_doc.docs.isEmpty) {
+        _doc = await _firestore
+            .collection("files")
+            .where("iv", isEqualTo: iv)
+            .where("sharedEmailIds", arrayContains: userEmail)
+            .limit(1)
+            .get(const GetOptions(
+              source: Source.server,
+            ));
+      }
       if (_doc.docs.isNotEmpty) {
         return DocumentModel(
           ownerPhotoUrl: _doc.docs.single["ownerPhotoUrl"] as String,
@@ -106,12 +119,11 @@ class FirestoreData {
     }
   }
 
-  static Future<DocumentModel?> getDocument(String documentId) async {
+  static Future<DocumentModel?> getDocument(
+      DocumentReference _documentReference) async {
     try {
-      DocumentSnapshot _doc = await _firestore
-          .collection("files")
-          .doc(documentId)
-          .get(const GetOptions(source: Source.server));
+      DocumentSnapshot _doc =
+          await _documentReference.get(const GetOptions(source: Source.server));
 
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
@@ -124,6 +136,10 @@ class FirestoreData {
         documentSize: _data["documentSize"] as String,
         ownerId: _data["ownerId"] as String,
         createdOn: (_data["createdOn"] as Timestamp).toDate(),
+        documentId: _doc.id,
+        sharedEmailIds: List<String>.from(_data["sharedEmailIds"]),
+        documentPermission:
+            DocumentPermission.values.byName(_data["documentPermission"]),
       );
     } catch (e) {
       rethrow;
@@ -144,9 +160,10 @@ class FirestoreData {
     }
   }
 
-  static Future<void> createDocument(DocumentModel documentModel) async {
+  static Future<DocumentReference> createDocument(
+      DocumentModel documentModel) async {
     try {
-      await _firestore.collection("files").add(
+      return await _firestore.collection("files").add(
         {
           "ownerId": documentModel.ownerId,
           "documentName": documentModel.documentName,
@@ -156,6 +173,8 @@ class FirestoreData {
           "documentSize": documentModel.documentSize,
           "ownerPhotoUrl": documentModel.ownerPhotoUrl,
           "ownerName": documentModel.ownerName,
+          "documentPermission": DocumentPermission.private.name,
+          "sharedEmailIds": [documentModel.ownerEmailId],
         },
       );
     } catch (e) {
