@@ -1,5 +1,1 @@
-// enum DocumentPermission {
-//   private,
-//   public,
-//   shared,
-// }
+enum DocumentPermission { private, public, shared }

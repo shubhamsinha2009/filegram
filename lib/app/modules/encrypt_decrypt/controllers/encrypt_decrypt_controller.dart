@@ -217,6 +217,7 @@ class EncryptDecryptController extends GetxController {
       }
     } on Exception catch (e) {
       isLoading.value = false;
+
       Get.showSnackbar(GetSnackBar(
         duration: const Duration(seconds: 5),
         messageText: Text(e.toString()),
@@ -238,6 +239,7 @@ class EncryptDecryptController extends GetxController {
         final _document = await FirestoreData.getSecretKey(
           _checkKey,
           homeController.user.value.emailId,
+          homeController.user.value.id,
         );
         final _secretKey = _document?.secretKey;
         if (_secretKey != null) {
@@ -252,11 +254,11 @@ class EncryptDecryptController extends GetxController {
         // ! Use of Cloud Function
         // *Using Cloud Firestore temporarily
       }
-    } on Exception catch (e) {
+    } on PlatformException catch (e) {
       isLoading.value = false;
       Get.showSnackbar(GetSnackBar(
         duration: const Duration(seconds: 5),
-        messageText: Text(e.toString()),
+        messageText: Text(e.message ?? e.details),
         icon: const Icon(Icons.error_outline),
         snackPosition: SnackPosition.TOP,
       ));

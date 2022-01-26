@@ -23,6 +23,8 @@ class HomeView extends GetView<HomeController> {
             body: const EncryptedFileListView(),
             drawer: const AppDrawerView(),
             floatingActionButton: const EncryptDecryptView(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniEndFloat,
           )
         : const NoInternetView());
   }

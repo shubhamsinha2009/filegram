@@ -19,10 +19,7 @@ class LoginView extends GetView<LoginController> {
               children: [
                 const Text(
                   'Welcome, Please Sign in to continue',
-                  textScaleFactor: 1.3,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 const SizedBox(),
                 controller.isSomethingLoading.value
@@ -50,7 +47,8 @@ class LoginView extends GetView<LoginController> {
                       await controller.analytics
                           .logScreenView(screenName: '/home');
                       Get.offAndToNamed('home');
-                    } on Exception catch (e) {
+                    } catch (e) {
+                      controller.isSomethingLoading.toggle();
                       Get.showSnackbar(GetSnackBar(
                         title: 'Error',
                         message: e.toString(),

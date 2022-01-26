@@ -40,18 +40,28 @@ class Themes {
     scaffoldBackgroundColor: Colors.black,
     backgroundColor: Colors.black,
     appBarTheme: const AppBarTheme(
-      elevation: 4,
       color: Colors.black,
-      centerTitle: true,
     ),
     cardColor: Colors.black,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.amber,
-      foregroundColor: Colors.black,
+      backgroundColor: Colors.white12,
+      foregroundColor: Colors.white60,
     ),
     popupMenuTheme: const PopupMenuThemeData(
       color: Colors.black,
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: TextButton.styleFrom(
+        primary: Colors.white70,
+        backgroundColor: Colors.white10,
+        shadowColor: Colors.grey.shade900,
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        primary: Colors.white70,
+      ),
     ),
     textTheme: const TextTheme(
       headline6: TextStyle(
@@ -100,15 +110,13 @@ class Themes {
     scaffoldBackgroundColor: Colors.white,
     backgroundColor: Colors.white,
     // drawerTheme: DrawerThemeData(
-
     // ),
     appBarTheme: const AppBarTheme(
       elevation: 4,
       color: Colors.red,
-      centerTitle: true,
       titleTextStyle: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700,
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
         fontSize: 25,
       ),
       actionsIconTheme: IconThemeData(
@@ -123,56 +131,68 @@ class Themes {
     popupMenuTheme: const PopupMenuThemeData(
       color: Colors.black,
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        primary: Colors.deepOrange,
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: TextButton.styleFrom(
+        primary: Colors.white70,
+        backgroundColor: Colors.white10,
+        shadowColor: Colors.grey.shade900,
+      ),
+    ),
     textTheme: const TextTheme(
       bodyText1: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       bodyText2: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       subtitle1: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       subtitle2: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       headline6: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       headline1: TextStyle(
         color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       headline2: TextStyle(
         color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       headline3: TextStyle(
         color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       headline4: TextStyle(
         color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       headline5: TextStyle(
         color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
       ),
       button: TextStyle(),
     ),

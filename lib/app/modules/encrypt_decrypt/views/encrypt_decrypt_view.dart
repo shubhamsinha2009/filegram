@@ -13,7 +13,7 @@ class EncryptDecryptView extends GetView<EncryptDecryptController> {
           onPressed: controller.isLoading.value ? null : controller.pickFile,
           child: controller.isLoading.value
               ? const CircularProgressIndicator(
-                  color: Colors.black,
+                  color: Colors.white60,
                 )
               : const Icon(
                   Icons.file_upload_sharp,

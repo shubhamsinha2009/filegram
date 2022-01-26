@@ -1,3 +1,6 @@
+import 'package:filegram/app/data/enums/docpermission.dart';
+import 'package:flutter/cupertino.dart';
+
 import '../../../data/model/documents_model.dart';
 import '../../../data/provider/firestore_data.dart';
 import '../../home/controllers/home_controller.dart';
@@ -10,8 +13,11 @@ class EncryptedFileListController extends GetxController
   bool getFirstData = false;
   int page = 1;
   bool lastPage = false;
-  final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
-
+  final homeController = Get.find<HomeController>();
+  final sharedEmailIds = <String>[].obs;
+  final TextEditingController textEditingController = TextEditingController();
+  // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
+  final groupValue = DocumentPermission.public.obs;
   @override
   void onInit() async {
     await findAllEncryptedFiles();
@@ -20,7 +26,7 @@ class EncryptedFileListController extends GetxController
 
   Future<void> findAllEncryptedFiles() async {
     await FirestoreData.getDocumentsListFromCache(
-      _ownerId,
+      homeController.auth.currentUser?.uid,
       documentPerPage,
       startAfter: documents.isEmpty ? null : documents.last.createdOn,
     ).then((result) {
@@ -37,6 +43,12 @@ class EncryptedFileListController extends GetxController
     }, onError: (err) {
       change(null, status: RxStatus.error(err.toString()));
     });
+  }
+
+  @override
+  void onClose() {
+    textEditingController.dispose();
+    super.onClose();
   }
 
   @override

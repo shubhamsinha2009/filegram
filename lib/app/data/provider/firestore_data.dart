@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:filegram/app/data/enums/docpermission.dart';
+import 'package:flutter/services.dart';
 import '../model/documents_model.dart';
 import '../model/user_model.dart';
 
@@ -6,7 +8,10 @@ class FirestoreData {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   static Future<DocumentModel?> getSecretKey(
-      String iv, String? userEmail) async {
+    String iv,
+    String? userEmail,
+    String? ownerId,
+  ) async {
     try {
       QuerySnapshot _doc = await _firestore
           .collection("files")
@@ -27,6 +32,16 @@ class FirestoreData {
               source: Source.server,
             ));
       }
+      if (_doc.docs.isEmpty) {
+        _doc = await _firestore
+            .collection("files")
+            .where("iv", isEqualTo: ownerId)
+            .where("ownerId", arrayContains: userEmail)
+            .limit(1)
+            .get(const GetOptions(
+              source: Source.server,
+            ));
+      }
       if (_doc.docs.isNotEmpty) {
         return DocumentModel(
           ownerPhotoUrl: _doc.docs.single["ownerPhotoUrl"] as String,
@@ -40,7 +55,7 @@ class FirestoreData {
           documentId: _doc.docs.single.id,
         );
       }
-    } catch (e) {
+    } on PlatformException {
       rethrow;
     }
   }
@@ -62,7 +77,7 @@ class FirestoreData {
               .collection("files")
               .orderBy("createdOn", descending: true)
               .where("ownerId", isEqualTo: ownerId)
-              .get(const GetOptions(source: Source.serverAndCache));
+              .get(const GetOptions(source: Source.server));
         }
       } else {
         final Timestamp _startAfter = Timestamp.fromDate(startAfter);
@@ -73,37 +88,7 @@ class FirestoreData {
       return _docList.docs.map((DocumentSnapshot document) {
         Map<String, dynamic> _data = document.data()! as Map<String, dynamic>;
         return DocumentModel(
-          ownerPhotoUrl: _data["ownerPhotoUrl"] as String?,
-          ownerName: _data["ownerName"] as String?,
-          secretKey: _data["secretKey"] as String?,
-          iv: _data["iv"] as String?,
-          documentName: _data["documentName"] as String?,
-          documentSize: _data["documentSize"] as String?,
-          ownerId: _data["ownerId"] as String?,
-          createdOn: (_data["createdOn"] as Timestamp?)?.toDate(),
-          documentId: document.id,
-        );
-      }).toList();
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  static Future<List<DocumentModel?>> getDocumentsListFromServer(
-    String? ownerId,
-  ) async {
-    try {
-      QuerySnapshot _docList = await _firestore
-          .collection("files")
-          .orderBy("createdOn", descending: true)
-          .where("ownerId", isEqualTo: ownerId)
-          .limit(1)
-          .get(const GetOptions(source: Source.serverAndCache));
-
-      return _docList.docs.map((DocumentSnapshot document) {
-        Map<String, dynamic> _data = document.data()! as Map<String, dynamic>;
-        return DocumentModel(
-          ownerPhotoUrl: _data["ownerPhotoUrl"] as String,
+          ownerPhotoUrl: _data["ownerId"] as String,
           ownerName: _data["ownerName"] as String,
           secretKey: _data["secretKey"] as String,
           iv: _data["iv"] as String,
@@ -112,6 +97,9 @@ class FirestoreData {
           ownerId: _data["ownerId"] as String,
           createdOn: (_data["createdOn"] as Timestamp).toDate(),
           documentId: document.id,
+          sharedEmailIds: List<String>.from(_data["sharedEmailIds"]),
+          documentPermission:
+              DocumentPermission.values.byName(_data["documentPermission"]),
         );
       }).toList();
     } catch (e) {
@@ -124,6 +112,34 @@ class FirestoreData {
     try {
       DocumentSnapshot _doc =
           await _documentReference.get(const GetOptions(source: Source.server));
+
+      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+
+      return DocumentModel(
+        ownerPhotoUrl: _data["ownerId"] as String,
+        ownerName: _data["ownerName"] as String,
+        secretKey: _data["secretKey"] as String,
+        iv: _data["iv"] as String,
+        documentName: _data["documentName"] as String,
+        documentSize: _data["documentSize"] as String,
+        ownerId: _data["ownerId"] as String,
+        createdOn: (_data["createdOn"] as Timestamp).toDate(),
+        documentId: _doc.id,
+        sharedEmailIds: List<String>.from(_data["sharedEmailIds"]),
+        documentPermission:
+            DocumentPermission.values.byName(_data["documentPermission"]),
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<DocumentModel?> getDocumentAfterUpdate(String? uid) async {
+    try {
+      DocumentSnapshot _doc = await _firestore
+          .collection("files")
+          .doc(uid)
+          .get(const GetOptions(source: Source.server));
 
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
@@ -173,8 +189,35 @@ class FirestoreData {
           "documentSize": documentModel.documentSize,
           "ownerPhotoUrl": documentModel.ownerPhotoUrl,
           "ownerName": documentModel.ownerName,
-          "documentPermission": DocumentPermission.private.name,
+          "documentPermission": DocumentPermission.public.name,
           "sharedEmailIds": [documentModel.ownerEmailId],
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> deleteDocument({
+    String? documentId,
+  }) async {
+    try {
+      await _firestore.collection("files").doc(documentId).delete();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> updateDocumentPermission({
+    String? documentId,
+    List<String>? emailIds,
+    required DocumentPermission documentPermission,
+  }) async {
+    try {
+      await _firestore.collection("files").doc(documentId).update(
+        {
+          "documentPermission": documentPermission.name,
+          "sharedEmailIds": emailIds,
         },
       );
     } catch (e) {

@@ -10,6 +10,9 @@ class NoInternetView extends GetView<NoInternetController> {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.isOverlaysOpen) {
+      Get.back(closeOverlays: true);
+    }
     return SafeArea(
       child: Center(
         child: Column(

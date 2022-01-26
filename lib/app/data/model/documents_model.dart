@@ -1,3 +1,5 @@
+import 'package:filegram/app/data/enums/docpermission.dart';
+
 class DocumentModel {
   final String? ownerId;
   final String? documentName;
@@ -11,6 +13,7 @@ class DocumentModel {
   final DateTime? createdOn;
   final DocumentPermission documentPermission;
   final List<String>? sharedEmailIds;
+  final bool isAnimatedContainerClosed;
 
   DocumentModel({
     this.ownerId,
@@ -23,9 +26,8 @@ class DocumentModel {
     this.documentSize,
     this.documentId,
     this.createdOn,
-    this.documentPermission = DocumentPermission.private,
+    this.documentPermission = DocumentPermission.public,
     this.sharedEmailIds,
+    this.isAnimatedContainerClosed = true,
   });
 }
-
-enum DocumentPermission { private, public, shared }
