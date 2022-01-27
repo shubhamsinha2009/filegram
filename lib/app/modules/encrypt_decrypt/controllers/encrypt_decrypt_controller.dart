@@ -122,9 +122,12 @@ class EncryptDecryptController extends GetxController {
               onWillPop: () async => false,
               child: AlertDialog(
                 backgroundColor: Colors.black,
-                title: const Text('Reward : Want to Save your file? '),
+                // title: const Text('Reward : Want to Save your file? '),
+                title: const Text('Want to Save your file? '),
+                // content: Text(
+                //     'Your File : ${_fileOut.split('/').last} will be Saved as a reward after you watch full ad'),
                 content: Text(
-                    'Your File : ${_fileOut.split('/').last} will be Saved as a reward after you watch full ad'),
+                    'Your File : ${_fileOut.split('/').last} will be Saved'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {

@@ -59,12 +59,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: APPBUNDLE
-      - name: Release APPBUNDLE to internal track
+      - name: Release APPBUNDLE to beta track
         uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_CONSOLE_JSON_KEY }}
           packageName: com.sks.filegram
           releaseFiles: app-production-release.aab
-          track: internal
+          track: beta
           whatsNewDirectory: distribution/whatsnew          
   

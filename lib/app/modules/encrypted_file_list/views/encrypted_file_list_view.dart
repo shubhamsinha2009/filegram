@@ -150,7 +150,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                   await FirestoreData.deleteDocument(
                                       documentId: _document.documentId);
                                   controller.documents.clear();
-
+                                  controller.getFirstData = false;
                                   await controller.findAllEncryptedFiles();
                                   if (Get.isOverlaysOpen) {
                                     Get.back();

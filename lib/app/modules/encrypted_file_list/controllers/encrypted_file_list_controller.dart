@@ -18,6 +18,7 @@ class EncryptedFileListController extends GetxController
   final TextEditingController textEditingController = TextEditingController();
   // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
   final groupValue = DocumentPermission.public.obs;
+
   @override
   void onInit() async {
     await findAllEncryptedFiles();
