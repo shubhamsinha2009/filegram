@@ -11,5 +11,5 @@
 - [] logo and name reconsider - 2 
 - [] FileManger  - 1
 - [] Themes - 6
-- [] Bug First Element delete
+- [x] Bug First Element delete
 - [] Realtime Stream Remove Cache 
