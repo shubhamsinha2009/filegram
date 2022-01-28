@@ -1,4 +1,4 @@
-import 'package:filegram/app/modules/no_internet/views/no_internet_view.dart';
+import '../../no_internet/views/no_internet_view.dart';
 
 import '../../encrypted_file_list/views/encrypted_file_list_view.dart';
 

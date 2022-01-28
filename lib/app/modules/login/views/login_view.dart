@@ -1,4 +1,6 @@
-import 'package:filegram/app/modules/no_internet/views/no_internet_view.dart';
+import 'package:filegram/app/core/services/firebase_analytics.dart';
+
+import '../../no_internet/views/no_internet_view.dart';
 
 import '../controllers/login_controller.dart';
 import 'package:flutter/material.dart';
@@ -39,12 +41,12 @@ class LoginView extends GetView<LoginController> {
                       await controller.signInWithGoogle();
                       if (await controller.userNotExists()) {
                         await controller.createNewUser();
-                        await controller.analytics.logSignUp(
+                        await AnalyticsService.analytics.logSignUp(
                           signUpMethod: 'google_sign_in',
                         );
                       }
                       controller.isSomethingLoading.toggle();
-                      await controller.analytics
+                      await AnalyticsService.analytics
                           .logScreenView(screenName: '/home');
                       Get.offAndToNamed('home');
                     } catch (e) {

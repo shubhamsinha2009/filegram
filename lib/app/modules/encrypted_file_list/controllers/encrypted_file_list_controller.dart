@@ -1,4 +1,4 @@
-import 'package:filegram/app/data/enums/docpermission.dart';
+import '../../../data/enums/docpermission.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../data/model/documents_model.dart';

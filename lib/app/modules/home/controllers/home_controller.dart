@@ -1,4 +1,4 @@
-import 'package:filegram/app/modules/no_internet/controllers/no_internet_controller.dart';
+import '../../no_internet/controllers/no_internet_controller.dart';
 
 import '../../../data/model/user_model.dart';
 import '../../../data/provider/firestore_data.dart';

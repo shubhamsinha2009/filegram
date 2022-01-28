@@ -1,6 +1,6 @@
-import 'package:filegram/app/data/provider/firestore_data.dart';
-import 'package:filegram/app/modules/encrypted_file_list/encrypted_file_list.dart';
-import 'package:filegram/app/modules/encrypted_file_list/localwidgets/document_bottom_sheet.dart';
+import '../../../data/provider/firestore_data.dart';
+import '../encrypted_file_list.dart';
+import '../localwidgets/document_bottom_sheet.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../data/model/documents_model.dart';

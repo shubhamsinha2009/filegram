@@ -1,4 +1,4 @@
-import 'package:filegram/app/data/enums/docpermission.dart';
+import '../enums/docpermission.dart';
 
 class DocumentModel {
   final String? ownerId;

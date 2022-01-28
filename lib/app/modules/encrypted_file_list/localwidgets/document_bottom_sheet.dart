@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
-import 'package:filegram/app/data/enums/docpermission.dart';
-import 'package:filegram/app/data/model/documents_model.dart';
-import 'package:filegram/app/data/provider/firestore_data.dart';
-import 'package:filegram/app/modules/encrypted_file_list/controllers/encrypted_file_list_controller.dart';
+import '../../../data/enums/docpermission.dart';
+import '../../../data/model/documents_model.dart';
+import '../../../data/provider/firestore_data.dart';
+import '../controllers/encrypted_file_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

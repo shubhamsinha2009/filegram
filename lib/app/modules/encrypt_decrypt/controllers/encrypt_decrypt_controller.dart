@@ -1,14 +1,16 @@
 import 'dart:io';
 import 'dart:math';
-import '../../../core/services/firebase_analytics.dart';
-import '../../../data/model/documents_model.dart';
-import '../../../data/provider/firestore_data.dart';
-import '../services/file_encrypter.dart';
-import '../../home/controllers/controllers.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
+
+import '../../../core/services/firebase_analytics.dart';
+import '../../../data/model/documents_model.dart';
+import '../../../data/provider/firestore_data.dart';
+import '../../home/controllers/controllers.dart';
+import '../services/file_encrypter.dart';
 
 class EncryptDecryptController extends GetxController {
   final isLoading = false.obs;
