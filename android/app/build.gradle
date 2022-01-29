@@ -76,7 +76,12 @@ android {
             dimension "default"
             applicationIdSuffix ""
             manifestPlaceholders = [appName: "Filegram"]
-        }       
+        }
+        staging {
+            dimension "default"
+            applicationIdSuffix ".stg"
+            manifestPlaceholders = [appName: "[STG] Filegram"]
+        }         
         development {
             dimension "default"
             applicationIdSuffix ".dev"
