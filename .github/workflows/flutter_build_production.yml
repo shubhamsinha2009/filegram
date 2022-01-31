@@ -27,6 +27,12 @@ jobs:
       - name: Decoding env
         run: echo "${{ secrets.ENV_PRODUCTION }}" | base64 --decode > .env.production      
 
+      - name: Decoding env_development
+        run: echo "${{ secrets.ENV_DEVELOPMENT }}" | base64 --decode > .env.development
+
+      - name: Decoding env_staging
+        run: echo "${{ secrets.ENV_DEVELOPMENT }}" | base64 --decode > .env.staging      
+ 
       - uses: subosito/flutter-action@v2
         with:
           channel: "stable"  
