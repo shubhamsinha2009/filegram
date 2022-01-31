@@ -33,6 +33,14 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+def admobProperties = new Properties()
+def admobPropertiesFile = rootProject.file('admob.properties')
+if (admobPropertiesFile.exists()) {
+    admobProperties.load(new FileInputStream(admobPropertiesFile))
+}
+
+
+
 
 android {
     compileSdkVersion 32
@@ -75,17 +83,17 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "Filegram"]
+            manifestPlaceholders = [appName: "Filegram" , admobId: admobProperties['admobId']]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] Filegram"]
+            manifestPlaceholders = [appName: "[STG] Filegram",admobId: admobProperties['sampleId']]
         }         
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] Filegram"]
+            manifestPlaceholders = [appName: "[DEV] Filegram",admobId: admobProperties['sampleId']]
         }
     }
 

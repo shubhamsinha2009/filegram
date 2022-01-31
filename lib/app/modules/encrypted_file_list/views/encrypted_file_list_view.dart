@@ -1,3 +1,5 @@
+import 'package:native_admob_flutter/native_admob_flutter.dart';
+
 import '../../../data/provider/firestore_data.dart';
 import '../encrypted_file_list.dart';
 import '../localwidgets/document_bottom_sheet.dart';
@@ -32,168 +34,173 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
         child: ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           controller: controller.scroll,
-          itemCount: state?.length,
+          itemCount: (state?.length)! + 1,
           itemBuilder: (context, index) {
-            final DocumentModel _document = state![index];
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              padding: const EdgeInsets.all(15),
-              margin: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                // textBaseline: TextBaseline.alphabetic,
-                // verticalDirection: VerticalDirection.down,
-                children: [
-                  Text(
-                    '${_document.documentName}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w300,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    DateFormat.yMMMEd()
-                        .add_jms()
-                        .format(_document.createdOn ?? DateTime.now()),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w300,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    '${_document.documentSize}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w300,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () => Get.bottomSheet(
-                          DocumentPermissionBottomSheet(
-                            document: _document,
-                            controller: controller,
+            final DocumentModel? _document =
+                index == 0 ? null : state?[index - 1];
+
+            return index == 0
+                ? homeAd(controller)
+                : AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    padding: const EdgeInsets.all(15),
+                    margin: const EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      // textBaseline: TextBaseline.alphabetic,
+                      // verticalDirection: VerticalDirection.down,
+                      children: [
+                        Text(
+                          '${_document?.documentName}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 1,
                           ),
-                          backgroundColor: Colors.black,
-                          isDismissible: true,
-                          isScrollControlled: true,
                         ),
-                        child: Text(
-                            '${_document.documentPermission.name.capitalize}'),
-                      ),
-                      OutlinedButton(
-                        onPressed: () async {
-                          final _views = await FirestoreData.readViews(
-                              _document.documentId);
-                          Get.dialog(
-                            AlertDialog(
-                              alignment: Alignment.center,
-                              backgroundColor: Colors.black,
-                              title: const Text(
-                                ' Number of Views',
-                              ),
-                              content: Text(
-                                _views.toString(),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 50,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    if (Get.isOverlaysOpen) {
-                                      Get.back();
-                                    }
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                            barrierDismissible: false,
-                          );
-                        },
-                        child: const Text('Views'),
-                      ),
-                      OutlinedButton(
-                        onPressed: () => Get.dialog(
-                          AlertDialog(
-                            backgroundColor: Colors.black,
-                            title: Text(
-                              ' ${_document.documentName} will be deleted?',
-                            ),
-                            content: const Text(
-                                'After you delete your file, Nobody will be able to decrypt this file ever'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  if (Get.isOverlaysOpen) {
-                                    Get.back();
-                                  }
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  await FirestoreData.deleteDocument(
-                                      documentId: _document.documentId);
-                                  controller.documents.clear();
-                                  controller.getFirstData = false;
-                                  await controller.findAllEncryptedFiles();
-                                  if (Get.isOverlaysOpen) {
-                                    Get.back();
-                                  }
-                                },
-                                child: const Text('Delete'),
-                              ),
-                            ],
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          DateFormat.yMMMEd()
+                              .add_jms()
+                              .format(_document?.createdOn ?? DateTime.now()),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 1,
                           ),
-                          barrierDismissible: false,
                         ),
-                        child: const Text('Delete'),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.black54,
-                      Colors.black87,
-                    ],
-                  ),
-                  //color: Colors.black87,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade900,
-                      offset: const Offset(5, 5),
-                      blurRadius: 5,
-                      spreadRadius: 1,
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          '${_document?.documentSize}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        ButtonBar(
+                          alignment: MainAxisAlignment.end,
+                          children: [
+                            OutlinedButton(
+                              onPressed: () => Get.bottomSheet(
+                                DocumentPermissionBottomSheet(
+                                  document: _document!,
+                                  controller: controller,
+                                ),
+                                backgroundColor: Colors.black,
+                                isDismissible: true,
+                                isScrollControlled: true,
+                              ),
+                              child: Text(
+                                  '${_document?.documentPermission.name.capitalize}'),
+                            ),
+                            OutlinedButton(
+                              onPressed: () async {
+                                final _views = await FirestoreData.readViews(
+                                    _document?.documentId);
+                                Get.dialog(
+                                  AlertDialog(
+                                    alignment: Alignment.center,
+                                    backgroundColor: Colors.black,
+                                    title: const Text(
+                                      ' Number of Views',
+                                    ),
+                                    content: Text(
+                                      _views.toString(),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 50,
+                                        letterSpacing: 1,
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          if (Get.isOverlaysOpen) {
+                                            Get.back();
+                                          }
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                  barrierDismissible: false,
+                                );
+                              },
+                              child: const Text('Views'),
+                            ),
+                            OutlinedButton(
+                              onPressed: () => Get.dialog(
+                                AlertDialog(
+                                  backgroundColor: Colors.black,
+                                  title: Text(
+                                    ' ${_document?.documentName} will be deleted?',
+                                  ),
+                                  content: const Text(
+                                      'After you delete your file, Nobody will be able to decrypt this file ever'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        if (Get.isOverlaysOpen) {
+                                          Get.back();
+                                        }
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        await FirestoreData.deleteDocument(
+                                            documentId: _document?.documentId);
+                                        controller.documents.clear();
+                                        controller.getFirstData = false;
+                                        await controller
+                                            .findAllEncryptedFiles();
+                                        if (Get.isOverlaysOpen) {
+                                          Get.back();
+                                        }
+                                      },
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
+                                ),
+                                barrierDismissible: false,
+                              ),
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                    BoxShadow(
-                      color: Colors.grey.shade800,
-                      offset: const Offset(-4, -4),
-                      blurRadius: 5,
-                      spreadRadius: 1,
-                    )
-                  ]),
-            );
+                    decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.black54,
+                            Colors.black87,
+                          ],
+                        ),
+                        //color: Colors.black87,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade900,
+                            offset: const Offset(5, 5),
+                            blurRadius: 5,
+                            spreadRadius: 1,
+                          ),
+                          BoxShadow(
+                            color: Colors.grey.shade800,
+                            offset: const Offset(-4, -4),
+                            blurRadius: 5,
+                            spreadRadius: 1,
+                          )
+                        ]),
+                  );
           },
         ),
       ),
@@ -203,8 +210,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
           // mainAxisAlignment: MainAxisAlignment.center,
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            homeAd(controller),
             const SizedBox(
-              height: 100,
+              height: 10,
             ),
             const Text(
               "No encrypted Files Found ! ",
@@ -216,13 +224,13 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(
-              height: 100,
+              height: 10,
             ),
             Lottie.asset(
               "assets/empty.json",
             ),
             const SizedBox(
-              height: 100,
+              height: 10,
             ),
             const Text(
               "Start Encrypting Your Files  ",
@@ -234,7 +242,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(
-              height: 50,
+              height: 10,
             ),
             TextButton.icon(
               onPressed: () async {
@@ -258,9 +266,13 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
       onError: (error) => Center(
           child: Column(
         children: [
+          homeAd(controller),
+          const SizedBox(
+            height: 10,
+          ),
           Lottie.asset('assets/error.json'),
           const SizedBox(
-            height: 50,
+            height: 10,
           ),
           TextButton.icon(
             onPressed: () async {
@@ -283,3 +295,99 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
     );
   }
 }
+
+NativeAd homeAd(EncryptedFileListController controller) {
+  return NativeAd(
+    controller: controller.nativeAdController,
+    height: 300,
+    builder: (context, child) {
+      return Material(
+        color: Colors.black,
+        elevation: 8,
+        child: child,
+      );
+    },
+    buildLayout: fullBuilder,
+    loading: const SizedBox(
+      height: 0,
+      width: 0,
+    ),
+    error: const SizedBox(
+      height: 0,
+      width: 0,
+    ),
+    icon: AdImageView(size: 40),
+    headline: AdTextView(
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      maxLines: 1,
+    ),
+    media: AdMediaView(
+      height: 180,
+      width: MATCH_PARENT,
+      elevation: 6,
+      //elevationColor: Colors.deepPurpleAccent,
+    ),
+    attribution: AdTextView(
+      width: WRAP_CONTENT,
+      height: WRAP_CONTENT,
+      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+      margin: const EdgeInsets.only(right: 4),
+      maxLines: 1,
+      text: 'Ad',
+      decoration: AdDecoration(
+        borderRadius: AdBorderRadius.all(20),
+      ),
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+    button: AdButtonView(
+      elevation: 18,
+      elevationColor: Colors.amber,
+      height: MATCH_PARENT,
+    ),
+    ratingBar: AdRatingBarView(starsColor: Colors.white),
+  );
+}
+
+AdLayoutBuilder get fullBuilder => (ratingBar, media, icon, headline,
+        advertiser, body, price, store, attribuition, button) {
+      return AdLinearLayout(
+        padding: const EdgeInsets.all(10),
+        // The first linear layout width needs to be extended to the
+        // parents height, otherwise the children won't fit good
+        width: MATCH_PARENT,
+        decoration: AdDecoration(
+          backgroundColor: Colors.black,
+        ),
+        children: [
+          media,
+          AdLinearLayout(
+            children: [
+              icon,
+              AdLinearLayout(children: [
+                headline,
+                AdLinearLayout(
+                  children: [attribuition, advertiser, ratingBar],
+                  orientation: HORIZONTAL,
+                  width: MATCH_PARENT,
+                ),
+              ], margin: const EdgeInsets.only(left: 4)),
+            ],
+            gravity: LayoutGravity.center_horizontal,
+            width: WRAP_CONTENT,
+            orientation: HORIZONTAL,
+            margin: const EdgeInsets.only(top: 6),
+          ),
+          AdLinearLayout(
+            children: [button],
+            orientation: HORIZONTAL,
+          ),
+        ],
+      );
+    };

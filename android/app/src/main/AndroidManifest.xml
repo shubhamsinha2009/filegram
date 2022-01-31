@@ -7,7 +7,6 @@
         <uses-permission android:name="android.permission.INTERNET" />
         <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
    <application
         android:label="${appName}"
@@ -43,6 +42,6 @@
             android:value="2" />
          <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5279463744831556~4000967999"/>        
+            android:value="${admobId}"/>        
     </application>
 </manifest>

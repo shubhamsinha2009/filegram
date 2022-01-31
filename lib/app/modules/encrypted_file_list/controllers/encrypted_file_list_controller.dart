@@ -1,3 +1,5 @@
+import 'package:native_admob_flutter/native_admob_flutter.dart';
+
 import '../../../data/enums/docpermission.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -18,7 +20,7 @@ class EncryptedFileListController extends GetxController
   final TextEditingController textEditingController = TextEditingController();
   // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
   final groupValue = DocumentPermission.public.obs;
-
+  final nativeAdController = NativeAdController();
   @override
   void onInit() async {
     await findAllEncryptedFiles();
@@ -39,6 +41,7 @@ class EncryptedFileListController extends GetxController
       } else {
         getFirstData = true;
         documents.addAll(result);
+
         change(documents, status: RxStatus.success());
       }
     }, onError: (err) {

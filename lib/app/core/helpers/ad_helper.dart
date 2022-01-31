@@ -1,15 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:native_admob_flutter/native_admob_flutter.dart';
 
 class AdHelper {
   static String get nativeAdUnitId {
-    if (kDebugMode) {
-      return MobileAds.nativeAdTestUnitId;
-    } else {
-      return 'ca-app-pub-5279463744831556/1808802937';
-    }
-
-    /// Always test with test ads
+    return dotenv.get('homePageAd');
   }
 
   static String get interstitialAdUnitId {
