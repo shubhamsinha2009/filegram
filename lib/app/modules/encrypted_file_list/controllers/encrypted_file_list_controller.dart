@@ -21,10 +21,17 @@ class EncryptedFileListController extends GetxController
   // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
   final groupValue = DocumentPermission.public.obs;
   final nativeAdController = NativeAdController();
+
   @override
   void onInit() async {
     await findAllEncryptedFiles();
     super.onInit();
+  }
+
+  Future<void> requestInAppReview() async {
+    if (await homeController.inAppReview.isAvailable()) {
+      homeController.inAppReview.requestReview();
+    }
   }
 
   Future<void> findAllEncryptedFiles() async {
