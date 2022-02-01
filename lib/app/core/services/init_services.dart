@@ -11,8 +11,8 @@ Future<void> initServices() async {
 
   await MobileAds.initialize(
     nativeAdUnitId: AdHelper.nativeAdUnitId,
-    // interstitialAdUnitId: AdHelper.interstitialAdUnitId,
-    // appOpenAdUnitId: AdHelper.appOpenAdUnitId,
-    // rewardedInterstitialAdUnitId: AdHelper.rewardedInterstitialAdUnitId,
+    interstitialAdUnitId: AdHelper.interstitialAdUnitId,
+    appOpenAdUnitId: AdHelper.appOpenAdUnitId,
+    rewardedInterstitialAdUnitId: AdHelper.rewardedInterstitialAdUnitId,
   );
 }
