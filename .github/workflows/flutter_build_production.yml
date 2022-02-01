@@ -62,7 +62,7 @@ jobs:
           path: build/app/outputs/bundle/productionRelease/app-production-release.aab
 
   release_internal:
-    name: Release Artifacts to internal track
+    name: Release Artifacts to beta track
     needs: [build]
     runs-on: ubuntu-latest
     steps:
