@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:native_updater/native_updater.dart';
 
 import '../controllers/app_drawer_controller.dart';
 
@@ -38,6 +39,26 @@ class AppDrawerView extends GetView<AppDrawerController> {
             },
             leading: const Icon(Icons.logout_rounded),
             title: const Text('LogOut'),
+          ),
+          ListTile(
+            onTap: () {
+              NativeUpdater.displayUpdateAlert(
+                context,
+                forceUpdate: false,
+              );
+            },
+            leading: const Icon(Icons.system_security_update),
+            title: const Text('Check For Update'),
+          ),
+          ListTile(
+            onTap: () {
+              NativeUpdater.displayUpdateAlert(
+                context,
+                forceUpdate: false,
+              );
+            },
+            leading: const Icon(Icons.system_update),
+            title: const Text('Immediate Update'),
           ),
         ],
       ),

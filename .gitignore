@@ -126,3 +126,15 @@ app.*.map.json
 /android/app/staging
 /android/app/development
 
+firebase_backend/firebase.json
+firebase_backend/.gitignore
+firebase_backend/functions/.eslintrc.js
+firebase_backend/functions/.gitignore
+firebase_backend/functions/package-lock.json
+firebase_backend/functions/package.json
+firebase_backend/functions/tsconfig.dev.json
+firebase_backend/functions/tsconfig.json
+firebase_backend/.firebaserc
+firebase_backend/firestore.rules
+firebase_backend/firestore.indexes.json
+firebase_backend/remoteconfig.template.json
