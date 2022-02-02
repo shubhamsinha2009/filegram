@@ -1,4 +1,4 @@
-import 'package:native_admob_flutter/native_admob_flutter.dart';
+import 'package:filegram/app/modules/ads/controllers/ads_controller.dart';
 
 import '../../../data/enums/docpermission.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,16 +11,17 @@ import 'package:get/get.dart';
 class EncryptedFileListController extends GetxController
     with StateMixin<List<DocumentModel>>, ScrollMixin {
   List<DocumentModel> documents = [];
-  final int documentPerPage = 10;
+  final int documentPerPage = 5;
   bool getFirstData = false;
   int page = 1;
   bool lastPage = false;
   final homeController = Get.find<HomeController>();
   final sharedEmailIds = <String>[].obs;
+  final adsController = Get.find<AdsController>();
   final TextEditingController textEditingController = TextEditingController();
   // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
   final groupValue = DocumentPermission.public.obs;
-  final nativeAdController = NativeAdController();
+  final inlineAdIndex = 0;
 
   @override
   void onInit() async {
@@ -28,10 +29,11 @@ class EncryptedFileListController extends GetxController
     super.onInit();
   }
 
-  Future<void> requestInAppReview() async {
-    if (await homeController.inAppReview.isAvailable()) {
-      homeController.inAppReview.requestReview();
+  int getListViewItemIndex(int index) {
+    if (index >= inlineAdIndex && adsController.isInlineBannerAdLoaded.value) {
+      return index - 1;
     }
+    return index;
   }
 
   Future<void> findAllEncryptedFiles() async {

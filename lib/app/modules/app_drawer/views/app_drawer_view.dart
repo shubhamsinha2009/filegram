@@ -36,10 +36,10 @@ class AppDrawerView extends GetView<AppDrawerController> {
             leading: const Icon(Icons.logout_rounded),
             title: const Text('LogOut'),
           ),
-          ListTile(
-            onTap: controller.openPlayStore,
-            title: const Text('Open App in Play Store'),
-          ),
+          // ListTile(
+          //   onTap: controller.openPlayStore,
+          //   title: const Text('Open App in Play Store'),
+          // ),
         ],
       ),
     );

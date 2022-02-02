@@ -1,7 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AdHelper {
-  static String get nativeAdUnitId {
+  static String get bannerAdUnitId {
     return dotenv.get('homePageAd');
   }
 
@@ -13,7 +13,7 @@ class AdHelper {
     return dotenv.get('appOpenAd');
   }
 
-  static String get rewardedInterstitialAdUnitId {
+  static String get rewardedAdUnitId {
     return dotenv.get('rewardedAd');
   }
 }

@@ -1,5 +1,4 @@
-import 'package:filegram/app/modules/encrypted_file_list/localwidgets/native_banner.dart';
-import 'package:native_updater/native_updater.dart';
+import 'package:filegram/app/modules/ads/views/ads_view.dart';
 
 import '../../../data/provider/firestore_data.dart';
 import '../encrypted_file_list.dart';
@@ -21,32 +20,34 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
   Widget build(BuildContext context) {
     return controller.obx(
       (state) => RefreshIndicator(
-        triggerMode: RefreshIndicatorTriggerMode.onEdge,
-        backgroundColor: Colors.white,
-        color: Colors.black87,
-        strokeWidth: 4,
-        displacement: 150,
-        edgeOffset: 0,
-        onRefresh: () async {
-          controller.documents.clear();
+          triggerMode: RefreshIndicatorTriggerMode.onEdge,
+          backgroundColor: Colors.white,
+          color: Colors.black87,
+          strokeWidth: 4,
+          displacement: 150,
+          edgeOffset: 0,
+          onRefresh: () async {
+            controller.documents.clear();
 
-          await controller.findAllEncryptedFiles();
-          NativeUpdater.displayUpdateAlert(
-            context,
-            forceUpdate: true,
-          );
-        },
-        child: ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          controller: controller.scroll,
-          itemCount: (state?.length)! + 1,
-          itemBuilder: (context, index) {
-            final DocumentModel? _document =
-                index == 0 ? null : state?[index - 1];
+            await controller.findAllEncryptedFiles();
+          },
+          child: Obx(
+            () => ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: controller.scroll,
+              itemCount: (state?.length)! +
+                  (controller.adsController.isInlineBannerAdLoaded.value
+                      ? 1
+                      : 0),
+              itemBuilder: (context, index) {
+                if (controller.adsController.isInlineBannerAdLoaded.value &&
+                    index == (controller.inlineAdIndex)) {
+                  return const AdsView();
+                } else {
+                  final DocumentModel? _document =
+                      state![controller.getListViewItemIndex(index)];
 
-            return index == 0
-                ? homeAd(controller)
-                : AnimatedContainer(
+                  return AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     padding: const EdgeInsets.all(15),
                     margin: const EdgeInsets.all(15),
@@ -87,7 +88,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                           ),
                         ),
                         ButtonBar(
-                          alignment: MainAxisAlignment.end,
+                          alignment: MainAxisAlignment.start,
                           children: [
                             OutlinedButton(
                               onPressed: () => Get.bottomSheet(
@@ -125,7 +126,6 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () async {
-                                          await controller.requestInAppReview();
                                           if (Get.isOverlaysOpen) {
                                             Get.back();
                                           }
@@ -207,97 +207,108 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                           )
                         ]),
                   );
-          },
-        ),
-      ),
+                }
+              },
+            ),
+          )),
       onLoading: const Center(child: CircularProgressIndicator()),
       onEmpty: Center(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            homeAd(controller),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              "No encrypted Files Found ! ",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                overflow: TextOverflow.fade,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Lottie.asset(
-              "assets/empty.json",
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              "Start Encrypting Your Files  ",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                overflow: TextOverflow.fade,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextButton.icon(
-              onPressed: () async {
-                controller.documents.clear();
-
-                await controller.findAllEncryptedFiles();
-              },
-              icon: const Icon(Icons.refresh),
-              label: const Text(
-                'Refresh',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  overflow: TextOverflow.fade,
+        child: Obx(() => Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                controller.adsController.isInlineBannerAdLoaded.value
+                    ? const AdsView()
+                    : const SizedBox(
+                        height: 100,
+                        width: 0,
+                      ),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-            ),
-          ],
-        ),
+                const Text(
+                  "No encrypted Files Found ! ",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.fade,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Lottie.asset(
+                  "assets/empty.json",
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Start Encrypting Your Files  ",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.fade,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextButton.icon(
+                  onPressed: () async {
+                    controller.documents.clear();
+
+                    await controller.findAllEncryptedFiles();
+                  },
+                  icon: const Icon(Icons.refresh),
+                  label: const Text(
+                    'Refresh',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ),
+                ),
+              ],
+            )),
       ),
       onError: (error) => Center(
-          child: Column(
-        children: [
-          homeAd(controller),
-          const SizedBox(
-            height: 10,
-          ),
-          Lottie.asset('assets/error.json'),
-          const SizedBox(
-            height: 10,
-          ),
-          TextButton.icon(
-            onPressed: () async {
-              controller.documents.clear();
+          child: Obx(() => Column(
+                children: [
+                  controller.adsController.isInlineBannerAdLoaded.value
+                      ? const AdsView()
+                      : const SizedBox(
+                          height: 100,
+                          width: 0,
+                        ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Lottie.asset('assets/error.json'),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextButton.icon(
+                    onPressed: () async {
+                      controller.documents.clear();
 
-              await controller.findAllEncryptedFiles();
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text(
-              'Refresh',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                overflow: TextOverflow.fade,
-              ),
-            ),
-          ),
-        ],
-      )),
+                      await controller.findAllEncryptedFiles();
+                    },
+                    icon: const Icon(Icons.refresh),
+                    label: const Text(
+                      'Refresh',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.fade,
+                      ),
+                    ),
+                  ),
+                ],
+              ))),
     );
   }
 }

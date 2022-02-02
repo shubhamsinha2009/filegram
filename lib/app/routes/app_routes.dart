@@ -7,6 +7,7 @@ abstract class Routes {
   static const login = _Paths.login;
   // static const ENCRYPTED_FILE_LIST = _Paths.ENCRYPTED_FILE_LIST;
   //static const NO_INTERNET = _Paths.NO_INTERNET;
+  // static const ADS = _Paths.ADS;
 }
 
 abstract class _Paths {
@@ -16,4 +17,5 @@ abstract class _Paths {
   static const login = '/login';
   //static const ENCRYPTED_FILE_LIST = '/encrypted-file-list';
   // static const NO_INTERNET = '/no-internet';
+  // static const ADS = '/ads';
 }

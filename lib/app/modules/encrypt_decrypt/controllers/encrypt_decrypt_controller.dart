@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'dart:math';
-
-import 'package:filegram/app/core/helpers/ad_helper.dart';
+import 'package:filegram/app/modules/ads/controllers/ads_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
-import 'package:native_admob_flutter/native_admob_flutter.dart';
 
 import '../../../core/services/firebase_analytics.dart';
 import '../../../data/model/documents_model.dart';
@@ -20,10 +18,7 @@ class EncryptDecryptController extends GetxController {
   final _documentModel = DocumentModel().obs;
   final analytics = AnalyticsService.analytics;
   final homeController = Get.find<HomeController>();
-  RewardedInterstitialAd rewardedInterstitial =
-      RewardedInterstitialAd(unitId: AdHelper.rewardedInterstitialAdUnitId);
-  InterstitialAd interstitialAd =
-      InterstitialAd(unitId: AdHelper.interstitialAdUnitId);
+  final adController = Get.find<AdsController>();
 
   Future<void> pickFile() async {
     try {
@@ -83,13 +78,8 @@ class EncryptDecryptController extends GetxController {
                   if (Get.isOverlaysOpen) {
                     Get.back();
                   }
-
-                  if (!interstitialAd.isAvailable) {
-                    await interstitialAd.load();
-                    await encryptDecrypt();
-                  } else {
-                    interstitialAd.show();
-                  }
+                  await adController.showInterstitialAd();
+                  await encryptDecrypt();
                 },
                 child: Text(_dialogTitle.toUpperCase()),
               ),
@@ -160,13 +150,7 @@ class EncryptDecryptController extends GetxController {
                       if (Get.isOverlaysOpen) {
                         Get.back();
                       }
-
-                      if (!rewardedInterstitial.isAvailable) {
-                        await rewardedInterstitial.load();
-                        await saveFile();
-                      } else {
-                        await rewardedInterstitial.show();
-                      }
+                      adController.showRewardAd(saveFile());
                     },
                     child: const Text('Save File'),
                   ),
@@ -339,74 +323,11 @@ class EncryptDecryptController extends GetxController {
 
   @override
   void onInit() {
-    if (!interstitialAd.isLoaded) {
-      interstitialAd.load();
-    }
-    interstitialAd.onEvent.listen((e) {
-      final event = e.keys.first;
-      switch (event) {
-        case FullScreenAdEvent.loading:
-          break;
-        case FullScreenAdEvent.loaded:
-          break;
-        case FullScreenAdEvent.loadFailed:
-          //final errorCode = e.values.first;
-
-          break;
-        case FullScreenAdEvent.showed:
-          break;
-        case FullScreenAdEvent.closed:
-          encryptDecrypt();
-          interstitialAd.load();
-
-          break;
-        case FullScreenAdEvent.showFailed:
-          encryptDecrypt();
-          // final errorCode = e.values.first;
-
-          break;
-        default:
-          break;
-      }
-    });
-
-    if (!rewardedInterstitial.isLoaded) {
-      rewardedInterstitial.load();
-    }
-    rewardedInterstitial.onEvent.listen((e) {
-      final event = e.keys.first;
-      switch (event) {
-        case RewardedAdEvent.loading:
-          break;
-        case RewardedAdEvent.loaded:
-          break;
-        case RewardedAdEvent.loadFailed:
-          break;
-        case RewardedAdEvent.closed:
-          isLoading.value = false;
-
-          rewardedInterstitial.load();
-          break;
-        case RewardedAdEvent.earnedReward:
-          saveFile();
-
-          break;
-        case RewardedAdEvent.showFailed:
-          saveFile();
-
-          break;
-        default:
-          break;
-      }
-    });
-
     super.onInit();
   }
 
   @override
   void onClose() {
-    interstitialAd.dispose();
-    rewardedInterstitial.dispose();
     super.onClose();
   }
 }

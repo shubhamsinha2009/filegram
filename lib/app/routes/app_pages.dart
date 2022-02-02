@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+
+import '../modules/ads/bindings/ads_binding.dart';
 import '../modules/app_drawer/bindings/app_drawer_binding.dart';
 import '../modules/encrypt_decrypt/bindings/encrypt_decrypt_binding.dart';
 import '../modules/encrypted_file_list/bindings/encrypted_file_list_binding.dart';
@@ -8,6 +10,7 @@ import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/no_internet/bindings/no_internet_binding.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -25,6 +28,7 @@ class AppPages {
         AppDrawerBinding(),
         EncryptedFileListBinding(),
         NoInternetBinding(),
+        AdsBinding(),
       ],
       middlewares: [HomeMiddleware()],
     ),
@@ -45,6 +49,11 @@ class AppPages {
     //   name: _Paths.NO_INTERNET,
     //   page: () => NoInternetView(),
     //   binding: NoInternetBinding(),
+    // ),
+    // GetPage(
+    //   name: _Paths.ADS,
+    //   page: () => const AdsView(),
+    //   binding: AdsBinding(),
     // ),
   ];
 }
