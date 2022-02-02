@@ -88,12 +88,12 @@ android {
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] Filegram",admobId: admobProperties['sampleId']]
+            manifestPlaceholders = [appName: "[STG] Filegram",admobId: admobProperties['admobId']]
         }         
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] Filegram",admobId: admobProperties['sampleId']]
+            manifestPlaceholders = [appName: "[DEV] Filegram",admobId: admobProperties['admobId']]
         }
     }
 

@@ -11,6 +11,8 @@ class AdsController extends GetxController {
   int rewardLoadAttempts = 0;
   late RewardedAd rewardedAd;
   final isRewardedAdReady = false.obs;
+  AppOpenAd? appOpenAd;
+  final isShowingAd = false.obs;
 
   @override
   void onInit() {
@@ -150,4 +152,59 @@ class AdsController extends GetxController {
       ),
     );
   }
+
+  // void loadAd() {
+  //   AppOpenAd.load(
+  //     adUnitId: AdHelper.appOpenAdUnitId,
+  //     orientation: AppOpenAd.orientationPortrait,
+  //     request: const AdRequest(),
+  //     adLoadCallback: AppOpenAdLoadCallback(
+  //       onAdLoaded: (ad) {
+  //         // print('$ad loaded');
+
+  //         appOpenAd = ad;
+  //       },
+  //       onAdFailedToLoad: (error) {
+  //         // print('AppOpenAd failed to load: $error');
+  //       },
+  //     ),
+  //   );
+  // }
+
+  // /// Shows the ad, if one exists and is not already being shown.
+  // ///
+  // /// If the previously cached ad has expired, this just loads and caches a
+  // /// new ad.
+  // void showAdIfAvailable() {
+  //   if (appOpenAd == null) {
+  //     //print('Tried to show ad before available.');
+  //     loadAd();
+  //   }
+  //   if (isShowingAd.value) {
+  //     // print('Tried to show ad while already showing an ad.');
+  //     return;
+  //   }
+
+  //   // Set the fullScreenContentCallback and show the ad.
+  //   appOpenAd!.fullScreenContentCallback = FullScreenContentCallback(
+  //     onAdShowedFullScreenContent: (ad) {
+  //       isShowingAd.value = true;
+  //       // print('$ad onAdShowedFullScreenContent');
+  //     },
+  //     onAdFailedToShowFullScreenContent: (ad, error) {
+  //       //print('$ad onAdFailedToShowFullScreenContent: $error');
+  //       isShowingAd.value = false;
+  //       ad.dispose();
+  //       appOpenAd = null;
+  //     },
+  //     onAdDismissedFullScreenContent: (ad) {
+  //       // print('$ad onAdDismissedFullScreenContent');
+  //       isShowingAd.value = false;
+  //       ad.dispose();
+  //       appOpenAd = null;
+  //       loadAd();
+  //     },
+  //   );
+  //   appOpenAd!.show();
+  // }
 }
