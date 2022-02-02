@@ -102,23 +102,24 @@ class AdsController extends GetxController {
     }
   }
 
-  Future<void> showRewardAd(Future<void> rewardEarned) async {
-    rewardedAd.fullScreenContentCallback = FullScreenContentCallback(
-      onAdDismissedFullScreenContent: (RewardedAd ad) {
-        ad.dispose();
-        createRewardedAd();
-      },
-      onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
-        ad.dispose();
-        createRewardedAd();
-      },
-    );
-    await rewardedAd.show(
-      onUserEarnedReward: (ad, reward) async {
-        await rewardEarned;
-      },
-    );
-  }
+  // void showRewardAd(Future<void> rewardEarned) {
+  //   // rewardedAd.fullScreenContentCallback = FullScreenContentCallback(
+  //   //   onAdDismissedFullScreenContent: (RewardedAd ad) {
+  //   //     ad.dispose();
+  //   //     createRewardedAd();
+  //   //   },
+  //   //   onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
+  //   //     ad.dispose();
+  //   //     createRewardedAd();
+  //   //   },
+  //   // );
+  //   rewardedAd.show(
+  //     onUserEarnedReward: (ad, reward) async {
+
+  //       // await rewardEarned;
+  //     },
+  //   );
+  // }
 
   void createRewardedAd() {
     RewardedAd.load(
@@ -129,15 +130,15 @@ class AdsController extends GetxController {
           rewardedAd = ad;
           rewardLoadAttempts = 0;
 
-          // ad.fullScreenContentCallback = FullScreenContentCallback(
-          //   onAdDismissedFullScreenContent: (ad) {
-          //     isRewardedAdReady.value = false;
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              isRewardedAdReady.value = false;
 
-          //     createRewardedAd();
-          //   },
-          // );
+              createRewardedAd();
+            },
+          );
 
-          // isRewardedAdReady.value = true;
+          isRewardedAdReady.value = true;
         },
         onAdFailedToLoad: (LoadAdError error) {
           // print('Failed to load a rewarded ad: ${err.message}');

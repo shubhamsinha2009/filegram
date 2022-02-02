@@ -119,12 +119,12 @@ class EncryptDecryptController extends GetxController {
               onWillPop: () async => false,
               child: AlertDialog(
                 backgroundColor: Colors.black,
-                // title: const Text('Reward : Want to Save your file? '),
-                title: const Text('Want to Save your file? '),
-                // content: Text(
-                //     'Your File : ${_fileOut.split('/').last} will be Saved as a reward after you watch full ad'),
+                title: const Text('Reward : Want to Save your file? '),
+                // title: const Text('Want to Save your file? '),
                 content: Text(
-                    'Your File : ${_fileOut.split('/').last} will be Saved'),
+                    'Your File : ${_fileOut.split('/').last} will be Saved as a reward after you watch full ad'),
+                // content: Text(
+                //     'Your File : ${_fileOut.split('/').last} will be Saved'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -150,7 +150,11 @@ class EncryptDecryptController extends GetxController {
                       if (Get.isOverlaysOpen) {
                         Get.back();
                       }
-                      adController.showRewardAd(saveFile());
+                      adController.rewardedAd.show(
+                        onUserEarnedReward: (ad, reward) {
+                          saveFile();
+                        },
+                      ).whenComplete(() => isLoading.toggle());
                     },
                     child: const Text('Save File'),
                   ),
@@ -267,7 +271,7 @@ class EncryptDecryptController extends GetxController {
       try {
         final params = SaveFileDialogParams(sourceFilePath: _fileOut);
         _fileSavedPath = await FlutterFileDialog.saveFile(params: params);
-        isLoading.toggle();
+
         if (File(_fileOut).existsSync()) {
           File(_fileOut).deleteSync();
         }
@@ -295,7 +299,6 @@ class EncryptDecryptController extends GetxController {
           );
         }
       } catch (e) {
-        isLoading.toggle();
         Get.showSnackbar(GetSnackBar(
           duration: const Duration(seconds: 5),
           messageText: Text(e.toString()),
@@ -319,15 +322,5 @@ class EncryptDecryptController extends GetxController {
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     var i = (log(bytes) / log(1024)).floor();
     return ((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i];
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }
