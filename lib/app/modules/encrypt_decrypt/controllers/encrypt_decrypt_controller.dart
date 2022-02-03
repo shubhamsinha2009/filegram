@@ -19,6 +19,8 @@ class EncryptDecryptController extends GetxController {
   final analytics = AnalyticsService.analytics;
   final homeController = Get.find<HomeController>();
   final adController = Get.find<AdsController>();
+  String? secretKey;
+  String? iv;
 
   Future<void> pickFile() async {
     try {
@@ -99,7 +101,7 @@ class EncryptDecryptController extends GetxController {
       String _fileOut = _result.contains('.enc')
           ? _result.replaceAll('.enc', '').trim()
           : '$_result.enc';
-      pickedFile = _fileOut;
+      // pickedFile = _fileOut;
 
       try {
         if (_result.contains('.enc')) {
@@ -108,9 +110,6 @@ class EncryptDecryptController extends GetxController {
           _isEncDone = await doEncryption(_fileOut, _isEncDone, _result);
         }
 
-        if (File(_result).existsSync()) {
-          File(_result).deleteSync();
-        }
         if (_isEncDone != null && _isEncDone) {
           isLoading.toggle();
 
@@ -181,37 +180,14 @@ class EncryptDecryptController extends GetxController {
     bool? _isEncDone,
     String _result,
   ) async {
-    final _secretKey = await FileEncrypter.generatekey();
-    final _iv = await FileEncrypter.generateiv();
-    final _userId = homeController.user.value.id;
-    final _fizeSize = getFileSize(bytes: File(_result).lengthSync());
-    final _ownerName = homeController.user.value.name;
-    final _ownerPhotoUrl = homeController.user.value.photoUrl;
-    final _ownerEmailId = homeController.user.value.emailId;
-
     try {
-      if (_secretKey != null && _iv != null) {
+      if (secretKey != null && iv != null) {
         _isEncDone = await FileEncrypter.encrypt(
-          key: _secretKey,
-          iv: _iv,
+          key: secretKey!,
+          iv: iv!,
           inFilename: _result,
           outFileName: _fileOut,
         );
-        final _documentReference =
-            await FirestoreData.createDocument(_documentModel(DocumentModel(
-          documentName: _fileOut.split('/').last,
-          secretKey: _secretKey,
-          iv: _iv,
-          ownerId: _userId,
-          documentSize: _fizeSize,
-          ownerName: _ownerName,
-          ownerPhotoUrl: _ownerPhotoUrl,
-          ownerEmailId: _ownerEmailId,
-        )));
-
-        // await FirestoreData.getDocumentsListFromServer(_userId);
-        _documentModel(await FirestoreData.getDocument(_documentReference));
-        await FirestoreData.createViews(_documentModel.value.documentId);
       }
     } on Exception catch (e) {
       isLoading.value = false;
@@ -268,9 +244,33 @@ class EncryptDecryptController extends GetxController {
     if (pickedFile != null) {
       String? _fileSavedPath;
       final String _fileOut = pickedFile!;
+      final _userId = homeController.user.value.id;
+      final _fizeSize = getFileSize(bytes: File(pickedFile!).lengthSync());
+      final _ownerName = homeController.user.value.name;
+      final _ownerPhotoUrl = homeController.user.value.photoUrl;
+      final _ownerEmailId = homeController.user.value.emailId;
+
       try {
         final params = SaveFileDialogParams(sourceFilePath: _fileOut);
         _fileSavedPath = await FlutterFileDialog.saveFile(params: params);
+
+        if (_fileSavedPath != null) {
+          final _documentReference =
+              await FirestoreData.createDocument(_documentModel(DocumentModel(
+            documentName: pickedFile?.split('/').last,
+            secretKey: secretKey,
+            iv: iv,
+            ownerId: _userId,
+            documentSize: _fizeSize,
+            ownerName: _ownerName,
+            ownerPhotoUrl: _ownerPhotoUrl,
+            ownerEmailId: _ownerEmailId,
+          )));
+
+          // await FirestoreData.getDocumentsListFromServer(_userId);
+          _documentModel(await FirestoreData.getDocument(_documentReference));
+          await FirestoreData.createViews(_documentModel.value.documentId);
+        }
 
         if (File(_fileOut).existsSync()) {
           File(_fileOut).deleteSync();
@@ -280,6 +280,9 @@ class EncryptDecryptController extends GetxController {
         }
         if (File(_fileOut.replaceAll('.enc', '').trim()).existsSync()) {
           File(_fileOut.replaceAll('.enc', '').trim()).deleteSync();
+        }
+        if (File(pickedFile!).existsSync()) {
+          File(pickedFile!).deleteSync();
         }
         if (_fileSavedPath != null) {
           Get.showSnackbar(
@@ -322,5 +325,12 @@ class EncryptDecryptController extends GetxController {
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     var i = (log(bytes) / log(1024)).floor();
     return ((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i];
+  }
+
+  @override
+  void onInit() async {
+    secretKey = await FileEncrypter.generatekey();
+    iv = await FileEncrypter.generateiv();
+    super.onInit();
   }
 }

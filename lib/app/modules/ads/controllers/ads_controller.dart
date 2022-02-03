@@ -105,16 +105,16 @@ class AdsController extends GetxController {
   }
 
   // void showRewardAd(Future<void> rewardEarned) {
-  //   // rewardedAd.fullScreenContentCallback = FullScreenContentCallback(
-  //   //   onAdDismissedFullScreenContent: (RewardedAd ad) {
-  //   //     ad.dispose();
-  //   //     createRewardedAd();
-  //   //   },
-  //   //   onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
-  //   //     ad.dispose();
-  //   //     createRewardedAd();
-  //   //   },
-  //   // );
+    // rewardedAd.fullScreenContentCallback = FullScreenContentCallback(
+    //   onAdDismissedFullScreenContent: (RewardedAd ad) {
+    //     ad.dispose();
+    //     createRewardedAd();
+    //   },
+    //   onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
+    //     ad.dispose();
+    //     createRewardedAd();
+    //   },
+    // );
   //   rewardedAd.show(
   //     onUserEarnedReward: (ad, reward) async {
 

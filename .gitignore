@@ -138,3 +138,4 @@ firebase_backend/.firebaserc
 firebase_backend/firestore.rules
 firebase_backend/firestore.indexes.json
 firebase_backend/remoteconfig.template.json
+firebase_backend/functions/src/index.ts

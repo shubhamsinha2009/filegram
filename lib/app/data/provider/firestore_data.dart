@@ -237,6 +237,14 @@ class FirestoreData {
     }
   }
 
+  static Future<void> deleteViews(String? documentId) async {
+    try {
+      await _firestore.collection("views").doc(documentId).delete();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   static Future<void> updateViews(String? documentID) async {
     try {
       await _firestore.collection("views").doc(documentID).update(
