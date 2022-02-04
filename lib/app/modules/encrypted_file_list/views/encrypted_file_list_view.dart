@@ -91,19 +91,19 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                           alignment: MainAxisAlignment.start,
                           children: [
                             OutlinedButton(
-                              onPressed: () => controller
-                                  .adsController.rewardedAd
-                                  .show(onUserEarnedReward: (ad, reward) {
-                                Get.bottomSheet(
-                                  DocumentPermissionBottomSheet(
-                                    document: _document!,
-                                    controller: controller,
-                                  ),
-                                  backgroundColor: Colors.black,
-                                  isDismissible: true,
-                                  isScrollControlled: true,
-                                );
-                              }),
+                              // onPressed: () => controller
+                              //     .adsController.rewardedAd
+                              //     .show(onUserEarnedReward: (ad, reward) {
+                              onPressed: () => Get.bottomSheet(
+                                DocumentPermissionBottomSheet(
+                                  document: _document!,
+                                  controller: controller,
+                                ),
+                                backgroundColor: Colors.black,
+                                isDismissible: true,
+                                isScrollControlled: true,
+                              ),
+                              // }),
                               child: Text(
                                   '${_document?.documentPermission.name.capitalize}'),
                             ),
@@ -111,85 +111,84 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                               onPressed: () async {
                                 final _views = await FirestoreData.readViews(
                                     _document?.documentId);
-                                controller.adsController.rewardedAd.show(
-                                  onUserEarnedReward: (ad, reward) {
-                                    Get.dialog(
-                                      AlertDialog(
-                                        alignment: Alignment.center,
-                                        backgroundColor: Colors.black,
-                                        title: const Text(
-                                          ' Number of Views',
-                                        ),
-                                        content: Text(
-                                          _views.toString(),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 50,
-                                            letterSpacing: 1,
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () async {
-                                              if (Get.isOverlaysOpen) {
-                                                Get.back();
-                                              }
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      ),
-                                      barrierDismissible: false,
-                                    );
-                                  },
-                                );
-                              },
-                              child: const Text('Views'),
-                            ),
-                            OutlinedButton(
-                              onPressed: () => controller
-                                  .adsController.rewardedAd
-                                  .show(onUserEarnedReward: (ad, reward) {
+                                // controller.adsController.rewardedAd.show(
+                                //   onUserEarnedReward: (ad, reward) {
                                 Get.dialog(
                                   AlertDialog(
+                                    alignment: Alignment.center,
                                     backgroundColor: Colors.black,
-                                    title: Text(
-                                      ' ${_document?.documentName} will be deleted?',
+                                    title: const Text(
+                                      ' Number of Views',
                                     ),
-                                    content: const Text(
-                                        'After you delete your file, Nobody will be able to decrypt this file ever'),
+                                    content: Text(
+                                      _views.toString(),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 50,
+                                        letterSpacing: 1,
+                                      ),
+                                    ),
                                     actions: <Widget>[
                                       TextButton(
-                                        onPressed: () {
-                                          if (Get.isOverlaysOpen) {
-                                            Get.back();
-                                          }
-                                        },
-                                        child: const Text('Cancel'),
-                                      ),
-                                      TextButton(
                                         onPressed: () async {
-                                          await FirestoreData.deleteDocument(
-                                              documentId:
-                                                  _document?.documentId);
-                                          await FirestoreData.deleteViews(
-                                              _document?.documentId);
-                                          controller.documents.clear();
-                                          controller.getFirstData = false;
-                                          await controller
-                                              .findAllEncryptedFiles();
                                           if (Get.isOverlaysOpen) {
                                             Get.back();
                                           }
                                         },
-                                        child: const Text('Delete'),
+                                        child: const Text('OK'),
                                       ),
                                     ],
                                   ),
                                   barrierDismissible: false,
                                 );
-                              }),
+                              },
+                              //  );
+                              // },
+                              child: const Text('Views'),
+                            ),
+                            OutlinedButton(
+                              // onPressed: () => controller
+                              //     .adsController.rewardedAd
+                              //     .show(onUserEarnedReward: (ad, reward) {
+                              onPressed: () => Get.dialog(
+                                AlertDialog(
+                                  backgroundColor: Colors.black,
+                                  title: Text(
+                                    ' ${_document?.documentName} will be deleted?',
+                                  ),
+                                  content: const Text(
+                                      'After you delete your file, Nobody will be able to decrypt this file ever'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        if (Get.isOverlaysOpen) {
+                                          Get.back();
+                                        }
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        await FirestoreData.deleteDocument(
+                                            documentId: _document?.documentId);
+                                        await FirestoreData.deleteViews(
+                                            _document?.documentId);
+                                        controller.documents.clear();
+                                        controller.getFirstData = false;
+                                        await controller
+                                            .findAllEncryptedFiles();
+                                        if (Get.isOverlaysOpen) {
+                                          Get.back();
+                                        }
+                                      },
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
+                                ),
+                                barrierDismissible: false,
+                              ),
+                              // }),
                               child: const Text('Delete'),
                             ),
                           ],
