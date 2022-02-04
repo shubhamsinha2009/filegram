@@ -101,7 +101,7 @@ class EncryptDecryptController extends GetxController {
       String _fileOut = _result.contains('.enc')
           ? _result.replaceAll('.enc', '').trim()
           : '$_result.enc';
-      // pickedFile = _fileOut;
+      pickedFile = _fileOut;
 
       try {
         if (_result.contains('.enc')) {
@@ -111,6 +111,9 @@ class EncryptDecryptController extends GetxController {
         }
 
         if (_isEncDone != null && _isEncDone) {
+          if (File(_result).existsSync()) {
+            File(_result).deleteSync();
+          }
           isLoading.toggle();
 
           Get.dialog(
@@ -281,9 +284,7 @@ class EncryptDecryptController extends GetxController {
         if (File(_fileOut.replaceAll('.enc', '').trim()).existsSync()) {
           File(_fileOut.replaceAll('.enc', '').trim()).deleteSync();
         }
-        if (File(pickedFile!).existsSync()) {
-          File(pickedFile!).deleteSync();
-        }
+
         if (_fileSavedPath != null) {
           Get.showSnackbar(
             const GetSnackBar(
