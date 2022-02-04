@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:filegram/app/modules/ads/controllers/ads_controller.dart';
+
+import 'package:filegram/app/controller/interstitial_ads_controller.dart';
+import 'package:filegram/app/controller/rewarded_ads_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
@@ -18,7 +20,8 @@ class EncryptDecryptController extends GetxController {
   final _documentModel = DocumentModel().obs;
   final analytics = AnalyticsService.analytics;
   final homeController = Get.find<HomeController>();
-  final adController = Get.find<AdsController>();
+  final rewardedAdController = Get.put(RewardedAdsController());
+  final interstitialAdController = Get.put(InterstitialAdsController());
   String? secretKey;
   String? iv;
 
@@ -80,7 +83,7 @@ class EncryptDecryptController extends GetxController {
                   if (Get.isOverlaysOpen) {
                     Get.back();
                   }
-                  await adController.showInterstitialAd();
+                  await interstitialAdController.showInterstitialAd();
                   await encryptDecrypt();
                 },
                 child: Text(_dialogTitle.toUpperCase()),
@@ -152,7 +155,7 @@ class EncryptDecryptController extends GetxController {
                       if (Get.isOverlaysOpen) {
                         Get.back();
                       }
-                      adController.rewardedAd.show(
+                      rewardedAdController.rewardedAd.show(
                         onUserEarnedReward: (ad, reward) {
                           saveFile();
                         },

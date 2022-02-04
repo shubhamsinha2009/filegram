@@ -1,4 +1,5 @@
-import 'package:filegram/app/modules/ads/views/ads_view.dart';
+import 'package:filegram/app/modules/homebannerad/controllers/homebannerad_controller.dart';
+import 'package:filegram/app/modules/homebannerad/views/homebannerad_view.dart';
 
 import '../../../data/provider/firestore_data.dart';
 import '../encrypted_file_list.dart';
@@ -28,7 +29,6 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
           edgeOffset: 0,
           onRefresh: () async {
             controller.documents.clear();
-
             await controller.findAllEncryptedFiles();
           },
           child: Obx(
@@ -41,8 +41,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                       : 0),
               itemBuilder: (context, index) {
                 if (controller.adsController.isInlineBannerAdLoaded.value &&
-                    index == (controller.inlineAdIndex)) {
-                  return const AdsView();
+                    index == (controller.inlineAdIndex) &&
+                    (state?.length)! >= controller.inlineAdIndex) {
+                  return const HomeBannerAdView();
                 } else {
                   final DocumentModel? _document =
                       state![controller.getListViewItemIndex(index)];
@@ -170,14 +171,17 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     ),
                                     TextButton(
                                       onPressed: () async {
-                                        await FirestoreData.deleteDocument(
-                                            documentId: _document?.documentId);
                                         await FirestoreData.deleteViews(
                                             _document?.documentId);
+                                        await FirestoreData.deleteDocument(
+                                            documentId: _document?.documentId);
+
                                         controller.documents.clear();
+                                        Get.reload<HomeBannerAdController>();
                                         controller.getFirstData = false;
                                         await controller
                                             .findAllEncryptedFiles();
+
                                         if (Get.isOverlaysOpen) {
                                           Get.back();
                                         }
@@ -232,10 +236,10 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 controller.adsController.isInlineBannerAdLoaded.value
-                    ? const AdsView()
+                    ? const HomeBannerAdView()
                     : const SizedBox(
                         height: 100,
-                        width: 0,
+                        width: 1000,
                       ),
                 const SizedBox(
                   height: 10,
@@ -272,8 +276,8 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                 ),
                 TextButton.icon(
                   onPressed: () async {
+                    Get.reload<HomeBannerAdController>();
                     controller.documents.clear();
-
                     await controller.findAllEncryptedFiles();
                   },
                   icon: const Icon(Icons.refresh),
@@ -293,10 +297,10 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
           child: Obx(() => Column(
                 children: [
                   controller.adsController.isInlineBannerAdLoaded.value
-                      ? const AdsView()
+                      ? const HomeBannerAdView()
                       : const SizedBox(
                           height: 100,
-                          width: 0,
+                          width: 100,
                         ),
                   const SizedBox(
                     height: 10,
@@ -307,6 +311,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                   ),
                   TextButton.icon(
                     onPressed: () async {
+                      Get.reload<HomeBannerAdController>();
                       controller.documents.clear();
 
                       await controller.findAllEncryptedFiles();

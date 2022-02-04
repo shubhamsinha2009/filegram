@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/ads_controller.dart';
+import '../controllers/homebannerad_controller.dart';
 
-class AdsView extends GetView<AdsController> {
-  const AdsView({Key? key}) : super(key: key);
+class HomeBannerAdView extends GetView<HomeBannerAdController> {
+  const HomeBannerAdView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

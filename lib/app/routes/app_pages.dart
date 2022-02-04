@@ -1,6 +1,6 @@
+import 'package:filegram/app/modules/homebannerad/bindings/homebannerad_binding.dart';
 import 'package:get/get.dart';
 
-import '../modules/ads/bindings/ads_binding.dart';
 import '../modules/app_drawer/bindings/app_drawer_binding.dart';
 import '../modules/encrypt_decrypt/bindings/encrypt_decrypt_binding.dart';
 import '../modules/encrypted_file_list/bindings/encrypted_file_list_binding.dart';
@@ -24,11 +24,12 @@ class AppPages {
       page: () => const HomeView(),
       bindings: [
         HomeBinding(),
+        HomeBannerAdBinding(),
         EncryptDecryptBinding(),
         AppDrawerBinding(),
         EncryptedFileListBinding(),
         NoInternetBinding(),
-        AdsBinding(),
+        HomeBannerAdBinding(),
       ],
       middlewares: [HomeMiddleware()],
     ),

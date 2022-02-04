@@ -1,4 +1,4 @@
-import 'package:filegram/app/modules/ads/controllers/ads_controller.dart';
+import 'package:filegram/app/modules/homebannerad/controllers/homebannerad_controller.dart';
 
 import '../../../data/enums/docpermission.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +17,7 @@ class EncryptedFileListController extends GetxController
   bool lastPage = false;
   final homeController = Get.find<HomeController>();
   final sharedEmailIds = <String>[].obs;
-  final adsController = Get.find<AdsController>();
+  final adsController = Get.find<HomeBannerAdController>();
   final TextEditingController textEditingController = TextEditingController();
   // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
   final groupValue = DocumentPermission.public.obs;
