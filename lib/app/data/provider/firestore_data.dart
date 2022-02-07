@@ -88,7 +88,7 @@ class FirestoreData {
       return _docList.docs.map((DocumentSnapshot document) {
         Map<String, dynamic> _data = document.data()! as Map<String, dynamic>;
         return DocumentModel(
-          ownerPhotoUrl: _data["ownerId"] as String,
+          ownerPhotoUrl: _data["ownerPhotoUrl"] as String,
           ownerName: _data["ownerName"] as String,
           secretKey: _data["secretKey"] as String,
           iv: _data["iv"] as String,
@@ -116,7 +116,7 @@ class FirestoreData {
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
       return DocumentModel(
-        ownerPhotoUrl: _data["ownerId"] as String,
+        ownerPhotoUrl: _data["ownerPhotoUrl"] as String,
         ownerName: _data["ownerName"] as String,
         secretKey: _data["secretKey"] as String,
         iv: _data["iv"] as String,
@@ -144,7 +144,7 @@ class FirestoreData {
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
       return DocumentModel(
-        ownerPhotoUrl: _data["ownerId"] as String,
+        ownerPhotoUrl: _data["ownerPhotoUrl"] as String,
         ownerName: _data["ownerName"] as String,
         secretKey: _data["secretKey"] as String,
         iv: _data["iv"] as String,

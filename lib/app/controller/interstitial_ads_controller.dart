@@ -6,6 +6,7 @@ class InterstitialAdsController extends GetxController {
   InterstitialAd? interstitialAd;
   final int maxFailedLoadAttempts = 3;
   int interstitialLoadAttempts = 0;
+  final adDismissed = false.obs;
 
   AdWidget adWidget({required AdWithView ad}) {
     return AdWidget(ad: ad);
@@ -36,6 +37,7 @@ class InterstitialAdsController extends GetxController {
       interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdDismissedFullScreenContent: (InterstitialAd ad) {
           ad.dispose();
+          adDismissed.value = true;
           createInterstitialAd();
         },
         onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {

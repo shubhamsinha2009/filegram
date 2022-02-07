@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:filegram/app/controller/interstitial_ads_controller.dart';
 import 'package:filegram/app/controller/rewarded_ads_controller.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +31,8 @@ class EncryptDecryptController extends GetxController {
       pickedFile = _result;
       isLoading.toggle();
       confirmDialog();
+      // await interstitialAdController.showInterstitialAd();
+      // Get.toNamed(Routes.viewPdf, arguments: _result);
     } on PlatformException catch (e) {
       isLoading.toggle();
       Get.showSnackbar(GetSnackBar(
@@ -260,7 +261,7 @@ class EncryptDecryptController extends GetxController {
         final params = SaveFileDialogParams(sourceFilePath: _fileOut);
         _fileSavedPath = await FlutterFileDialog.saveFile(params: params);
 
-        if (_fileSavedPath != null) {
+        if (_fileSavedPath != null && _fileOut.endsWith('.enc')) {
           final _documentReference =
               await FirestoreData.createDocument(_documentModel(DocumentModel(
             documentName: pickedFile?.split('/').last,

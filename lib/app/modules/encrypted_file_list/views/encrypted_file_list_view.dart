@@ -50,7 +50,12 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
 
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.only(
+                      top: 15,
+                      bottom: 0,
+                      left: 15,
+                      right: 15,
+                    ),
                     margin: const EdgeInsets.all(15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

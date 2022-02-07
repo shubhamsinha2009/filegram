@@ -13,7 +13,6 @@ class DocumentModel {
   final DateTime? createdOn;
   final DocumentPermission documentPermission;
   final List<String>? sharedEmailIds;
-  final bool isAnimatedContainerClosed;
 
   DocumentModel({
     this.ownerId,
@@ -28,6 +27,5 @@ class DocumentModel {
     this.createdOn,
     this.documentPermission = DocumentPermission.public,
     this.sharedEmailIds,
-    this.isAnimatedContainerClosed = true,
   });
 }
