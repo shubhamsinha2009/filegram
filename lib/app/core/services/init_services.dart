@@ -1,4 +1,5 @@
 import 'package:filegram/app/core/helpers/ad_helper.dart';
+import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 Future<void> initServices() async {
@@ -25,4 +26,6 @@ Future<void> initServices() async {
 
   await MobileAds.instance.initialize();
   await loadAd();
+
+  await GetStorageDbService.init();
 }

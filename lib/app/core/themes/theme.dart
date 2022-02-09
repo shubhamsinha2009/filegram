@@ -117,7 +117,7 @@ class Themes {
       titleTextStyle: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.w500,
-        fontSize: 25,
+        fontSize: 20,
       ),
       actionsIconTheme: IconThemeData(
         color: Colors.black,

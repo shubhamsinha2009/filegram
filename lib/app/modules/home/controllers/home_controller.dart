@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
+  final isFileDeviceOpen = true.obs;
   final user = UserModel().obs;
   final auth = FirebaseAuth.instance;
   final firestoreData = FirestoreData();
