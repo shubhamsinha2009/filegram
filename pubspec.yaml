@@ -18,12 +18,18 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_file_dialog: ^2.3.0
   flutter_native_splash: ^1.3.3
+  flutter_slidable: ^1.2.0
+  flutter_windowmanager: ^0.2.0
   get: ^4.6.1
+  get_storage: ^2.0.3
   google_mobile_ads: ^1.0.1
   google_sign_in: ^5.2.2
+  in_app_update: ^2.0.0
   lottie: ^1.2.1
   path_provider: ^2.0.8
   pdf_render: ^1.0.23
+  receive_sharing_intent: ^1.4.5
+  share_plus: ^3.0.4
   simple_connection_checker: ^0.2.1
 
 dev_dependencies:

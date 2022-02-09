@@ -1,3 +1,6 @@
+import 'package:filegram/app/modules/files_device/views/files_device_view.dart';
+import 'package:filegram/app/modules/homebannerad/controllers/homebannerad_controller.dart';
+
 import '../../no_internet/views/no_internet_view.dart';
 
 import '../../encrypted_file_list/views/encrypted_file_list_view.dart';
@@ -18,10 +21,22 @@ class HomeView extends GetView<HomeController> {
     return Obx(() => controller.isInternetConnected.isTrue
         ? Scaffold(
             appBar: AppBar(
-              title: const Text('Filegram'),
+              titleSpacing: 0,
+              title: Text(
+                  'Filegram ${controller.isFileDeviceOpen.isTrue ? 'Library' : 'Personal'}'),
+              leading: IconButton(
+                  onPressed: () {
+                    controller.isFileDeviceOpen.toggle();
+                    Get.reload<HomeBannerAdController>();
+                  },
+                  icon: const Icon(
+                    Icons.compare_arrows_rounded,
+                  )),
             ),
-            body: const EncryptedFileListView(),
-            drawer: const AppDrawerView(),
+            body: controller.isFileDeviceOpen.isTrue
+                ? const FilesDeviceView()
+                : const EncryptedFileListView(),
+            endDrawer: const AppDrawerView(),
             floatingActionButton: const EncryptDecryptView(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.miniEndFloat,
