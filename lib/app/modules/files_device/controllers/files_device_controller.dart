@@ -9,10 +9,7 @@ import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:filegram/app/modules/homebannerad/controllers/homebannerad_controller.dart';
 import 'package:get/get.dart';
-import 'package:in_app_update/in_app_update.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 class FilesDeviceController extends GetxController {
   final adsController = Get.find<HomeBannerAdController>();
@@ -191,16 +188,5 @@ class FilesDeviceController extends GetxController {
     //     : null;
     fileOut = '${(await getTemporaryDirectory()).path}/current.pdf';
     super.onInit();
-  }
-
-  @override
-  void onReady() async {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    // _intentDataStreamSubscription.cancel();
-    super.onClose();
   }
 }
