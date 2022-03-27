@@ -12,6 +12,11 @@ class HomeController extends GetxController {
   final firestoreData = FirestoreData();
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
+  final selectedIndex = 0.obs;
+
+  void onBottomBarSelected(value) {
+    selectedIndex.value = value;
+  }
 
   @override
   void onInit() async {

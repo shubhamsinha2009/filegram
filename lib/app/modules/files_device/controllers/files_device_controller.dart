@@ -7,12 +7,11 @@ import 'package:filegram/app/modules/encrypt_decrypt/services/file_encrypter.dar
 import 'package:filegram/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:intl/intl.dart';
-import 'package:filegram/app/modules/homebannerad/controllers/homebannerad_controller.dart';
+
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FilesDeviceController extends GetxController {
-  final adsController = Get.find<HomeBannerAdController>();
   final interstitialAdController = Get.put(InterstitialAdsController());
   final rename = ''.obs;
   // late StreamSubscription _intentDataStreamSubscription;
@@ -41,12 +40,12 @@ class FilesDeviceController extends GetxController {
     return '${DateFormat.yMMMMd('en_US').add_jm().format(time)} - ${((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i]}';
   }
 
-  int getListViewItemIndex(int index) {
-    if (index >= inlineAdIndex && adsController.isInlineBannerAdLoaded.value) {
-      return index - 1;
-    }
-    return index;
-  }
+  // int getListViewItemIndex(int index) {
+  //   if (index >= inlineAdIndex && adsController.isInlineBannerAdLoaded.value) {
+  //     return index - 1;
+  //   }
+  //   return index;
+  // }
 
   String nameOfFile(String _currentfilePath) =>
       _currentfilePath.split('/').last;

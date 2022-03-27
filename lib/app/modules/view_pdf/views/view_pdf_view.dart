@@ -1,7 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview_professor/flutter_pdfview_professor.dart';
 import 'package:get/get.dart';
-import 'package:pdf_render/pdf_render_widgets.dart';
 
 import '../controllers/view_pdf_controller.dart';
 
@@ -10,39 +9,55 @@ class ViewPdfView extends GetView<ViewPdfController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 0.0,
-        titleTextStyle: const TextStyle(),
-        //  title: Text(controller.ownerName,),
-        title: ValueListenableBuilder<Object>(
-            // The controller is compatible with ValueListenable<Matrix4> and you can receive notifications on scrolling and zooming of the view.
-            valueListenable: controller.pdfController,
-            builder: (context, value, child) {
-              controller.currentPageNumber.value =
-                  controller.pdfController.isReady
-                      ? controller.pdfController.currentPageNumber
-                      : 1;
-              return Text(controller.pdfController.isReady
-                  ? 'Page - ${controller.pdfController.currentPageNumber}/${controller.pdfController.pageCount}'
-                  : 'Page -');
-            }),
-        actions: <Widget>[
-          CachedNetworkImage(
-            imageUrl: controller.photoUrl,
-          ),
-        ],
-      ),
-      body: PdfViewer.openFile(
-        Get.arguments,
-        viewerController: controller.pdfController,
-        onError: (err) => Get.snackbar('Error', err.toString()),
-        params: PdfViewerParams(
-          padding: 5,
-          minScale: 1.0,
-          pageNumber: controller.intialPageNumber,
-          scrollDirection: Axis.horizontal,
-        ),
+    return SafeArea(
+      // appBar: AppBar(),
+      // floatingActionButton: FutureBuilder<PDFViewController>(
+      //   future: controller.pdfController.future,
+      //   builder: (context, AsyncSnapshot<PDFViewController> snapshot) {
+      //     if (snapshot.hasData) {
+      //       return FloatingActionButton.extended(
+      //         label: Text("Go to ${controller.pages! ~/ 2}"),
+      //         onPressed: () async {
+      //           await snapshot.data!.setPage(controller.pages! ~/ 2);
+      //         },
+      //       );
+      //     }
+
+      //     return Container();
+      //   },
+      // ),
+      child: PDFView(
+        filePath: controller.filePath,
+        // pdfData: ,
+        enableSwipe: true,
+        swipeHorizontal: false,
+        autoSpacing: false,
+        pageFling: false,
+        pageSnap: false,
+        nightMode: false,
+        fitEachPage: true,
+        fitPolicy: FitPolicy.WIDTH,
+        defaultPage: controller.intialPageNumber,
+        onRender: (_pages) {
+          controller.pages = _pages;
+          controller.isReady.value = true;
+        },
+        onError: (error) {
+          print(error.toString());
+        },
+        onPageError: (page, error) {
+          print('$page: ${error.toString()}');
+        },
+        onViewCreated: (PDFViewController pdfViewController) {
+          controller.pdfController.complete(pdfViewController);
+        },
+        onPageChanged: (int? page, int? total) {
+          if (page != null) {
+            controller.currentPageNumber.value = page;
+          }
+
+          //  print('page change: $page/$total');
+        },
       ),
     );
   }

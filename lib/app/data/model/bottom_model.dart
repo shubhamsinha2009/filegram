@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 class BottomModel {
@@ -8,7 +5,7 @@ class BottomModel {
   final BottomType bottomType;
   final Icon? listTileIcon;
   final Color color;
-  final bool showShareButton ;
+  final bool showShareButton;
 
   BottomModel({
     required this.index,
@@ -19,10 +16,7 @@ class BottomModel {
   });
 }
 
-enum BottomType {
- personal ,
- library
-}
+enum BottomType { personal, library }
 final bottomModel = <BottomModel>[
   BottomModel(
     index: 0,
@@ -44,5 +38,4 @@ final bottomModel = <BottomModel>[
     color: Colors.cyan,
     showShareButton: false,
   ),
- 
 ];

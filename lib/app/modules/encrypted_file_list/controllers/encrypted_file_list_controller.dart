@@ -1,5 +1,3 @@
-import 'package:filegram/app/modules/homebannerad/controllers/homebannerad_controller.dart';
-
 import '../../../data/enums/docpermission.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -17,7 +15,7 @@ class EncryptedFileListController extends GetxController
   bool lastPage = false;
   final homeController = Get.find<HomeController>();
   final sharedEmailIds = <String>[].obs;
-  final adsController = Get.find<HomeBannerAdController>();
+
   final TextEditingController textEditingController = TextEditingController();
   // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
   final groupValue = DocumentPermission.public.obs;
@@ -29,12 +27,12 @@ class EncryptedFileListController extends GetxController
     super.onInit();
   }
 
-  int getListViewItemIndex(int index) {
-    if (index >= inlineAdIndex && adsController.isInlineBannerAdLoaded.value) {
-      return index - 1;
-    }
-    return index;
-  }
+  // int getListViewItemIndex(int index) {
+  //   if (index >= inlineAdIndex && adsController.isInlineBannerAdLoaded.value) {
+  //     return index - 1;
+  //   }
+  //   return index;
+  // }
 
   Future<void> findAllEncryptedFiles() async {
     await FirestoreData.getDocumentsListFromCache(

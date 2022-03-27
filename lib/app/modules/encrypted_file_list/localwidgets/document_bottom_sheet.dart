@@ -122,6 +122,7 @@ class DocumentPermissionBottomSheet extends StatelessWidget {
                             return "Email Id is not valid";
                           }
                         }
+                        return null;
                       },
                       maxLines: 1,
                     )

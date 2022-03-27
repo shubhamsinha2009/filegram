@@ -55,6 +55,7 @@ class FirestoreData {
           documentId: _doc.docs.single.id,
         );
       }
+      return null;
     } on PlatformException {
       rethrow;
     }
