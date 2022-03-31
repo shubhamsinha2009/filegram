@@ -163,14 +163,15 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       ),
                                       TextButton(
                                         onPressed: () async {
-                                          await FirestoreData.deleteViews(
-                                              _document?.documentId);
-                                          await FirestoreData.deleteDocument(
-                                              documentId:
-                                                  _document?.documentId);
-
+                                          // ! Sometimes due to async document gets deleted before views
+                                          FirestoreData.deleteViews(
+                                                  _document?.documentId)
+                                              .then((value) async =>
+                                                  await FirestoreData
+                                                      .deleteDocument(
+                                                          documentId: _document
+                                                              ?.documentId));
                                           controller.documents.clear();
-
                                           controller.getFirstData = false;
                                           await controller
                                               .findAllEncryptedFiles();

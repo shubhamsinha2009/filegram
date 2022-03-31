@@ -16,23 +16,24 @@ import '../services/file_encrypter.dart';
 
 class EncryptDecryptController extends GetxController {
   final isLoading = false.obs;
-  String? pickedFile;
   final _documentModel = DocumentModel().obs;
   final analytics = AnalyticsService.analytics;
   final homeController = Get.find<HomeController>();
   final interstitialAdController = Get.put(InterstitialAdsController());
-  String? secretKey;
-  String? iv;
 
   Future<void> pickFile() async {
     try {
       isLoading.toggle();
-      final String? _result = await FlutterFileDialog.pickFile();
-      pickedFile = _result;
+      final String? _result = await FlutterFileDialog.pickFile(
+          params: const OpenFileDialogParams(
+        copyFileToCacheDir: true,
+        fileExtensionsFilter: ['pdf', 'enc'],
+        mimeTypesFilter: ['application/pdf', 'application/octet-stream'],
+      ));
+      // pickedFile = _result;
+      // Picked File variable
       isLoading.toggle();
-      confirmDialog();
-      // await interstitialAdController.showInterstitialAd();
-      // Get.toNamed(Routes.viewPdf, arguments: _result);
+      confirmDialog(_result);
     } on PlatformException catch (e) {
       isLoading.toggle();
       Get.showSnackbar(GetSnackBar(
@@ -43,7 +44,7 @@ class EncryptDecryptController extends GetxController {
     }
   }
 
-  void confirmDialog() {
+  void confirmDialog(String? pickedFile) {
     final _result = pickedFile;
     if (_result != null) {
       String _fileName = _result.split('/').last;
@@ -84,9 +85,8 @@ class EncryptDecryptController extends GetxController {
                   if (Get.isOverlaysOpen) {
                     Get.back();
                   }
-
                   await interstitialAdController.showInterstitialAd();
-                  bool? _isEncDone = await encryptDecrypt();
+                  bool? _isEncDone = await encryptDecrypt(pickedFile);
                   if (_isEncDone != null && _isEncDone) {
                     Get.showSnackbar(
                       const GetSnackBar(
@@ -115,7 +115,7 @@ class EncryptDecryptController extends GetxController {
     }
   }
 
-  Future<bool?> encryptDecrypt() async {
+  Future<bool?> encryptDecrypt(String? pickedFile) async {
     final _result = pickedFile;
     bool? _isEncDone;
 
@@ -189,8 +189,6 @@ class EncryptDecryptController extends GetxController {
           //   barrierDismissible: false,
           // );
         }
-
-        return _isEncDone;
       } catch (e) {
         isLoading.toggle();
         Get.showSnackbar(GetSnackBar(
@@ -201,6 +199,7 @@ class EncryptDecryptController extends GetxController {
         ));
       }
     }
+    return _isEncDone;
   }
 
   Future<String> filesDocDir() async {
@@ -228,24 +227,24 @@ class EncryptDecryptController extends GetxController {
     String _result,
   ) async {
     try {
-      secretKey = await FileEncrypter.generatekey();
-      iv = await FileEncrypter.generateiv();
+      final secretKey = await FileEncrypter.generatekey();
+      final iv = await FileEncrypter.generateiv();
       if (secretKey != null && iv != null) {
         _isEncDone = await FileEncrypter.encrypt(
-          key: secretKey!,
-          iv: iv!,
+          key: secretKey,
+          iv: iv,
           inFilename: _result,
           outFileName: _fileOut,
         );
       }
       final _userId = homeController.user.value.id;
-      final _fizeSize = getFileSize(bytes: File(pickedFile!).lengthSync());
+      final _fizeSize = getFileSize(bytes: File(_result).lengthSync());
       final _ownerName = homeController.user.value.name;
       final _ownerPhotoUrl = homeController.user.value.photoUrl;
       final _ownerEmailId = homeController.user.value.emailId;
       final _documentReference =
           await FirestoreData.createDocument(_documentModel(DocumentModel(
-        documentName: pickedFile?.split('/').last,
+        documentName: _result.split('/').last,
         secretKey: secretKey,
         iv: iv,
         ownerId: _userId,
@@ -260,7 +259,7 @@ class EncryptDecryptController extends GetxController {
       final Map<String, dynamic> _pdfDetails = {
         'photoUrl': _ownerPhotoUrl,
         'ownerName': _ownerName,
-        'intialPageNumber': 1
+        'intialPageNumber': 0,
       };
       GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
     } on Exception catch (e) {
@@ -301,7 +300,7 @@ class EncryptDecryptController extends GetxController {
           final Map<String, dynamic> _pdfDetails = {
             'photoUrl': _document?.ownerPhotoUrl,
             'ownerName': _document?.ownerName,
-            'intialPageNumber': 1
+            'intialPageNumber': 0,
           };
           GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
           return true;

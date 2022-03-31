@@ -18,3 +18,8 @@ A App made for controlling pdfs files privacy
 - [] Intro Screens
 - [] Promotions Options
 - [] UI Designers
+
+## BUGS
+
+- Sometimes document in the forestore gets deleted before views
+- Internet lookup problems

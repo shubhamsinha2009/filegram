@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:filegram/app/controller/interstitial_ads_controller.dart';
-import 'package:filegram/app/data/provider/firestore_data.dart';
-import 'package:filegram/app/modules/encrypt_decrypt/services/file_encrypter.dart';
-import 'package:filegram/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:intl/intl.dart';
 
@@ -17,7 +14,6 @@ class FilesDeviceController extends GetxController {
   // late StreamSubscription _intentDataStreamSubscription;
   final filesList = <FileSystemEntity>[].obs;
   final inlineAdIndex = 0;
-  late String fileOut;
 
 // final analytics = AnalyticsService.analytics;
   // AppUpdateInfo? _updateInfo;
@@ -140,39 +136,6 @@ class FilesDeviceController extends GetxController {
   //   });
   // }
 
-  Future<bool> doDecryption(
-    String _fileIn,
-  ) async {
-    bool? _isEncDone;
-    // try {
-    final _checkKey = await FileEncrypter.getFileIv(inFilename: _fileIn);
-    if (_checkKey != null) {
-      final _document = await FirestoreData.getSecretKey(
-        _checkKey,
-        Get.find<HomeController>().user.value.emailId,
-        Get.find<HomeController>().user.value.id,
-      );
-      final _secretKey = _document?.secretKey;
-      if (_secretKey != null) {
-        _isEncDone = await FileEncrypter.decrypt(
-          inFilename: _fileIn,
-          key: _secretKey,
-          outFileName: fileOut,
-        );
-      }
-      await FirestoreData.updateViews(_document?.documentId);
-    }
-    // } on PlatformException catch (e) {
-    //   Get.showSnackbar(GetSnackBar(
-    //     duration: const Duration(seconds: 5),
-    //     messageText: Text(e.message ?? e.details),
-    //     icon: const Icon(Icons.error_outline),
-    //     snackPosition: SnackPosition.TOP,
-    //   ));
-    // }
-    return _isEncDone ?? false;
-  }
-
   @override
   void onInit() async {
     await onInitialisation();
@@ -185,7 +148,7 @@ class FilesDeviceController extends GetxController {
     //             .catchError((e) => Get.snackbar('Error', e.toString()));
     //       }
     //     : null;
-    fileOut = '${(await getTemporaryDirectory()).path}/current.pdf';
+
     super.onInit();
   }
 }

@@ -43,7 +43,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                     NavigationDestination(
                       icon: Icon(Icons.file_copy),
-                      label: 'Manage Encrypted ',
+                      label: 'Manage Encrypted',
                     ),
                     NavigationDestination(
                       icon: Icon(Icons.settings),
@@ -51,8 +51,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ],
                   selectedIndex: controller.selectedIndex.value,
-                  labelBehavior:
-                      NavigationDestinationLabelBehavior.onlyShowSelected,
+                  labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
                   onDestinationSelected: controller.onBottomBarSelected),
             )
           : const NoInternetView(),

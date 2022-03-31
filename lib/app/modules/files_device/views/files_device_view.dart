@@ -133,11 +133,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                           onTap: () {
                             controller.interstitialAdController
                                 .showInterstitialAd();
-                            controller.doDecryption(_currentfile.path).then(
-                                (value) => value == true
-                                    ? Get.toNamed(Routes.viewPdf,
-                                        arguments: controller.fileOut)
-                                    : null);
+                            Get.toNamed(Routes.viewPdf,
+                                arguments: _currentfile.path);
                             // await controller.analytics
                             //     .setCurrentScreen(screenName: 'pdf');
                             // await controller.analytics

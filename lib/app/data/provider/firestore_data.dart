@@ -19,18 +19,14 @@ class FirestoreData {
           .where("documentPermission",
               isEqualTo: DocumentPermission.public.name)
           .limit(1)
-          .get(const GetOptions(
-            source: Source.server,
-          ));
+          .get();
       if (_doc.docs.isEmpty) {
         _doc = await _firestore
             .collection("files")
             .where("iv", isEqualTo: iv)
             .where("sharedEmailIds", arrayContains: userEmail)
             .limit(1)
-            .get(const GetOptions(
-              source: Source.server,
-            ));
+            .get();
       }
       if (_doc.docs.isEmpty) {
         _doc = await _firestore
@@ -38,9 +34,7 @@ class FirestoreData {
             .where("iv", isEqualTo: ownerId)
             .where("ownerId", arrayContains: userEmail)
             .limit(1)
-            .get(const GetOptions(
-              source: Source.server,
-            ));
+            .get();
       }
       if (_doc.docs.isNotEmpty) {
         return DocumentModel(
@@ -78,7 +72,7 @@ class FirestoreData {
               .collection("files")
               .orderBy("createdOn", descending: true)
               .where("ownerId", isEqualTo: ownerId)
-              .get(const GetOptions(source: Source.server));
+              .get();
         }
       } else {
         final Timestamp _startAfter = Timestamp.fromDate(startAfter);
@@ -111,8 +105,7 @@ class FirestoreData {
   static Future<DocumentModel?> getDocument(
       DocumentReference _documentReference) async {
     try {
-      DocumentSnapshot _doc =
-          await _documentReference.get(const GetOptions(source: Source.server));
+      DocumentSnapshot _doc = await _documentReference.get();
 
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
@@ -137,10 +130,8 @@ class FirestoreData {
 
   static Future<DocumentModel?> getDocumentAfterUpdate(String? uid) async {
     try {
-      DocumentSnapshot _doc = await _firestore
-          .collection("files")
-          .doc(uid)
-          .get(const GetOptions(source: Source.server));
+      DocumentSnapshot _doc =
+          await _firestore.collection("files").doc(uid).get();
 
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
