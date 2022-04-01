@@ -102,24 +102,24 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                               ),
                               OutlinedButton(
                                 onPressed: () async {
-                                  final _views = await FirestoreData.readViews(
-                                      _document?.documentId);
+                                  final _views =
+                                      await FirestoreData.readViewsAndUsers(
+                                          _document?.documentId);
                                   // controller.adsController.rewardedAd.show(
                                   //   onUserEarnedReward: (ad, reward) {
                                   Get.dialog(
                                     AlertDialog(
                                       alignment: Alignment.center,
                                       backgroundColor: Colors.black,
-                                      title: const Text(
-                                        ' Number of Views',
-                                      ),
+                                      // title: const Text(
+                                      //   ' Number of Views',
+                                      // ),
                                       content: Text(
-                                        _views.toString(),
+                                        'Number of Views : ${_views.views} \n \n & \n \n  Number of Users : ${_views.numberOfUsers} ',
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w800,
-                                          fontSize: 50,
-                                          letterSpacing: 1,
+                                          fontSize: 20,
                                         ),
                                       ),
                                       actions: <Widget>[
@@ -164,7 +164,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       TextButton(
                                         onPressed: () async {
                                           // ! Sometimes due to async document gets deleted before views
-                                          FirestoreData.deleteViews(
+                                          FirestoreData.deleteViewsAndUsers(
                                                   _document?.documentId)
                                               .then((value) async =>
                                                   await FirestoreData

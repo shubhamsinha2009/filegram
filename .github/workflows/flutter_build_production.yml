@@ -62,7 +62,7 @@ jobs:
           path: build/app/outputs/bundle/productionRelease/app-production-release.aab
 
   release_internal:
-    name: Release Artifacts to beta track
+    name: Release Artifacts to production track
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -71,12 +71,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: APPBUNDLE
-      - name: Release APPBUNDLE to beta track
+      - name: Release APPBUNDLE to production track
         uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_CONSOLE_JSON_KEY }}
           packageName: com.sks.filegram
           releaseFiles: app-production-release.aab
-          track: beta
+          track: production
           whatsNewDirectory: distribution/whatsnew          
   

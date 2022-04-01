@@ -33,7 +33,6 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                     final _currentfile = controller.filesList[index];
                     final Map<String, dynamic>? _pdfDetails =
                         GetStorageDbService.getRead(key: _currentfile.path);
-
                     final _photoUrl = _pdfDetails?['photoUrl'] ??
                         'https://source.unsplash.com/random';
                     final _ownerName = _pdfDetails?['ownerName'] ?? 'Unknown';

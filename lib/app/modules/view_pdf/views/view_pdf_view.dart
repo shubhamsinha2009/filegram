@@ -16,7 +16,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
               filePath: controller.fileOut,
               // pdfData: ,
               enableSwipe: true,
-              swipeHorizontal: true,
+              swipeHorizontal: false,
               autoSpacing: false,
               pageFling: false,
               pageSnap: false,

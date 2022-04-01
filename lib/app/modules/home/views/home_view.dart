@@ -34,7 +34,7 @@ class HomeView extends GetView<HomeController> {
               body: bodyPages[controller.selectedIndex.value],
               floatingActionButton: const EncryptDecryptView(),
               floatingActionButtonLocation:
-                  FloatingActionButtonLocation.endFloat,
+                  FloatingActionButtonLocation.miniEndFloat,
               bottomNavigationBar: NavigationBar(
                   destinations: const [
                     NavigationDestination(

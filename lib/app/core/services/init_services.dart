@@ -7,25 +7,26 @@ Future<void> initServices() async {
   // await AnalyticsService.analytics.setDefaultEventParameters({
   //   'version': '1.0.1+1',
   // });
-  Future<void> loadAd() async {
-    AppOpenAd.load(
-      adUnitId: AdHelper.appOpenAdUnitId,
-      orientation: AppOpenAd.orientationPortrait,
-      request: const AdRequest(),
-      adLoadCallback: AppOpenAdLoadCallback(
-        onAdLoaded: (ad) {
-          // print('$ad loaded');
-          ad.show();
-        },
-        onAdFailedToLoad: (error) {
-          // print('AppOpenAd failed to load: $error');
-        },
-      ),
-    );
-  }
 
   await MobileAds.instance.initialize();
-  await loadAd();
+  loadAd(AdHelper.appOpenAdUnitId);
 
   await GetStorageDbService.init();
+}
+
+void loadAd(String adUnit) {
+  AppOpenAd.load(
+    adUnitId: adUnit,
+    orientation: AppOpenAd.orientationPortrait,
+    request: const AdRequest(),
+    adLoadCallback: AppOpenAdLoadCallback(
+      onAdLoaded: (ad) {
+        // print('$ad loaded');
+        ad.show();
+      },
+      onAdFailedToLoad: (error) {
+        // print('AppOpenAd failed to load: $error');
+      },
+    ),
+  );
 }

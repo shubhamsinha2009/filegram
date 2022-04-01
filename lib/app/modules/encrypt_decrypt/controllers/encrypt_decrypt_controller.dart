@@ -118,77 +118,64 @@ class EncryptDecryptController extends GetxController {
   Future<bool?> encryptDecrypt(String? pickedFile) async {
     final _result = pickedFile;
     bool? _isEncDone;
-
-// _result.replaceAll('.enc', '').trim()
     if (_result != null) {
-      String _fileOut = _result.contains('.enc') ? _result : '$_result.enc';
-      String _filename = _fileOut.split('/').last;
-      _fileOut = '${await filesDocDir()}/$_filename';
-      pickedFile = _fileOut;
-
       try {
         if (_result.contains('.enc')) {
-          _isEncDone = await doFileCopy(_result, _isEncDone, _fileOut);
+          _isEncDone = await doFileCopy(_result);
         } else {
-          _isEncDone = await doEncryption(_fileOut, _isEncDone, _result);
+          _isEncDone = await doEncryption(_isEncDone, _result);
         }
 
-        if (_isEncDone != null && _isEncDone) {
-          if (File(_result).existsSync()) {
-            File(_result).deleteSync();
-          }
-          isLoading.toggle();
+        // Get.dialog(
+        //   WillPopScope(
+        //     onWillPop: () async => false,
+        //     child: AlertDialog(
+        //       backgroundColor: Colors.black,
+        //       title: const Text('Reward : Want to Save your file? '),
+        //       // title: const Text('Want to Save your file? '),
+        //       content: Text(
+        //           'Your File : $_filename will be Saved as a reward after you watch full ad'),
+        //       // content: Text(
+        //       //     'Your File : ${_fileOut.split('/').last} will be Saved'),
+        //       actions: <Widget>[
+        //         TextButton(
+        //           onPressed: () {
+        //             if (File(_fileOut).existsSync()) {
+        //               File(_fileOut).deleteSync();
+        //             }
+        //             if (Get.isOverlaysOpen) {
+        //               Get.back();
+        //             }
+        //             Get.showSnackbar(
+        //               const GetSnackBar(
+        //                 messageText: Text('File Saving Cancelled '),
+        //                 duration: Duration(seconds: 3),
+        //                 snackPosition: SnackPosition.TOP,
+        //               ),
+        //             );
+        //           },
+        //           child: const Text('Cancel'),
+        //         ),
+        //         TextButton(
+        //           onPressed: () async {
+        //             isLoading.toggle();
+        //             if (Get.isOverlaysOpen) {
+        //               Get.back();
+        //             }
+        // rewardedAdController.rewardedAd.show(
+        //   onUserEarnedReward: (ad, reward) {
+        //     saveFile();
+        //   },
+        // ).whenComplete(() => isLoading.toggle());
+        //           },
+        //           child: const Text('Save File'),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        //   barrierDismissible: false,
+        // );
 
-          // Get.dialog(
-          //   WillPopScope(
-          //     onWillPop: () async => false,
-          //     child: AlertDialog(
-          //       backgroundColor: Colors.black,
-          //       title: const Text('Reward : Want to Save your file? '),
-          //       // title: const Text('Want to Save your file? '),
-          //       content: Text(
-          //           'Your File : $_filename will be Saved as a reward after you watch full ad'),
-          //       // content: Text(
-          //       //     'Your File : ${_fileOut.split('/').last} will be Saved'),
-          //       actions: <Widget>[
-          //         TextButton(
-          //           onPressed: () {
-          //             if (File(_fileOut).existsSync()) {
-          //               File(_fileOut).deleteSync();
-          //             }
-          //             if (Get.isOverlaysOpen) {
-          //               Get.back();
-          //             }
-          //             Get.showSnackbar(
-          //               const GetSnackBar(
-          //                 messageText: Text('File Saving Cancelled '),
-          //                 duration: Duration(seconds: 3),
-          //                 snackPosition: SnackPosition.TOP,
-          //               ),
-          //             );
-          //           },
-          //           child: const Text('Cancel'),
-          //         ),
-          //         TextButton(
-          //           onPressed: () async {
-          //             isLoading.toggle();
-          //             if (Get.isOverlaysOpen) {
-          //               Get.back();
-          //             }
-          // rewardedAdController.rewardedAd.show(
-          //   onUserEarnedReward: (ad, reward) {
-          //     saveFile();
-          //   },
-          // ).whenComplete(() => isLoading.toggle());
-          //           },
-          //           child: const Text('Save File'),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          //   barrierDismissible: false,
-          // );
-        }
       } catch (e) {
         isLoading.toggle();
         Get.showSnackbar(GetSnackBar(
@@ -198,7 +185,12 @@ class EncryptDecryptController extends GetxController {
           snackPosition: SnackPosition.TOP,
         ));
       }
+      if (File(_result).existsSync()) {
+        File(_result).deleteSync();
+      }
+      isLoading.toggle();
     }
+
     return _isEncDone;
   }
 
@@ -221,12 +213,11 @@ class EncryptDecryptController extends GetxController {
     }
   }
 
-  Future<bool?> doEncryption(
-    String _fileOut,
-    bool? _isEncDone,
-    String _result,
-  ) async {
+  Future<bool?> doEncryption(bool? _isEncDone, String _result) async {
     try {
+      String _fileOut = '$_result.enc';
+      String _filename = _fileOut.split('/').last;
+      _fileOut = '${await filesDocDir()}/$_filename';
       final secretKey = await FileEncrypter.generatekey();
       final iv = await FileEncrypter.generateiv();
       if (secretKey != null && iv != null) {
@@ -255,32 +246,31 @@ class EncryptDecryptController extends GetxController {
       )));
       // await FirestoreData.getDocumentsListFromServer(_userId);
       _documentModel(await FirestoreData.getDocument(_documentReference));
-      await FirestoreData.createViews(_documentModel.value.documentId);
+      await FirestoreData.createViewsAndUsers(_documentModel.value.documentId);
       final Map<String, dynamic> _pdfDetails = {
         'photoUrl': _ownerPhotoUrl,
         'ownerName': _ownerName,
         'intialPageNumber': 0,
       };
       GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
-    } on Exception catch (e) {
+      return _isEncDone;
+    } on PlatformException {
       isLoading.value = false;
-
-      Get.showSnackbar(GetSnackBar(
-        duration: const Duration(seconds: 5),
-        messageText: Text(e.toString()),
-        icon: const Icon(Icons.error_outline),
-        snackPosition: SnackPosition.TOP,
-      ));
+      rethrow;
+      // Get.showSnackbar(GetSnackBar(
+      //   duration: const Duration(seconds: 5),
+      //   messageText: Text(e.toString()),
+      //   icon: const Icon(Icons.error_outline),
+      //   snackPosition: SnackPosition.TOP,
+      // ));
     }
-    return _isEncDone;
   }
 
-  Future<bool?> doFileCopy(
+  Future<bool> doFileCopy(
     String _result,
-    bool? _isEncDone,
-    String _fileOut,
   ) async {
     try {
+      // _fileOut = '${await filesDocDir()}/$_filename';
       final _checkKey = await FileEncrypter.getFileIv(inFilename: _result);
       if (_checkKey != null) {
         final _document = await FirestoreData.getSecretKey(
@@ -290,12 +280,10 @@ class EncryptDecryptController extends GetxController {
         );
         final _secretKey = _document?.secretKey;
         if (_secretKey != null) {
-          // _isEncDone = await FileEncrypter.decrypt(
-          //   inFilename: _result,
-          //   key: _secretKey,
-          //   outFileName: _fileOut,
-          // );
+          String _fileOut = '${await filesDocDir()}/${_document?.documentName}';
           await File(_result).copy(_fileOut);
+
+          await FirestoreData.updateViewsUsers(_document?.documentId);
 
           final Map<String, dynamic> _pdfDetails = {
             'photoUrl': _document?.ownerPhotoUrl,
@@ -305,20 +293,21 @@ class EncryptDecryptController extends GetxController {
           GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
           return true;
         }
-
+        return false;
         // ! Use of Cloud Function
         // *Using Cloud Firestore temporarily
       }
-    } on PlatformException catch (e) {
+      return false;
+    } on PlatformException {
       isLoading.value = false;
-      Get.showSnackbar(GetSnackBar(
-        duration: const Duration(seconds: 5),
-        messageText: Text(e.message ?? e.details),
-        icon: const Icon(Icons.error_outline),
-        snackPosition: SnackPosition.TOP,
-      ));
+      rethrow;
+      // Get.showSnackbar(GetSnackBar(
+      //   duration: const Duration(seconds: 5),
+      //   messageText: Text(e.message ?? e.details),
+      //   icon: const Icon(Icons.error_outline),
+      //   snackPosition: SnackPosition.TOP,
+      // ));
     }
-    return _isEncDone;
   }
 
   // Future<void> saveFile() async {

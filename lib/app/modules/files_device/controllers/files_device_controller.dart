@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../core/services/getstorage.dart';
+
 class FilesDeviceController extends GetxController {
   final interstitialAdController = Get.put(InterstitialAdsController());
   final rename = ''.obs;
@@ -46,27 +48,25 @@ class FilesDeviceController extends GetxController {
   String nameOfFile(String _currentfilePath) =>
       _currentfilePath.split('/').last;
 
-  // bool validateRename() {
-  //   final ext = rename.value.toLowerCase();
-  //   switch (selectedBottomModel.value.bottomType) {
-  //     case BottomType.library:
-  //       return ext.endsWith(".pdf");
-  //     case BottomType.personal:
-  //       return ext.endsWith(".sks.pdf");
-  //   }
-  // }
+  bool validateRename() {
+    final ext = rename.value.toLowerCase();
+    return ext.endsWith(".pdf.enc");
+  }
 
   Future<File> changeFileNameOnlySync(String filePath) async {
     var path = filePath;
     var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
     var newPath = path.substring(0, lastSeparator + 1) + rename.value;
 
+    GetStorageDbService.getWrite(
+        key: newPath, value: GetStorageDbService.getRead(key: filePath));
+    GetStorageDbService.getRemove(key: filePath);
     return await File(filePath).rename(newPath);
   }
 
   void save(String path) async {
     final params = SaveFileDialogParams(sourceFilePath: path);
-    final _savedFilePath = await FlutterFileDialog.saveFile(params: params);
+    await FlutterFileDialog.saveFile(params: params);
     // await analytics.logEvent(name: 'file_saved_in_device', parameters: {
     //   'saved_file': _savedFilePath,
     //   'source_file': path,

@@ -28,12 +28,13 @@ class BtmSheet extends StatelessWidget {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
               if (value != null) {
-                // if (!controller.validateRename()) {
-                //   return "File Name is not valid";
-                // } else {
-                //   return null;
-                // }
+                if (!controller.validateRename()) {
+                  return "File Name is not valid";
+                } else {
+                  return null;
+                }
               }
+              return null;
             },
             initialValue: controller.nameOfFile(filePath),
             keyboardType: TextInputType.name,
@@ -50,10 +51,11 @@ class BtmSheet extends StatelessWidget {
                   onPressed: () => Get.back(), child: const Text('Back')),
               TextButton(
                   onPressed: () {
-                    // if (controller.validateRename()) {
-                    //   controller.changeFileNameOnlySync(filePath).then(
-                    //       (value) => Get.back());
-                    // }
+                    if (controller.validateRename()) {
+                      controller
+                          .changeFileNameOnlySync(filePath)
+                          .then((value) => Get.back());
+                    }
                   },
                   child: const Text('Save')),
             ],

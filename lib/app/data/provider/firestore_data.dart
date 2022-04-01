@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:filegram/app/data/model/views_model.dart';
 import '../enums/docpermission.dart';
 import 'package:flutter/services.dart';
 import '../model/documents_model.dart';
@@ -217,11 +218,12 @@ class FirestoreData {
     }
   }
 
-  static Future<void> createViews(String? documentId) async {
+  static Future<void> createViewsAndUsers(String? documentId) async {
     try {
       await _firestore.collection("views").doc(documentId).set(
         {
           "views": 0,
+          "users": 1,
         },
       );
     } catch (e) {
@@ -229,7 +231,7 @@ class FirestoreData {
     }
   }
 
-  static Future<void> deleteViews(String? documentId) async {
+  static Future<void> deleteViewsAndUsers(String? documentId) async {
     try {
       await _firestore.collection("views").doc(documentId).delete();
     } catch (e) {
@@ -249,13 +251,28 @@ class FirestoreData {
     }
   }
 
-  static Future<int> readViews(String? documentID) async {
+  static Future<void> updateViewsUsers(String? documentID) async {
+    try {
+      await _firestore.collection("views").doc(documentID).update(
+        {
+          "users": FieldValue.increment(1),
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<ViewsModel> readViewsAndUsers(String? documentID) async {
     try {
       DocumentSnapshot _doc =
           await _firestore.collection("views").doc(documentID).get();
 
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
-      return _data["views"] as int;
+      return ViewsModel(
+        views: _data["views"] as int?,
+        numberOfUsers: _data["users"] as int?,
+      );
     } catch (e) {
       rethrow;
     }
