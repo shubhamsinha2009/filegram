@@ -13,6 +13,7 @@ class DocumentModel {
   final DateTime? createdOn;
   final DocumentPermission documentPermission;
   final List<String>? sharedEmailIds;
+  final String? sourceUrl;
 
   DocumentModel({
     this.ownerId,
@@ -27,5 +28,6 @@ class DocumentModel {
     this.createdOn,
     this.documentPermission = DocumentPermission.public,
     this.sharedEmailIds,
+    this.sourceUrl,
   });
 }

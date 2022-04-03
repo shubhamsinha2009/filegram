@@ -5,10 +5,10 @@ A App made for controlling pdfs files privacy
 ## TODOS
 
 - [] Pdf Viewer Update with Settings
-- [] Rename Feature
-- [] Check Cached file before decrypting files
+- [x] Rename Feature
+- [x] Check Cached file before decrypting files
 - [] Implement Rewarded Ads
-- [] Only Pdf Upload
+- [x] Only Pdf Upload
 - [] Automatic Refresh After Uploading Files
 - [] Receive Files Options
 - [] Subscription Feature
@@ -18,6 +18,9 @@ A App made for controlling pdfs files privacy
 - [] Intro Screens
 - [] Promotions Options
 - [] UI Designers
+- [] share url
+- [] night mode
+- [] Get ota update feature
 
 ## BUGS
 

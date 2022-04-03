@@ -27,6 +27,7 @@ class ViewPdfController extends GetxController {
   late final String ownerName;
   late File file;
   late String fileOut;
+  late final String? sourceUrl;
 
   Future<bool> doDecryption(
     String _fileIn,
@@ -73,6 +74,7 @@ class ViewPdfController extends GetxController {
     intialPageNumber = _pdfDetails?['intialPageNumber'] ?? 0;
     photoUrl = _pdfDetails?['photoUrl'] ?? 'https://source.unsplash.com/random';
     ownerName = _pdfDetails?['ownerName'] ?? 'Unknown';
+    sourceUrl = _pdfDetails?['sourceUrl'];
 
     super.onInit();
   }
@@ -91,7 +93,8 @@ class ViewPdfController extends GetxController {
     final Map<String, dynamic> _pdfDetails = {
       'photoUrl': photoUrl,
       'ownerName': ownerName,
-      'intialPageNumber': currentPageNumber.value
+      'intialPageNumber': currentPageNumber.value,
+      'sourceUrl': sourceUrl,
     };
     GetStorageDbService.getWrite(key: filePath, value: _pdfDetails);
   }

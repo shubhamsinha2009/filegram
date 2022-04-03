@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:filegram/app/controller/interstitial_ads_controller.dart';
@@ -13,6 +14,7 @@ import '../../../data/model/documents_model.dart';
 import '../../../data/provider/firestore_data.dart';
 import '../../home/controllers/controllers.dart';
 import '../services/file_encrypter.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 class EncryptDecryptController extends GetxController {
   final isLoading = false.obs;
@@ -20,6 +22,7 @@ class EncryptDecryptController extends GetxController {
   final analytics = AnalyticsService.analytics;
   final homeController = Get.find<HomeController>();
   final interstitialAdController = Get.put(InterstitialAdsController());
+  late StreamSubscription _intentDataStreamSubscription;
 
   Future<void> pickFile() async {
     try {
@@ -30,8 +33,7 @@ class EncryptDecryptController extends GetxController {
         fileExtensionsFilter: ['pdf', 'enc'],
         mimeTypesFilter: ['application/pdf', 'application/octet-stream'],
       ));
-      // pickedFile = _result;
-      // Picked File variable
+
       isLoading.toggle();
       confirmDialog(_result);
     } on PlatformException catch (e) {
@@ -45,77 +47,130 @@ class EncryptDecryptController extends GetxController {
   }
 
   void confirmDialog(String? pickedFile) {
+    String? _sourceUrl;
     final _result = pickedFile;
     if (_result != null) {
       String _fileName = _result.split('/').last;
       final String _dialogTitle =
           _result.contains('.enc') ? 'decrypt' : 'encrypt';
-      Get.dialog(
+      Get.bottomSheet(
         WillPopScope(
           onWillPop: () async => false,
-          child: AlertDialog(
-            backgroundColor: Colors.black,
-            title: Text(
-              'Want to $_dialogTitle your file ?',
-            ),
-            content: Text('Your File : $_fileName will be ${_dialogTitle}ed'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  if (File(_result).existsSync()) {
-                    File(_result).deleteSync();
-                  }
-                  if (Get.isOverlaysOpen) {
-                    Get.back();
-                  }
-                  Get.showSnackbar(
-                    GetSnackBar(
-                      message: 'File ${_dialogTitle}ion Canceled',
-                      // backgroundColor: Colors.amber,
-                      duration: const Duration(seconds: 3),
-                      snackPosition: SnackPosition.TOP,
+          child: Container(
+            color: Colors.black,
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
+            child: Wrap(
+              children: <Widget>[
+                Text(
+                  'Want to $_dialogTitle your file ?',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Text('Your File : $_fileName will be ${_dialogTitle}ed',
+                    softWrap: true),
+                const SizedBox(
+                  height: 50,
+                ),
+                _result.contains('.enc')
+                    ? const SizedBox(
+                        width: 0,
+                        height: 0,
+                      )
+                    : TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+
+                        // validator: (value) {
+                        //   if (value != null) {
+                        //     if (!GetUtils.isURL(value)) {
+                        //       return "File Name is not valid";
+                        //     } else {
+                        //       return null;
+                        //     }
+                        //   }
+                        //   return null;
+                        // },
+                        keyboardType: TextInputType.url,
+                        onChanged: (value) => _sourceUrl = value,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            helperText:
+                                'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
+                            labelText: 'Source URL / Share Link to redirect',
+                            hintText: 'https://t.me/trust_the_professor',
+                            helperMaxLines: 3,
+                            isDense: true,
+                            prefixIcon: Icon(Icons.link_rounded),
+                            prefixIconColor: Colors.white54),
+                      ),
+                const SizedBox(
+                  height: 30,
+                ),
+                ButtonBar(
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {
+                        if (File(_result).existsSync()) {
+                          File(_result).deleteSync();
+                        }
+                        if (Get.isOverlaysOpen) {
+                          Get.back();
+                        }
+                        Get.showSnackbar(
+                          GetSnackBar(
+                            message: 'File ${_dialogTitle}ion Canceled',
+                            // backgroundColor: Colors.amber,
+                            duration: const Duration(seconds: 3),
+                            snackPosition: SnackPosition.TOP,
+                          ),
+                        );
+                      },
+                      child: const Text('Cancel'),
                     ),
-                  );
-                },
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  isLoading.toggle();
-                  if (Get.isOverlaysOpen) {
-                    Get.back();
-                  }
-                  await interstitialAdController.showInterstitialAd();
-                  bool? _isEncDone = await encryptDecrypt(pickedFile);
-                  if (_isEncDone != null && _isEncDone) {
-                    Get.showSnackbar(
-                      const GetSnackBar(
-                        messageText: Text('File Saved '),
-                        duration: Duration(seconds: 3),
-                        snackPosition: SnackPosition.TOP,
-                      ),
-                    );
-                  } else {
-                    Get.showSnackbar(
-                      const GetSnackBar(
-                        messageText: Text('File Not Saved '),
-                        duration: Duration(seconds: 3),
-                        snackPosition: SnackPosition.TOP,
-                      ),
-                    );
-                  }
-                },
-                child: Text(_dialogTitle.toUpperCase()),
-              ),
-            ],
+                    OutlinedButton(
+                      onPressed: () async {
+                        isLoading.toggle();
+                        if (Get.isOverlaysOpen) {
+                          Get.back();
+                        }
+                        await interstitialAdController.showInterstitialAd();
+                        bool? _isEncDone =
+                            await encryptDecrypt(pickedFile, _sourceUrl);
+                        if (_isEncDone != null && _isEncDone) {
+                          Get.showSnackbar(
+                            const GetSnackBar(
+                              messageText: Text('File Saved '),
+                              duration: Duration(seconds: 3),
+                              snackPosition: SnackPosition.TOP,
+                            ),
+                          );
+                        } else {
+                          Get.showSnackbar(
+                            const GetSnackBar(
+                              messageText: Text('File Not Saved '),
+                              duration: Duration(seconds: 3),
+                              snackPosition: SnackPosition.TOP,
+                            ),
+                          );
+                        }
+                      },
+                      child: Text(_dialogTitle.toUpperCase()),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-        barrierDismissible: false,
+        isDismissible: false,
       );
     }
   }
 
-  Future<bool?> encryptDecrypt(String? pickedFile) async {
+  Future<bool?> encryptDecrypt(String? pickedFile, String? _sourceUrl) async {
     final _result = pickedFile;
     bool? _isEncDone;
     if (_result != null) {
@@ -123,61 +178,10 @@ class EncryptDecryptController extends GetxController {
         if (_result.contains('.enc')) {
           _isEncDone = await doFileCopy(_result);
         } else {
-          _isEncDone = await doEncryption(_isEncDone, _result);
+          _isEncDone = await doEncryption(_isEncDone, _result, _sourceUrl);
         }
-
-        // Get.dialog(
-        //   WillPopScope(
-        //     onWillPop: () async => false,
-        //     child: AlertDialog(
-        //       backgroundColor: Colors.black,
-        //       title: const Text('Reward : Want to Save your file? '),
-        //       // title: const Text('Want to Save your file? '),
-        //       content: Text(
-        //           'Your File : $_filename will be Saved as a reward after you watch full ad'),
-        //       // content: Text(
-        //       //     'Your File : ${_fileOut.split('/').last} will be Saved'),
-        //       actions: <Widget>[
-        //         TextButton(
-        //           onPressed: () {
-        //             if (File(_fileOut).existsSync()) {
-        //               File(_fileOut).deleteSync();
-        //             }
-        //             if (Get.isOverlaysOpen) {
-        //               Get.back();
-        //             }
-        //             Get.showSnackbar(
-        //               const GetSnackBar(
-        //                 messageText: Text('File Saving Cancelled '),
-        //                 duration: Duration(seconds: 3),
-        //                 snackPosition: SnackPosition.TOP,
-        //               ),
-        //             );
-        //           },
-        //           child: const Text('Cancel'),
-        //         ),
-        //         TextButton(
-        //           onPressed: () async {
-        //             isLoading.toggle();
-        //             if (Get.isOverlaysOpen) {
-        //               Get.back();
-        //             }
-        // rewardedAdController.rewardedAd.show(
-        //   onUserEarnedReward: (ad, reward) {
-        //     saveFile();
-        //   },
-        // ).whenComplete(() => isLoading.toggle());
-        //           },
-        //           child: const Text('Save File'),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        //   barrierDismissible: false,
-        // );
-
       } catch (e) {
-        isLoading.toggle();
+        isLoading.value = false;
         Get.showSnackbar(GetSnackBar(
           messageText: Text(e.toString()),
           icon: const Icon(Icons.error_outline),
@@ -188,7 +192,7 @@ class EncryptDecryptController extends GetxController {
       if (File(_result).existsSync()) {
         File(_result).deleteSync();
       }
-      isLoading.toggle();
+      isLoading.value = false;
     }
 
     return _isEncDone;
@@ -213,7 +217,8 @@ class EncryptDecryptController extends GetxController {
     }
   }
 
-  Future<bool?> doEncryption(bool? _isEncDone, String _result) async {
+  Future<bool?> doEncryption(
+      bool? _isEncDone, String _result, String? _sourceUrl) async {
     try {
       String _fileOut = '$_result.enc';
       String _filename = _fileOut.split('/').last;
@@ -243,6 +248,7 @@ class EncryptDecryptController extends GetxController {
         ownerName: _ownerName,
         ownerPhotoUrl: _ownerPhotoUrl,
         ownerEmailId: _ownerEmailId,
+        sourceUrl: _sourceUrl,
       )));
       // await FirestoreData.getDocumentsListFromServer(_userId);
       _documentModel(await FirestoreData.getDocument(_documentReference));
@@ -250,19 +256,21 @@ class EncryptDecryptController extends GetxController {
       final Map<String, dynamic> _pdfDetails = {
         'photoUrl': _ownerPhotoUrl,
         'ownerName': _ownerName,
+        'sourceUrl': _sourceUrl,
         'intialPageNumber': 0,
       };
       GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
       return _isEncDone;
     } on PlatformException {
       isLoading.value = false;
-      rethrow;
-      // Get.showSnackbar(GetSnackBar(
-      //   duration: const Duration(seconds: 5),
-      //   messageText: Text(e.toString()),
-      //   icon: const Icon(Icons.error_outline),
-      //   snackPosition: SnackPosition.TOP,
-      // ));
+
+      Get.showSnackbar(GetSnackBar(
+        duration: const Duration(seconds: 5),
+        messageText: Text(e.toString()),
+        icon: const Icon(Icons.error_outline),
+        snackPosition: SnackPosition.TOP,
+      ));
+      return false;
     }
   }
 
@@ -288,6 +296,7 @@ class EncryptDecryptController extends GetxController {
           final Map<String, dynamic> _pdfDetails = {
             'photoUrl': _document?.ownerPhotoUrl,
             'ownerName': _document?.ownerName,
+            'sourceUrl': _document?.sourceUrl,
             'intialPageNumber': 0,
           };
           GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
@@ -298,72 +307,17 @@ class EncryptDecryptController extends GetxController {
         // *Using Cloud Firestore temporarily
       }
       return false;
-    } on PlatformException {
+    } on PlatformException catch (e) {
       isLoading.value = false;
-      rethrow;
-      // Get.showSnackbar(GetSnackBar(
-      //   duration: const Duration(seconds: 5),
-      //   messageText: Text(e.message ?? e.details),
-      //   icon: const Icon(Icons.error_outline),
-      //   snackPosition: SnackPosition.TOP,
-      // ));
+      Get.showSnackbar(GetSnackBar(
+        duration: const Duration(seconds: 5),
+        messageText: Text(e.message ?? e.details),
+        icon: const Icon(Icons.error_outline),
+        snackPosition: SnackPosition.TOP,
+      ));
+      return false;
     }
   }
-
-  // Future<void> saveFile() async {
-  //   if (pickedFile != null) {
-  //     String? _fileSavedPath;
-  //     final String _fileOut = pickedFile!;
-
-  //     try {
-  //       final params = SaveFileDialogParams(sourceFilePath: _fileOut);
-  //       _fileSavedPath = await FlutterFileDialog.saveFile(params: params);
-
-  //       if (_fileSavedPath != null && _fileOut.endsWith('.enc')) {}
-
-  //       if (File(_fileOut).existsSync()) {
-  //         File(_fileOut).deleteSync();
-  //       }
-  //       if (File(_fileOut + '.enc').existsSync()) {
-  //         File(_fileOut + '.enc').deleteSync();
-  //       }
-  //       if (File(_fileOut.replaceAll('.enc', '').trim()).existsSync()) {
-  //         File(_fileOut.replaceAll('.enc', '').trim()).deleteSync();
-  //       }
-
-  //       if (_fileSavedPath != null) {
-  //         Get.showSnackbar(
-  //           const GetSnackBar(
-  //             messageText: Text('File Saved '),
-  //             duration: Duration(seconds: 3),
-  //             snackPosition: SnackPosition.TOP,
-  //           ),
-  //         );
-  //       } else {
-  //         Get.showSnackbar(
-  //           const GetSnackBar(
-  //             messageText: Text('File Not Saved '),
-  //             duration: Duration(seconds: 3),
-  //             snackPosition: SnackPosition.TOP,
-  //           ),
-  //         );
-  //       }
-  //     } catch (e) {
-  //       Get.showSnackbar(GetSnackBar(
-  //         duration: const Duration(seconds: 5),
-  //         messageText: Text(e.toString()),
-  //         icon: const Icon(Icons.error_outline),
-  //         snackPosition: SnackPosition.TOP,
-  //       ));
-  //     }
-  //   }
-  // }
-  // String getSubtitle({required int bytes, required DateTime time}) {
-  //   if (bytes <= 0) return "0 B";
-  //   const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-  //   var i = (log(bytes) / log(1024)).floor();
-  //   return '${DateFormat.yMMMMd('en_US').add_jm().format(time)} - ${((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i]}';
-  // }
 
   String getFileSize({
     required int bytes,
@@ -372,5 +326,58 @@ class EncryptDecryptController extends GetxController {
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     var i = (log(bytes) / log(1024)).floor();
     return ((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i];
+  }
+
+  void receiveSharing() {
+    // await analytics.logEvent(name: 'receive_sharing');
+    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
+        .listen((List<SharedMediaFile> value) async {
+      try {
+        if (value.isNotEmpty) {
+          //   print('Your file name ---------------------------------' +
+          //     value.single.path);
+          confirmDialog(value.single.path);
+        }
+      } catch (e) {
+        Get.snackbar(
+          'Error',
+          'Please Make Sure you are not doing any mistakes by yourself from text update we will find it for you',
+        );
+      }
+    }, onError: (err) {
+      Get.snackbar(
+        'Error Found',
+        err,
+      );
+    });
+
+    // For sharing images coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+      if (value.isNotEmpty) {
+        //  print('Your file name ---------------------------------' +
+        //    value.single.path);
+        try {
+          confirmDialog(value.single.path);
+        } catch (e) {
+          Get.snackbar(
+            'Error',
+            'Please Make Sure you are not doing any mistakes by yourself from text update we will find it for you',
+          );
+        }
+      }
+    });
+  }
+
+  @override
+  void onInit() {
+    receiveSharing();
+
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    _intentDataStreamSubscription.cancel();
+    super.onClose();
   }
 }

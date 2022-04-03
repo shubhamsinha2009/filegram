@@ -38,16 +38,20 @@ class FirestoreData {
             .get();
       }
       if (_doc.docs.isNotEmpty) {
+        Map<String, dynamic> _data =
+            _doc.docs.single.data()! as Map<String, dynamic>;
+
         return DocumentModel(
-          ownerPhotoUrl: _doc.docs.single["ownerPhotoUrl"] as String,
-          ownerName: _doc.docs.single["ownerName"] as String,
-          secretKey: _doc.docs.single["secretKey"] as String,
-          iv: _doc.docs.single["iv"] as String,
-          documentName: _doc.docs.single["documentName"] as String,
-          documentSize: _doc.docs.single["documentSize"] as String,
-          ownerId: _doc.docs.single["ownerId"] as String,
-          createdOn: (_doc.docs.single["createdOn"] as Timestamp).toDate(),
+          ownerPhotoUrl: _data["ownerPhotoUrl"] as String,
+          ownerName: _data["ownerName"] as String,
+          secretKey: _data["secretKey"] as String,
+          iv: _data["iv"] as String,
+          documentName: _data["documentName"] as String,
+          documentSize: _data["documentSize"] as String,
+          ownerId: _data["ownerId"] as String,
+          createdOn: (_data["createdOn"] as Timestamp).toDate(),
           documentId: _doc.docs.single.id,
+          sourceUrl: _data.containsKey("sourceUrl") ? _data["sourceUrl"] : null,
         );
       }
       return null;
@@ -96,6 +100,7 @@ class FirestoreData {
           sharedEmailIds: List<String>.from(_data["sharedEmailIds"]),
           documentPermission:
               DocumentPermission.values.byName(_data["documentPermission"]),
+          sourceUrl: _data.containsKey("sourceUrl") ? _data["sourceUrl"] : null,
         );
       }).toList();
     } catch (e) {
@@ -123,6 +128,7 @@ class FirestoreData {
         sharedEmailIds: List<String>.from(_data["sharedEmailIds"]),
         documentPermission:
             DocumentPermission.values.byName(_data["documentPermission"]),
+        sourceUrl: _data.containsKey("sourceUrl") ? _data["sourceUrl"] : null,
       );
     } catch (e) {
       rethrow;
@@ -149,6 +155,7 @@ class FirestoreData {
         sharedEmailIds: List<String>.from(_data["sharedEmailIds"]),
         documentPermission:
             DocumentPermission.values.byName(_data["documentPermission"]),
+        sourceUrl: _data.containsKey("sourceUrl") ? _data["sourceUrl"] : null,
       );
     } catch (e) {
       rethrow;
@@ -184,6 +191,7 @@ class FirestoreData {
           "ownerName": documentModel.ownerName,
           "documentPermission": DocumentPermission.public.name,
           "sharedEmailIds": [documentModel.ownerEmailId],
+          "shareUrl": documentModel.sourceUrl,
         },
       );
     } catch (e) {

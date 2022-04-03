@@ -8,6 +8,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controllers/files_device_controller.dart';
 
 class FilesDeviceView extends GetView<FilesDeviceController> {
@@ -36,6 +37,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                     final _photoUrl = _pdfDetails?['photoUrl'] ??
                         'https://source.unsplash.com/random';
                     final _ownerName = _pdfDetails?['ownerName'] ?? 'Unknown';
+                    final _sourceUrl = _pdfDetails?['sourceUrl'];
                     if (_currentfile is File) {
                       return Slidable(
                         startActionPane: ActionPane(
@@ -108,17 +110,24 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                           ],
                         ),
                         child: ListTile(
-                          // trailing: const Icon(
-                          //   Icons.picture_as_pdf,
-                          //   color: Colors.deepOrange,
-                          // ),
+                          trailing: _sourceUrl != null
+                              ? IconButton(
+                                  icon: const Icon(
+                                      Icons.open_in_browser_rounded,
+                                      color: Colors.white),
+                                  onPressed: () async {
+                                    if (await canLaunch(_sourceUrl)) {
+                                      await launch(_sourceUrl);
+                                    }
+                                  },
+                                )
+                              : null,
 
                           isThreeLine: true,
                           dense: true,
                           visualDensity: VisualDensity.adaptivePlatformDensity,
                           title: Text(
                             controller.nameOfFile(_currentfile.path),
-                            maxLines: 1,
                             overflow: TextOverflow.visible,
                             softWrap: true,
                           ),

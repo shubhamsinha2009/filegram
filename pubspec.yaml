@@ -1,5 +1,5 @@
 name: filegram
-version: 1.0.6+24
+version: 1.0.7+25
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -31,6 +31,7 @@ dependencies:
   receive_sharing_intent: ^1.4.5
   share_plus: ^3.0.4
   simple_connection_checker: ^0.2.1
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   build_runner: ^2.1.7
@@ -58,4 +59,3 @@ flutter:
     - .env.production
     - .env.development
     - .env.staging
-    
