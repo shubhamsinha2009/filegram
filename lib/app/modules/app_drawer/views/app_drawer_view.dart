@@ -18,9 +18,7 @@ class AppDrawerView extends GetView<AppDrawerController> {
               controller.homeController.user.value.name ?? 'User Name',
             ),
             accountEmail: Text(
-              controller.homeController.user.value.emailId
-                      ?.replaceAll('@gmail.com', '') ??
-                  'User ID',
+              controller.homeController.user.value.emailId ?? 'User ID',
             ),
             currentAccountPicture: CachedNetworkImage(
               imageUrl: controller.homeController.user.value.photoUrl ??

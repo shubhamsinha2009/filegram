@@ -191,7 +191,7 @@ class FirestoreData {
           "ownerName": documentModel.ownerName,
           "documentPermission": DocumentPermission.public.name,
           "sharedEmailIds": [documentModel.ownerEmailId],
-          "shareUrl": documentModel.sourceUrl,
+          "sourceUrl": documentModel.sourceUrl,
         },
       );
     } catch (e) {
@@ -221,6 +221,19 @@ class FirestoreData {
           "sharedEmailIds": emailIds,
         },
       );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> setSourceUrl({
+    required String? documentId,
+    required String? sourceUrl,
+  }) async {
+    try {
+      await _firestore.collection("files").doc(documentId).set({
+        "sourceUrl": sourceUrl,
+      }, SetOptions(merge: true));
     } catch (e) {
       rethrow;
     }

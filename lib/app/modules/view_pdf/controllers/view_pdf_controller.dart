@@ -27,7 +27,7 @@ class ViewPdfController extends GetxController {
   late final String ownerName;
   late File file;
   late String fileOut;
-  late final String? sourceUrl;
+  String? sourceUrl;
 
   Future<bool> doDecryption(
     String _fileIn,
@@ -50,6 +50,8 @@ class ViewPdfController extends GetxController {
           );
         }
         await FirestoreData.updateViews(_document?.documentId);
+
+        sourceUrl = _document?.sourceUrl;
       }
     } on PlatformException catch (e) {
       Get.showSnackbar(GetSnackBar(

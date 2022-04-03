@@ -30,10 +30,41 @@ class ViewPdfView extends GetView<ViewPdfController> {
                 controller.isReady.value = true;
               },
               onError: (error) {
-                print(error.toString());
+                Get.dialog(
+                  AlertDialog(
+                    alignment: Alignment.center,
+                    backgroundColor: Colors.black,
+                    title: const Icon(Icons.error_outline),
+                    content: Text(
+                      '${error.toString()} ',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () async {
+                          if (Get.isOverlaysOpen) {
+                            Get.back(closeOverlays: true, canPop: true);
+                          }
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                  barrierDismissible: false,
+                );
               },
               onPageError: (page, error) {
-                Center(child: Text(error.toString()));
+                Get.showSnackbar(GetSnackBar(
+                  messageText:
+                      Text('The Page $page has an error : ${error.toString()}'),
+                  icon: const Icon(Icons.error_outline),
+                  snackPosition: SnackPosition.TOP,
+                  duration: const Duration(seconds: 3),
+                ));
               },
               onViewCreated: (PDFViewController pdfViewController) {
                 controller.pdfController.complete(pdfViewController);

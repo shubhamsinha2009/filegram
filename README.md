@@ -10,17 +10,18 @@ A App made for controlling pdfs files privacy
 - [] Implement Rewarded Ads
 - [x] Only Pdf Upload
 - [] Automatic Refresh After Uploading Files
-- [] Receive Files Options
+- [x] Receive Files Options
 - [] Subscription Feature
 - [] Money Earning For Content Creators
-- [] Terms , Policy and Many More Things
+- [] Terms,Policy and Many More Things
 - [] Created By
 - [] Intro Screens
 - [] Promotions Options
 - [] UI Designers
-- [] share url
-- [] night mode
+- [x] share url
+- [] night mode pdf
 - [] Get ota update feature
+- [] Themes Flutter
 
 ## BUGS
 

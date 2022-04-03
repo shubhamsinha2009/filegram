@@ -25,6 +25,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
               displacement: 150,
               edgeOffset: 0,
               onRefresh: () async {
+                controller.getFirstData = false;
                 controller.documents.clear();
                 await controller.findAllEncryptedFiles();
               },
@@ -80,8 +81,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                               letterSpacing: 1,
                             ),
                           ),
-                          ButtonBar(
-                            alignment: MainAxisAlignment.start,
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               OutlinedButton(
                                 // onPressed: () => controller
@@ -162,19 +164,22 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                         child: const Text('Cancel'),
                                       ),
                                       TextButton(
-                                        onPressed: () async {
+                                        onPressed: () {
                                           // ! Sometimes due to async document gets deleted before views
                                           FirestoreData.deleteViewsAndUsers(
                                                   _document?.documentId)
-                                              .then((value) async =>
-                                                  await FirestoreData
-                                                      .deleteDocument(
+                                              .then((value) =>
+                                                  FirestoreData.deleteDocument(
                                                           documentId: _document
-                                                              ?.documentId));
-                                          controller.documents.clear();
-                                          controller.getFirstData = false;
-                                          await controller
-                                              .findAllEncryptedFiles();
+                                                              ?.documentId)
+                                                      .then((value) {
+                                                    controller.documents
+                                                        .clear();
+                                                    controller.getFirstData =
+                                                        false;
+                                                    controller
+                                                        .findAllEncryptedFiles();
+                                                  }));
 
                                           if (Get.isOverlaysOpen) {
                                             Get.back();
@@ -189,6 +194,125 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                 // }),
                                 child: const Text('Delete'),
                               ),
+                              OutlinedButton(
+                                  onPressed: () => Get.bottomSheet(
+                                        Container(
+                                          color: Colors.black,
+                                          margin: const EdgeInsets.all(16),
+                                          padding: const EdgeInsets.all(16),
+                                          child: Wrap(
+                                            children: <Widget>[
+                                              const Text(
+                                                'Shared Link // Source Url',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                              ),
+                                              const SizedBox(
+                                                height: 50,
+                                              ),
+                                              TextFormField(
+                                                autovalidateMode:
+                                                    AutovalidateMode
+                                                        .onUserInteraction,
+                                                keyboardType: TextInputType.url,
+                                                onChanged: (value) => controller
+                                                    .sourceUrl = value,
+                                                decoration: const InputDecoration(
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                    helperText:
+                                                        'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
+                                                    labelText:
+                                                        'Source URL / Share Link to redirect',
+                                                    hintText:
+                                                        'https://t.me/trust_the_professor',
+                                                    helperMaxLines: 3,
+                                                    isDense: true,
+                                                    prefixIcon: Icon(
+                                                        Icons.add_link_rounded),
+                                                    prefixIconColor:
+                                                        Colors.white54),
+                                              ),
+                                              const SizedBox(
+                                                height: 30,
+                                              ),
+                                              ButtonBar(
+                                                children: [
+                                                  OutlinedButton(
+                                                    onPressed: () {
+                                                      if (Get.isOverlaysOpen) {
+                                                        Get.back();
+                                                      }
+                                                      Get.showSnackbar(
+                                                        const GetSnackBar(
+                                                          message: 'Cancelled',
+                                                          // backgroundColor: Colors.amber,
+                                                          duration: Duration(
+                                                              seconds: 3),
+                                                          snackPosition:
+                                                              SnackPosition.TOP,
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Text('Cancel'),
+                                                  ),
+                                                  OutlinedButton(
+                                                    onPressed: () {
+                                                      if (Get.isOverlaysOpen) {
+                                                        Get.back();
+                                                      }
+                                                      // await interstitialAdController
+                                                      //     .showInterstitialAd();
+
+                                                      try {
+                                                        FirestoreData.setSourceUrl(
+                                                                documentId:
+                                                                    _document
+                                                                        ?.documentId,
+                                                                sourceUrl:
+                                                                    controller
+                                                                        .sourceUrl)
+                                                            .then((value) =>
+                                                                Get.showSnackbar(
+                                                                  const GetSnackBar(
+                                                                    message:
+                                                                        'Link Changed',
+                                                                    // backgroundColor: Colors.amber,
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .TOP,
+                                                                  ),
+                                                                ));
+                                                      } on Exception catch (e) {
+                                                        Get.showSnackbar(
+                                                          GetSnackBar(
+                                                            message:
+                                                                e.toString(),
+                                                            // backgroundColor: Colors.amber,
+                                                            duration:
+                                                                const Duration(
+                                                                    seconds: 3),
+                                                            snackPosition:
+                                                                SnackPosition
+                                                                    .TOP,
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                                    child: const Text('Save'),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                  child: const Text('Link')),
                             ],
                           )
                         ],
@@ -242,10 +366,11 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
             const SizedBox(
               height: 10,
             ),
-            Lottie.asset(
-              "assets/empty.json",
-              height: 250,
-              width: double.infinity,
+            Expanded(
+              child: Lottie.asset(
+                "assets/empty.json",
+                width: double.infinity,
+              ),
             ),
             const SizedBox(
               height: 10,

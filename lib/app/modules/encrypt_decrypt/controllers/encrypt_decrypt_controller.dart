@@ -42,6 +42,7 @@ class EncryptDecryptController extends GetxController {
         messageText: Text(e.message ?? e.details),
         icon: const Icon(Icons.error_outline),
         snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 3),
       ));
     }
   }
@@ -82,17 +83,6 @@ class EncryptDecryptController extends GetxController {
                       )
                     : TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-
-                        // validator: (value) {
-                        //   if (value != null) {
-                        //     if (!GetUtils.isURL(value)) {
-                        //       return "File Name is not valid";
-                        //     } else {
-                        //       return null;
-                        //     }
-                        //   }
-                        //   return null;
-                        // },
                         keyboardType: TextInputType.url,
                         onChanged: (value) => _sourceUrl = value,
                         decoration: const InputDecoration(
@@ -103,7 +93,7 @@ class EncryptDecryptController extends GetxController {
                             hintText: 'https://t.me/trust_the_professor',
                             helperMaxLines: 3,
                             isDense: true,
-                            prefixIcon: Icon(Icons.link_rounded),
+                            prefixIcon: Icon(Icons.add_link_rounded),
                             prefixIconColor: Colors.white54),
                       ),
                 const SizedBox(
@@ -234,13 +224,13 @@ class EncryptDecryptController extends GetxController {
         );
       }
       final _userId = homeController.user.value.id;
-      final _fizeSize = getFileSize(bytes: File(_result).lengthSync());
+      final _fizeSize = getFileSize(bytes: File(_fileOut).lengthSync());
       final _ownerName = homeController.user.value.name;
       final _ownerPhotoUrl = homeController.user.value.photoUrl;
       final _ownerEmailId = homeController.user.value.emailId;
       final _documentReference =
           await FirestoreData.createDocument(_documentModel(DocumentModel(
-        documentName: _result.split('/').last,
+        documentName: _fileOut.split('/').last,
         secretKey: secretKey,
         iv: iv,
         ownerId: _userId,
@@ -290,9 +280,7 @@ class EncryptDecryptController extends GetxController {
         if (_secretKey != null) {
           String _fileOut = '${await filesDocDir()}/${_document?.documentName}';
           await File(_result).copy(_fileOut);
-
           await FirestoreData.updateViewsUsers(_document?.documentId);
-
           final Map<String, dynamic> _pdfDetails = {
             'photoUrl': _document?.ownerPhotoUrl,
             'ownerName': _document?.ownerName,
@@ -338,17 +326,21 @@ class EncryptDecryptController extends GetxController {
           //     value.single.path);
           confirmDialog(value.single.path);
         }
-      } catch (e) {
-        Get.snackbar(
-          'Error',
-          'Please Make Sure you are not doing any mistakes by yourself from text update we will find it for you',
-        );
+      } on PlatformException catch (e) {
+        Get.showSnackbar(GetSnackBar(
+          messageText: Text(e.message ?? e.details),
+          icon: const Icon(Icons.error_outline),
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 3),
+        ));
       }
     }, onError: (err) {
-      Get.snackbar(
-        'Error Found',
-        err,
-      );
+      Get.showSnackbar(GetSnackBar(
+        messageText: Text(err.message ?? err.details),
+        icon: const Icon(Icons.error_outline),
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 3),
+      ));
     });
 
     // For sharing images coming from outside the app while the app is closed
@@ -358,11 +350,13 @@ class EncryptDecryptController extends GetxController {
         //    value.single.path);
         try {
           confirmDialog(value.single.path);
-        } catch (e) {
-          Get.snackbar(
-            'Error',
-            'Please Make Sure you are not doing any mistakes by yourself from text update we will find it for you',
-          );
+        } on PlatformException catch (e) {
+          Get.showSnackbar(GetSnackBar(
+            messageText: Text(e.message ?? e.details),
+            icon: const Icon(Icons.error_outline),
+            snackPosition: SnackPosition.TOP,
+            duration: const Duration(seconds: 3),
+          ));
         }
       }
     });

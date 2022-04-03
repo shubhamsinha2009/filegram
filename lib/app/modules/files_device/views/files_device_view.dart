@@ -4,6 +4,7 @@ import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:filegram/app/modules/files_device/local_widgets/btm_sheet.dart';
 import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -40,7 +41,53 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                     final _sourceUrl = _pdfDetails?['sourceUrl'];
                     if (_currentfile is File) {
                       return Slidable(
+                        key: ValueKey(index),
                         startActionPane: ActionPane(
+                          dismissible: DismissiblePane(
+                            motion: const BehindMotion(),
+                            dismissThreshold: 0.9,
+                            closeOnCancel: true,
+                            confirmDismiss: () async {
+                              return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.black,
+                                    title: const Text("Confirm"),
+                                    content: const Text(
+                                        "Are you sure you wish to delete this file from device"),
+                                    actions: <Widget>[
+                                      OutlinedButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(true),
+                                          child: const Text("DELETE")),
+                                      OutlinedButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                        child: const Text("CANCEL"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            onDismissed: () {
+                              _currentfile.deleteSync();
+                              GetStorageDbService.getRemove(
+                                  key: _currentfile.path);
+                              controller.onInitialisation();
+                              // await controller.analytics.logEvent(
+                              //     name: 'file_deleted',
+                              //     parameters: {'deleted_file': _currentfile.path});
+
+                              Get.showSnackbar(const GetSnackBar(
+                                messageText: Text('Your File is Deleted'),
+                                icon: Icon(Icons.delete_forever_rounded),
+                                snackPosition: SnackPosition.TOP,
+                                duration: Duration(seconds: 3),
+                              ));
+                            },
+                          ),
                           motion: const BehindMotion(),
                           children: [
                             SlidableAction(
@@ -58,7 +105,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                               spacing: 10,
                             ),
                             SlidableAction(
-                              onPressed: (context) async {
+                              onPressed: (context) {
                                 _currentfile.deleteSync();
                                 GetStorageDbService.getRemove(
                                     key: _currentfile.path);
@@ -66,7 +113,13 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                 // await controller.analytics.logEvent(
                                 //     name: 'file_deleted',
                                 //     parameters: {'deleted_file': _currentfile.path});
-                                Get.snackbar('Done', 'Your File is Deleted');
+
+                                Get.showSnackbar(const GetSnackBar(
+                                  messageText: Text('Your File is Deleted'),
+                                  icon: Icon(Icons.delete_forever_rounded),
+                                  snackPosition: SnackPosition.TOP,
+                                  duration: Duration(seconds: 3),
+                                ));
                               },
                               backgroundColor: Colors.orange,
                               foregroundColor: Colors.black,
@@ -78,6 +131,51 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                           ],
                         ),
                         endActionPane: ActionPane(
+                          dismissible: DismissiblePane(
+                            motion: const BehindMotion(),
+                            dismissThreshold: 0.9,
+                            closeOnCancel: true,
+                            confirmDismiss: () async {
+                              return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.black,
+                                    title: const Text("Confirm"),
+                                    content: const Text(
+                                        "Are you sure you wish to delete this file from device"),
+                                    actions: <Widget>[
+                                      OutlinedButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(true),
+                                          child: const Text("DELETE")),
+                                      OutlinedButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                        child: const Text("CANCEL"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            onDismissed: () {
+                              _currentfile.deleteSync();
+                              GetStorageDbService.getRemove(
+                                  key: _currentfile.path);
+                              controller.onInitialisation();
+                              // await controller.analytics.logEvent(
+                              //     name: 'file_deleted',
+                              //     parameters: {'deleted_file': _currentfile.path});
+
+                              Get.showSnackbar(const GetSnackBar(
+                                messageText: Text('Your File is Deleted'),
+                                icon: Icon(Icons.delete_forever_rounded),
+                                snackPosition: SnackPosition.TOP,
+                                duration: Duration(seconds: 3),
+                              ));
+                            },
+                          ),
                           motion: const BehindMotion(),
                           children: [
                             SlidableAction(
@@ -112,17 +210,23 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                         child: ListTile(
                           trailing: _sourceUrl != null
                               ? IconButton(
-                                  icon: const Icon(
-                                      Icons.open_in_browser_rounded,
+                                  icon: const Icon(Icons.link_rounded,
                                       color: Colors.white),
                                   onPressed: () async {
-                                    if (await canLaunch(_sourceUrl)) {
+                                    try {
                                       await launch(_sourceUrl);
+                                    } on PlatformException {
+                                      Get.showSnackbar(GetSnackBar(
+                                        messageText: Text(
+                                            'Cannot Open this link : $_sourceUrl'),
+                                        icon: const Icon(Icons.error_outline),
+                                        snackPosition: SnackPosition.TOP,
+                                        duration: const Duration(seconds: 3),
+                                      ));
                                     }
                                   },
                                 )
                               : null,
-
                           isThreeLine: true,
                           dense: true,
                           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -170,8 +274,6 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                 )
               : Center(
                   child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(
                       height: 10,
@@ -188,10 +290,11 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Lottie.asset(
-                      "assets/empty.json",
-                      height: 250,
-                      width: double.infinity,
+                    Expanded(
+                      child: Lottie.asset(
+                        "assets/empty.json",
+                        width: double.infinity,
+                      ),
                     ),
                     const SizedBox(
                       height: 10,

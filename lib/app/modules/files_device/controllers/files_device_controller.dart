@@ -96,45 +96,6 @@ class FilesDeviceController extends GetxController {
       return _appDocDirNewFolder.path;
     }
   }
-  // Future<void> receiveSharing() async {
-  //  // await analytics.logEvent(name: 'receive_sharing');
-  //   _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
-  //       .listen((List<SharedMediaFile> value) async {
-  //     try {
-  //       if (value.isNotEmpty) {
-  //         //   print('Your file name ---------------------------------' +
-  //         //     value.single.path);
-  //        // await getOpenitFiles(value.single.path);
-  //       }
-  //     } catch (e) {
-  //       Get.snackbar(
-  //         'Error',
-  //         'Please Make Sure you are not doing any mistakes by yourself from text update we will find it for you',
-  //       );
-  //     }
-  //   }, onError: (err) {
-  //     Get.snackbar(
-  //       'Error Found',
-  //       err,
-  //     );
-  //   });
-
-  //   // For sharing images coming from outside the app while the app is closed
-  //   ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-  //     if (value.isNotEmpty) {
-  //       //  print('Your file name ---------------------------------' +
-  //       //    value.single.path);
-  //       try {
-  //         getOpenitFiles(value.single.path);
-  //       } catch (e) {
-  //         Get.snackbar(
-  //           'Error',
-  //           'Please Make Sure you are not doing any mistakes by yourself from text update we will find it for you',
-  //         );
-  //       }
-  //     }
-  //   });
-  // }
 
   @override
   void onInit() async {

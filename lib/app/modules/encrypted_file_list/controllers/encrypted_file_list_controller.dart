@@ -15,7 +15,7 @@ class EncryptedFileListController extends GetxController
   bool lastPage = false;
   final homeController = Get.find<HomeController>();
   final sharedEmailIds = <String>[].obs;
-
+  String? sourceUrl;
   final TextEditingController textEditingController = TextEditingController();
   // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
   final groupValue = DocumentPermission.public.obs;
