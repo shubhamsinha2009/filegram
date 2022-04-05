@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_pdfview_professor/flutter_pdfview_professor.dart';
+
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,21 +14,20 @@ import '../../encrypt_decrypt/services/file_encrypter.dart';
 import '../../home/controllers/home_controller.dart';
 
 class ViewPdfController extends GetxController {
-  final Completer<PDFViewController> pdfController =
-      Completer<PDFViewController>();
-  int? pages = 0;
+  final swipehorizontal = false.obs;
+  final nightmode = false.obs;
+  final pages = 0.obs;
   final isReady = false.obs;
   final isDecryptionDone = false.obs;
   final isVisible = true.obs;
   late final String filePath;
-  final currentPageNumber = 1.obs;
-  late final int intialPageNumber;
+  final currentPageNumber = 0.obs;
+  late int intialPageNumber;
   late final String photoUrl;
   late final String ownerName;
   late File file;
   late String fileOut;
   String? sourceUrl;
-
   Future<bool> doDecryption(
     String _fileIn,
   ) async {

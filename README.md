@@ -4,7 +4,7 @@ A App made for controlling pdfs files privacy
 
 ## TODOS
 
-- [] Pdf Viewer Update with Settings
+- [x] Pdf Viewer Update with Settings
 - [x] Rename Feature
 - [x] Check Cached file before decrypting files
 - [] Implement Rewarded Ads
@@ -19,11 +19,18 @@ A App made for controlling pdfs files privacy
 - [] Promotions Options
 - [] UI Designers
 - [x] share url
-- [] night mode pdf
+- [x] night mode pdf
 - [] Get ota update feature
 - [] Themes Flutter
+- [] Wake Lock
+- [] Feature Discovery
+- [] Onboarding Screens
+- [] Whatsapp Tools
+- [] Different User Name
+- [x] Action View Filter
 
 ## BUGS
 
 - Sometimes document in the forestore gets deleted before views
 - Internet lookup problems
+- Performance

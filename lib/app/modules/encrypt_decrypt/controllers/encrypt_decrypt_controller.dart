@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
+import 'package:open_as_default/open_as_default.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../core/services/firebase_analytics.dart';
@@ -242,7 +243,8 @@ class EncryptDecryptController extends GetxController {
       )));
       // await FirestoreData.getDocumentsListFromServer(_userId);
       _documentModel(await FirestoreData.getDocument(_documentReference));
-      await FirestoreData.createViewsAndUsers(_documentModel.value.documentId);
+      await FirestoreData.createViewsAndUploads(
+          _documentModel.value.documentId);
       final Map<String, dynamic> _pdfDetails = {
         'photoUrl': _ownerPhotoUrl,
         'ownerName': _ownerName,
@@ -280,7 +282,7 @@ class EncryptDecryptController extends GetxController {
         if (_secretKey != null) {
           String _fileOut = '${await filesDocDir()}/${_document?.documentName}';
           await File(_result).copy(_fileOut);
-          await FirestoreData.updateViewsUsers(_document?.documentId);
+          await FirestoreData.updateUploads(_document?.documentId);
           final Map<String, dynamic> _pdfDetails = {
             'photoUrl': _document?.ownerPhotoUrl,
             'ownerName': _document?.ownerName,
@@ -365,6 +367,20 @@ class EncryptDecryptController extends GetxController {
   @override
   void onInit() {
     receiveSharing();
+    OpenAsDefault.getFileIntent.then((value) {
+      if (value != null) {
+        try {
+          confirmDialog(value.path);
+        } on PlatformException catch (e) {
+          Get.showSnackbar(GetSnackBar(
+            messageText: Text(e.message ?? e.details),
+            icon: const Icon(Icons.error_outline),
+            snackPosition: SnackPosition.TOP,
+            duration: const Duration(seconds: 3),
+          ));
+        }
+      }
+    });
 
     super.onInit();
   }

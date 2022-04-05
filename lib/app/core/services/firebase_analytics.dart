@@ -6,3 +6,6 @@ class AnalyticsService extends GetxService {
   static final FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 }
+
+
+// TODO: Implement Analytics within whole app

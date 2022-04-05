@@ -1,5 +1,5 @@
 name: filegram
-version: 1.0.8+26
+version: 1.0.9+27
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -26,6 +26,7 @@ dependencies:
   google_mobile_ads: ^1.0.1
   google_sign_in: ^5.2.2
   lottie: ^1.2.1
+  open_as_default: ^0.0.3
   path_provider: ^2.0.8
   receive_sharing_intent: ^1.4.5
   share_plus: ^3.0.4

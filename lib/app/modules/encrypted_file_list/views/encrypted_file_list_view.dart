@@ -105,7 +105,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                               OutlinedButton(
                                 onPressed: () async {
                                   final _views =
-                                      await FirestoreData.readViewsAndUsers(
+                                      await FirestoreData.readViewsAndUploads(
                                           _document?.documentId);
                                   // controller.adsController.rewardedAd.show(
                                   //   onUserEarnedReward: (ad, reward) {
@@ -117,7 +117,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       //   ' Number of Views',
                                       // ),
                                       content: Text(
-                                        'Number of Views : ${_views.views} \n \n & \n \n  Number of Users : ${_views.numberOfUsers} ',
+                                        'Number of Views : ${_views.views} \n \n & \n \n  Number of Uploads : ${_views.numberOfUploads} ',
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w800,
@@ -148,9 +148,12 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                 //     .show(onUserEarnedReward: (ad, reward) {
                                 onPressed: () => Get.dialog(
                                   AlertDialog(
+                                    titleTextStyle: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
                                     backgroundColor: Colors.black,
                                     title: Text(
-                                      ' ${_document?.documentName} will be deleted?',
+                                      '"Are you sure you wish to delete this file ${_document?.documentName} forever from servers?',
                                     ),
                                     content: const Text(
                                         'After you delete your file, Nobody will be able to decrypt this file ever'),
@@ -166,7 +169,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       TextButton(
                                         onPressed: () {
                                           // ! Sometimes due to async document gets deleted before views
-                                          FirestoreData.deleteViewsAndUsers(
+                                          FirestoreData.deleteViewsAndUploads(
                                                   _document?.documentId)
                                               .then((value) =>
                                                   FirestoreData.deleteDocument(
@@ -180,10 +183,18 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                     controller
                                                         .findAllEncryptedFiles();
                                                   }));
-
                                           if (Get.isOverlaysOpen) {
                                             Get.back();
                                           }
+                                          Get.showSnackbar(GetSnackBar(
+                                            messageText: Text(
+                                                'The File ${_document?.documentName} is deleted from server'),
+                                            icon: const Icon(
+                                                Icons.delete_forever_rounded),
+                                            snackPosition: SnackPosition.TOP,
+                                            duration:
+                                                const Duration(seconds: 3),
+                                          ));
                                         },
                                         child: const Text('Delete'),
                                       ),
@@ -219,6 +230,8 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                 keyboardType: TextInputType.url,
                                                 onChanged: (value) => controller
                                                     .sourceUrl = value,
+                                                initialValue:
+                                                    _document?.sourceUrl,
                                                 decoration: const InputDecoration(
                                                     border:
                                                         OutlineInputBorder(),

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../tools/views/tools_view.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -21,6 +22,7 @@ class HomeView extends GetView<HomeController> {
       const FilesDeviceView(),
       const EncryptedFileListView(),
       const AppDrawerView(),
+      const ToolsView(),
     ];
     return Obx(
       () => controller.isInternetConnected.isTrue
@@ -49,6 +51,10 @@ class HomeView extends GetView<HomeController> {
                       icon: Icon(Icons.settings),
                       label: 'Settings',
                     ),
+                    // NavigationDestination(
+                    //   icon: Icon(Icons.handyman),
+                    //   label: 'Tools',
+                    // ),
                   ],
                   selectedIndex: controller.selectedIndex.value,
                   labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,

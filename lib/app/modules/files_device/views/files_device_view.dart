@@ -80,11 +80,12 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                               //     name: 'file_deleted',
                               //     parameters: {'deleted_file': _currentfile.path});
 
-                              Get.showSnackbar(const GetSnackBar(
-                                messageText: Text('Your File is Deleted'),
-                                icon: Icon(Icons.delete_forever_rounded),
+                              Get.showSnackbar(GetSnackBar(
+                                messageText: Text(
+                                    'The file ${controller.nameOfFile(_currentfile.path)} is Deleted'),
+                                icon: const Icon(Icons.delete_forever_rounded),
                                 snackPosition: SnackPosition.TOP,
-                                duration: Duration(seconds: 3),
+                                duration: const Duration(seconds: 3),
                               ));
                             },
                           ),
@@ -104,30 +105,30 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                               label: 'Rename',
                               spacing: 10,
                             ),
-                            SlidableAction(
-                              onPressed: (context) {
-                                _currentfile.deleteSync();
-                                GetStorageDbService.getRemove(
-                                    key: _currentfile.path);
-                                controller.onInitialisation();
-                                // await controller.analytics.logEvent(
-                                //     name: 'file_deleted',
-                                //     parameters: {'deleted_file': _currentfile.path});
+                            // SlidableAction(
+                            //   onPressed: (context) {
+                            //     _currentfile.deleteSync();
+                            //     GetStorageDbService.getRemove(
+                            //         key: _currentfile.path);
+                            //     controller.onInitialisation();
+                            //     // await controller.analytics.logEvent(
+                            //     //     name: 'file_deleted',
+                            //     //     parameters: {'deleted_file': _currentfile.path});
 
-                                Get.showSnackbar(const GetSnackBar(
-                                  messageText: Text('Your File is Deleted'),
-                                  icon: Icon(Icons.delete_forever_rounded),
-                                  snackPosition: SnackPosition.TOP,
-                                  duration: Duration(seconds: 3),
-                                ));
-                              },
-                              backgroundColor: Colors.orange,
-                              foregroundColor: Colors.black,
-                              icon: Icons.delete,
-                              autoClose: true,
-                              spacing: 10,
-                              label: 'Delete',
-                            ),
+                            //     Get.showSnackbar(const GetSnackBar(
+                            //       messageText: Text('Your File is Deleted'),
+                            //       icon: Icon(Icons.delete_forever_rounded),
+                            //       snackPosition: SnackPosition.TOP,
+                            //       duration: Duration(seconds: 3),
+                            //     ));
+                            //   },
+                            //   backgroundColor: Colors.orange,
+                            //   foregroundColor: Colors.black,
+                            //   icon: Icons.delete,
+                            //   autoClose: true,
+                            //   spacing: 10,
+                            //   label: 'Delete',
+                            // ),
                           ],
                         ),
                         endActionPane: ActionPane(

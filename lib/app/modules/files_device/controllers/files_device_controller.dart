@@ -75,7 +75,10 @@ class FilesDeviceController extends GetxController {
 
   Future<void> onInitialisation() async {
     final _mydir = Directory(await filesDocDir());
-    filesList.assignAll(_mydir.listSync());
+    filesList.assignAll(_mydir.listSync()
+      ..sort(
+        (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
+      ));
   }
 
   Future<String> filesDocDir() async {

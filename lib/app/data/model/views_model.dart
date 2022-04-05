@@ -1,9 +1,9 @@
 class ViewsModel {
   final int? views;
-  final int? numberOfUsers;
+  final int? numberOfUploads;
 
   ViewsModel({
     this.views,
-    this.numberOfUsers,
+    this.numberOfUploads,
   });
 }
