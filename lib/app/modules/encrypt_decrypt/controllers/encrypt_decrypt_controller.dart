@@ -18,6 +18,7 @@ import '../services/file_encrypter.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 class EncryptDecryptController extends GetxController {
+  final rename = ''.obs;
   final isLoading = false.obs;
   final _documentModel = DocumentModel().obs;
   final analytics = AnalyticsService.analytics;
@@ -31,7 +32,6 @@ class EncryptDecryptController extends GetxController {
       final String? _result = await FlutterFileDialog.pickFile(
           params: const OpenFileDialogParams(
         copyFileToCacheDir: true,
-        fileExtensionsFilter: ['pdf', 'enc'],
         mimeTypesFilter: ['application/pdf', 'application/octet-stream'],
       ));
 
@@ -48,143 +48,192 @@ class EncryptDecryptController extends GetxController {
     }
   }
 
+  bool validateRename(String rename) {
+    final ext = rename.toLowerCase();
+    return ext.endsWith(".pdf");
+  }
+
   void confirmDialog(String? pickedFile) {
     String? _sourceUrl;
     final _result = pickedFile;
     if (_result != null) {
       String _fileName = _result.split('/').last;
-      final String _dialogTitle =
-          _result.contains('.enc') ? 'decrypt' : 'encrypt';
-      Get.bottomSheet(
-        WillPopScope(
-          onWillPop: () async => false,
-          child: Container(
-            color: Colors.black,
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(16),
-            child: Wrap(
-              children: <Widget>[
-                Text(
-                  'Want to $_dialogTitle your file ?',
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w800),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Text('Your File : $_fileName will be ${_dialogTitle}ed',
-                    softWrap: true),
-                const SizedBox(
-                  height: 50,
-                ),
-                _result.contains('.enc')
-                    ? const SizedBox(
-                        width: 0,
-                        height: 0,
-                      )
-                    : TextFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.url,
-                        onChanged: (value) => _sourceUrl = value,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            helperText:
-                                'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
-                            labelText: 'Source URL / Share Link to redirect',
-                            hintText: 'https://t.me/trust_the_professor',
-                            helperMaxLines: 3,
-                            isDense: true,
-                            prefixIcon: Icon(Icons.add_link_rounded),
-                            prefixIconColor: Colors.white54),
-                      ),
-                const SizedBox(
-                  height: 30,
-                ),
-                ButtonBar(
-                  children: [
-                    OutlinedButton(
-                      onPressed: () {
-                        if (File(_result).existsSync()) {
-                          File(_result).deleteSync();
-                        }
-                        if (Get.isOverlaysOpen) {
-                          Get.back();
-                        }
-                        Get.showSnackbar(
-                          GetSnackBar(
-                            message: 'File ${_dialogTitle}ion Canceled',
-                            // backgroundColor: Colors.amber,
-                            duration: const Duration(seconds: 3),
-                            snackPosition: SnackPosition.TOP,
-                          ),
-                        );
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    OutlinedButton(
-                      onPressed: () async {
-                        isLoading.toggle();
-                        if (Get.isOverlaysOpen) {
-                          Get.back();
-                        }
-                        await interstitialAdController.showInterstitialAd();
-                        bool? _isEncDone =
-                            await encryptDecrypt(pickedFile, _sourceUrl);
-                        if (_isEncDone != null && _isEncDone) {
-                          Get.showSnackbar(
-                            const GetSnackBar(
-                              messageText: Text('File Saved '),
-                              duration: Duration(seconds: 3),
-                              snackPosition: SnackPosition.TOP,
-                            ),
-                          );
+      // final String _dialogTitle =
+      //     _result.contains('.enc') ? 'decrypt' : 'encrypt';
+      if (!_result.contains('.enc')) {
+        Get.bottomSheet(
+          WillPopScope(
+            onWillPop: () async => false,
+            child: Container(
+              color: Colors.black,
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
+              child: Wrap(
+                children: <Widget>[
+                  const Text(
+                    'Want to encrypt your file ?',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value != null) {
+                        if (!validateRename(value)) {
+                          return "File Name is not valid";
                         } else {
+                          return null;
+                        }
+                      }
+                      return null;
+                    },
+                    initialValue: _fileName,
+                    keyboardType: TextInputType.name,
+                    onChanged: (value) {
+                      rename.value = value;
+                    },
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      helperText:
+                          'This file name will be permanently saved to server and cannot be undone',
+                      labelText: 'File Name ',
+                      helperMaxLines: 3,
+                      isDense: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.url,
+                    onChanged: (value) => _sourceUrl = value,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        helperText:
+                            'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
+                        labelText: 'Source URL / Share Link to redirect',
+                        hintText: 'https://t.me/trust_the_professor',
+                        helperMaxLines: 3,
+                        isDense: true,
+                        prefixIcon: Icon(Icons.add_link_rounded),
+                        prefixIconColor: Colors.white54),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ButtonBar(
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {
+                          if (File(_result).existsSync()) {
+                            File(_result).deleteSync();
+                          }
+                          if (Get.isOverlaysOpen) {
+                            Get.back();
+                          }
                           Get.showSnackbar(
                             const GetSnackBar(
-                              messageText: Text('File Not Saved '),
+                              message: 'File encryption Canceled',
+                              // backgroundColor: Colors.amber,
                               duration: Duration(seconds: 3),
                               snackPosition: SnackPosition.TOP,
                             ),
                           );
-                        }
-                      },
-                      child: Text(_dialogTitle.toUpperCase()),
-                    ),
-                  ],
-                ),
-              ],
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      OutlinedButton(
+                        onPressed: () async {
+                          if (validateRename(rename.value)) {
+                            isLoading.toggle();
+                            if (Get.isOverlaysOpen) {
+                              Get.back();
+                            }
+                            await interstitialAdController.showInterstitialAd();
+                            bool? _isEncDone =
+                                await encryptDecrypt(pickedFile, _sourceUrl);
+                            if (_isEncDone != null && _isEncDone) {
+                              Get.showSnackbar(
+                                const GetSnackBar(
+                                  messageText: Text('File Saved '),
+                                  duration: Duration(seconds: 3),
+                                  snackPosition: SnackPosition.TOP,
+                                ),
+                              );
+                            } else {
+                              Get.showSnackbar(
+                                const GetSnackBar(
+                                  messageText: Text('File Not Saved '),
+                                  duration: Duration(seconds: 3),
+                                  snackPosition: SnackPosition.TOP,
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: const Text('ENCRYPT'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        isDismissible: false,
-      );
+          isDismissible: false,
+        );
+      } else {
+        interstitialAdController.showInterstitialAd();
+        encryptDecrypt(pickedFile, _sourceUrl).then((value) {
+          if (value != null && value) {
+            Get.showSnackbar(
+              const GetSnackBar(
+                messageText: Text('File Saved '),
+                duration: Duration(seconds: 3),
+                snackPosition: SnackPosition.TOP,
+              ),
+            );
+          } else {
+            Get.showSnackbar(
+              const GetSnackBar(
+                messageText: Text('File Not Saved '),
+                duration: Duration(seconds: 3),
+                snackPosition: SnackPosition.TOP,
+              ),
+            );
+          }
+        });
+      }
     }
   }
 
   Future<bool?> encryptDecrypt(String? pickedFile, String? _sourceUrl) async {
-    final _result = pickedFile;
+    final _result = pickedFile!.substring(
+            0, (pickedFile.lastIndexOf(Platform.pathSeparator)) + 1) +
+        rename.value;
+    await File(pickedFile).rename(_result);
     bool? _isEncDone;
-    if (_result != null) {
-      try {
-        if (_result.contains('.enc')) {
-          _isEncDone = await doFileCopy(_result);
-        } else {
-          _isEncDone = await doEncryption(_isEncDone, _result, _sourceUrl);
-        }
-      } catch (e) {
-        isLoading.value = false;
-        Get.showSnackbar(GetSnackBar(
-          messageText: Text(e.toString()),
-          icon: const Icon(Icons.error_outline),
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.TOP,
-        ));
+    try {
+      if (_result.contains('.enc')) {
+        _isEncDone = await doFileCopy(_result);
+      } else {
+        _isEncDone = await doEncryption(_isEncDone, _result, _sourceUrl);
       }
-      if (File(_result).existsSync()) {
-        File(_result).deleteSync();
-      }
+    } catch (e) {
       isLoading.value = false;
+      Get.showSnackbar(GetSnackBar(
+        messageText: Text(e.toString()),
+        icon: const Icon(Icons.error_outline),
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.TOP,
+      ));
     }
+    if (File(_result).existsSync()) {
+      File(_result).deleteSync();
+    }
+    isLoading.value = false;
 
     return _isEncDone;
   }
