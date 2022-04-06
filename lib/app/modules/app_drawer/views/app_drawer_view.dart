@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../../../routes/app_pages.dart';
 import '../controllers/app_drawer_controller.dart';
 
 class AppDrawerView extends GetView<AppDrawerController> {
@@ -28,12 +28,31 @@ class AppDrawerView extends GetView<AppDrawerController> {
             ),
           ),
         ),
+
+        ListTile(
+          title: const Text(
+            'Whatsapp Click to Chat',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          leading: const Icon(
+            Icons.whatsapp_rounded,
+          ),
+          onTap: () => Get.toNamed(Routes.whatsappChat),
+        ),
         ListTile(
           onTap: controller.signOut,
-          leading: const Icon(Icons.logout_rounded),
-          title: const Text('LogOut'),
+          leading: const Icon(
+            Icons.logout_rounded,
+          ),
+          title: const Text(
+            'Log Out',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
-
         // ListTile(
         //   onTap: controller.openPlayStore,
         //   title: const Text('Open App in Play Store'),

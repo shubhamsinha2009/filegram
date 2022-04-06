@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview_professor/flutter_pdfview_professor.dart';
 import 'package:get/get.dart';
-
 import '../controllers/view_pdf_controller.dart';
 
 class ViewPdfView extends GetView<ViewPdfController> {

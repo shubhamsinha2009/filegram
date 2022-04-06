@@ -9,11 +9,11 @@ import '../modules/home/middlewares/homemiddleware.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
-
 import '../modules/no_internet/bindings/no_internet_binding.dart';
-import '../modules/tools/bindings/tools_binding.dart';
 import '../modules/view_pdf/bindings/view_pdf_binding.dart';
 import '../modules/view_pdf/views/view_pdf_view.dart';
+import '../modules/whatsapp_chat/bindings/whatsapp_chat_binding.dart';
+import '../modules/whatsapp_chat/views/whatsapp_chat_view.dart';
 
 part 'app_routes.dart';
 
@@ -33,7 +33,6 @@ class AppPages {
         EncryptedFileListBinding(),
         NoInternetBinding(),
         FilesDeviceBinding(),
-        ToolsBinding(),
       ],
       middlewares: [HomeMiddleware()],
     ),
@@ -70,5 +69,10 @@ class AppPages {
     //   page: () => ToolsView(),
     //   binding: ToolsBinding(),
     // ),
+    GetPage(
+      name: _Paths.whatsappChat,
+      page: () => const WhatsappChatView(),
+      binding: WhatsappChatBinding(),
+    ),
   ];
 }
