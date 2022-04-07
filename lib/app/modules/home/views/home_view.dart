@@ -30,29 +30,40 @@ class HomeView extends GetView<HomeController> {
                 leading: Image.asset(
                   "assets/app_bar.png",
                 ),
+                actions: [
+                  IconButton(
+                      onPressed: () => Get.showSnackbar(const GetSnackBar(
+                            messageText: Text('Rewards/Payouts Coming Soon'),
+                            icon: Icon(Icons.auto_awesome),
+                            snackPosition: SnackPosition.TOP,
+                            duration: Duration(seconds: 3),
+                          )),
+                      icon: const Icon(Icons.account_balance_wallet))
+                ],
               ),
               body: bodyPages[controller.selectedIndex.value],
               floatingActionButton: const EncryptDecryptView(),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.miniEndFloat,
               bottomNavigationBar: NavigationBar(
-                  destinations: const [
-                    NavigationDestination(
-                      icon: Icon(Icons.library_books),
-                      label: 'Library',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.tips_and_updates_outlined),
-                      label: 'Manage Encrypted',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.settings),
-                      label: 'Settings',
-                    ),
-                  ],
-                  selectedIndex: controller.selectedIndex.value,
-                  labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-                  onDestinationSelected: controller.onBottomBarSelected),
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.library_books),
+                    label: 'Library',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.tips_and_updates_outlined),
+                    label: 'Manage Encrypted',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.settings),
+                    label: 'Settings',
+                  ),
+                ],
+                selectedIndex: controller.selectedIndex.value,
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+                onDestinationSelected: controller.onBottomBarSelected,
+              ),
             )
           : const NoInternetView(),
     );

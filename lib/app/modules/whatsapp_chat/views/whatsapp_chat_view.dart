@@ -19,8 +19,8 @@ class WhatsappChatView extends GetView<WhatsappChatController> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: <Widget>[
-            Lottie.network(
-              'https://assets4.lottiefiles.com/packages/lf20_riycdgbe.json',
+            Lottie.asset(
+              'assets/whatsapp.json',
               width: double.infinity,
               errorBuilder: (context, error, stackTrace) => const SizedBox(
                 height: 0,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview_professor/flutter_pdfview_professor.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import '../controllers/view_pdf_controller.dart';
 
 class ViewPdfView extends GetView<ViewPdfController> {
@@ -26,7 +27,12 @@ class ViewPdfView extends GetView<ViewPdfController> {
       //top: false,
       body: Obx(
         () => controller.isDecryptionDone.isFalse
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(
+                child: Lottie.asset(
+                  'assets/loading.json',
+                  fit: BoxFit.fill,
+                ),
+              )
             : PDFView(
                 key: GlobalKey(),
                 filePath: controller.fileOut,
@@ -61,7 +67,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                       actions: <Widget>[
                         TextButton(
                           onPressed: () async {
-                            if (Get.isOverlaysOpen) {
+                            while (Get.isOverlaysOpen) {
                               Get.back(closeOverlays: true, canPop: true);
                             }
                           },

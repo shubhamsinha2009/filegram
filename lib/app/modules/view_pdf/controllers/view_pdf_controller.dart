@@ -16,7 +16,7 @@ import '../../home/controllers/home_controller.dart';
 class ViewPdfController extends GetxController {
   final swipehorizontal = false.obs;
   final nightmode = false.obs;
-  final pages = 0.obs;
+  final pages = 1.obs;
   final isReady = false.obs;
   final isDecryptionDone = false.obs;
   final isVisible = true.obs;

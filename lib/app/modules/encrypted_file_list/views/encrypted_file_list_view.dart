@@ -127,7 +127,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () async {
-                                            if (Get.isOverlaysOpen) {
+                                            while (Get.isOverlaysOpen) {
                                               Get.back();
                                             }
                                           },
@@ -160,7 +160,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
-                                          if (Get.isOverlaysOpen) {
+                                          while (Get.isOverlaysOpen) {
                                             Get.back();
                                           }
                                         },
@@ -168,6 +168,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       ),
                                       TextButton(
                                         onPressed: () {
+                                          while (Get.isOverlaysOpen) {
+                                            Get.back();
+                                          }
                                           // ! Sometimes due to async document gets deleted before views
                                           FirestoreData.deleteViewsAndUploads(
                                                   _document?.documentId)
@@ -182,19 +185,19 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                         false;
                                                     controller
                                                         .findAllEncryptedFiles();
+
+                                                    Get.showSnackbar(
+                                                        GetSnackBar(
+                                                      messageText: Text(
+                                                          'The File ${_document?.documentName} is deleted from server'),
+                                                      icon: const Icon(Icons
+                                                          .delete_forever_rounded),
+                                                      snackPosition:
+                                                          SnackPosition.TOP,
+                                                      duration: const Duration(
+                                                          seconds: 3),
+                                                    ));
                                                   }));
-                                          if (Get.isOverlaysOpen) {
-                                            Get.back();
-                                          }
-                                          Get.showSnackbar(GetSnackBar(
-                                            messageText: Text(
-                                                'The File ${_document?.documentName} is deleted from server'),
-                                            icon: const Icon(
-                                                Icons.delete_forever_rounded),
-                                            snackPosition: SnackPosition.TOP,
-                                            duration:
-                                                const Duration(seconds: 3),
-                                          ));
                                         },
                                         child: const Text('Delete'),
                                       ),
@@ -255,7 +258,8 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                 children: [
                                                   OutlinedButton(
                                                     onPressed: () {
-                                                      if (Get.isOverlaysOpen) {
+                                                      while (
+                                                          Get.isOverlaysOpen) {
                                                         Get.back();
                                                       }
                                                       Get.showSnackbar(
@@ -273,7 +277,8 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                   ),
                                                   OutlinedButton(
                                                     onPressed: () {
-                                                      if (Get.isOverlaysOpen) {
+                                                      while (
+                                                          Get.isOverlaysOpen) {
                                                         Get.back();
                                                       }
                                                       // await interstitialAdController
@@ -358,7 +363,11 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                     );
                   }),
             ),
-        onLoading: const Center(child: CircularProgressIndicator()),
+        onLoading: Center(
+            child: Lottie.asset(
+          'assets/loading.json',
+          fit: BoxFit.fill,
+        )),
         onEmpty: Center(
             child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,

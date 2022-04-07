@@ -25,9 +25,11 @@ A App made for controlling pdfs files privacy
 - [] Wake Lock
 - [] Feature Discovery
 - [] Onboarding Screens
-- [] Whatsapp Tools
+- [x] Whatsapp Tools
 - [] Different User Name
 - [x] Action View Filter
+- [] Playstore
+- [] Open License and Versions
 
 ## BUGS
 

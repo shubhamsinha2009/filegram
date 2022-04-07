@@ -1,4 +1,7 @@
 import 'dart:async';
+
+import 'package:flutter_carousel_widget/flutter_carousel_controller.dart';
+
 import '../../no_internet/controllers/no_internet_controller.dart';
 
 import '../../../core/services/firebase_analytics.dart';
@@ -9,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginController extends GetxController {
+  final page = 0.obs;
+  CarouselController buttonCarouselController = CarouselController();
   final _user = UserModel().obs;
   final auth = FirebaseAuth.instance;
   final isSomethingLoading = false.obs;

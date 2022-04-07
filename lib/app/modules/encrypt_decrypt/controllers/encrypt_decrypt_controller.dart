@@ -13,12 +13,12 @@ import 'package:path_provider/path_provider.dart';
 import '../../../core/services/firebase_analytics.dart';
 import '../../../data/model/documents_model.dart';
 import '../../../data/provider/firestore_data.dart';
+import '../../../routes/app_pages.dart';
 import '../../home/controllers/controllers.dart';
 import '../services/file_encrypter.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 class EncryptDecryptController extends GetxController {
-  final rename = ''.obs;
   final isLoading = false.obs;
   final _documentModel = DocumentModel().obs;
   final analytics = AnalyticsService.analytics;
@@ -58,8 +58,7 @@ class EncryptDecryptController extends GetxController {
     final _result = pickedFile;
     if (_result != null) {
       String _fileName = _result.split('/').last;
-      // final String _dialogTitle =
-      //     _result.contains('.enc') ? 'decrypt' : 'encrypt';
+
       if (!_result.contains('.enc')) {
         Get.bottomSheet(
           WillPopScope(
@@ -92,7 +91,7 @@ class EncryptDecryptController extends GetxController {
                     initialValue: _fileName,
                     keyboardType: TextInputType.name,
                     onChanged: (value) {
-                      rename.value = value;
+                      _fileName = value;
                     },
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -128,11 +127,11 @@ class EncryptDecryptController extends GetxController {
                     children: [
                       OutlinedButton(
                         onPressed: () {
+                          while (Get.isOverlaysOpen) {
+                            Get.back();
+                          }
                           if (File(_result).existsSync()) {
                             File(_result).deleteSync();
-                          }
-                          if (Get.isOverlaysOpen) {
-                            Get.back();
                           }
                           Get.showSnackbar(
                             const GetSnackBar(
@@ -146,32 +145,36 @@ class EncryptDecryptController extends GetxController {
                         child: const Text('Cancel'),
                       ),
                       OutlinedButton(
-                        onPressed: () async {
-                          if (validateRename(rename.value)) {
-                            isLoading.toggle();
-                            if (Get.isOverlaysOpen) {
+                        onPressed: () {
+                          if (validateRename(_fileName)) {
+                            while (Get.isOverlaysOpen) {
                               Get.back();
                             }
-                            await interstitialAdController.showInterstitialAd();
-                            bool? _isEncDone =
-                                await encryptDecrypt(pickedFile, _sourceUrl);
-                            if (_isEncDone != null && _isEncDone) {
-                              Get.showSnackbar(
-                                const GetSnackBar(
-                                  messageText: Text('File Saved '),
-                                  duration: Duration(seconds: 3),
-                                  snackPosition: SnackPosition.TOP,
-                                ),
-                              );
-                            } else {
-                              Get.showSnackbar(
-                                const GetSnackBar(
-                                  messageText: Text('File Not Saved '),
-                                  duration: Duration(seconds: 3),
-                                  snackPosition: SnackPosition.TOP,
-                                ),
-                              );
-                            }
+                            isLoading.toggle();
+
+                            interstitialAdController.showInterstitialAd();
+                            encryptDecrypt(pickedFile,
+                                    fileName: _fileName, sourceUrl: _sourceUrl)
+                                .then((_fileOut) {
+                              if (_fileOut != null) {
+                                Get.showSnackbar(
+                                  const GetSnackBar(
+                                    messageText: Text('File Saved '),
+                                    duration: Duration(seconds: 3),
+                                    snackPosition: SnackPosition.TOP,
+                                  ),
+                                );
+                              } else {
+                                Get.showSnackbar(
+                                  const GetSnackBar(
+                                    messageText: Text('File Not Saved '),
+                                    duration: Duration(seconds: 3),
+                                    snackPosition: SnackPosition.TOP,
+                                  ),
+                                );
+                              }
+                              Get.toNamed(Routes.viewPdf, arguments: _fileOut);
+                            });
                           }
                         },
                         child: const Text('ENCRYPT'),
@@ -186,8 +189,8 @@ class EncryptDecryptController extends GetxController {
         );
       } else {
         interstitialAdController.showInterstitialAd();
-        encryptDecrypt(pickedFile, _sourceUrl).then((value) {
-          if (value != null && value) {
+        encryptDecrypt(pickedFile).then((value) {
+          if (value != null) {
             Get.showSnackbar(
               const GetSnackBar(
                 messageText: Text('File Saved '),
@@ -195,6 +198,7 @@ class EncryptDecryptController extends GetxController {
                 snackPosition: SnackPosition.TOP,
               ),
             );
+            Get.toNamed(Routes.viewPdf, arguments: value);
           } else {
             Get.showSnackbar(
               const GetSnackBar(
@@ -209,33 +213,33 @@ class EncryptDecryptController extends GetxController {
     }
   }
 
-  Future<bool?> encryptDecrypt(String? pickedFile, String? _sourceUrl) async {
-    final _result = pickedFile!.substring(
-            0, (pickedFile.lastIndexOf(Platform.pathSeparator)) + 1) +
-        rename.value;
-    await File(pickedFile).rename(_result);
-    bool? _isEncDone;
-    try {
-      if (_result.contains('.enc')) {
-        _isEncDone = await doFileCopy(_result);
-      } else {
-        _isEncDone = await doEncryption(_isEncDone, _result, _sourceUrl);
+  Future<String?> encryptDecrypt(String? pickedFile,
+      {String? sourceUrl, String? fileName}) async {
+    final _result = pickedFile;
+    String? _fileOut;
+    if (_result != null) {
+      try {
+        if (_result.contains('.enc')) {
+          _fileOut = await doFileCopy(_result);
+        } else {
+          _fileOut = await doEncryption(_result, sourceUrl, fileName);
+        }
+      } catch (e) {
+        isLoading.value = false;
+        Get.showSnackbar(GetSnackBar(
+          messageText: Text(e.toString()),
+          icon: const Icon(Icons.error_outline),
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.TOP,
+        ));
       }
-    } catch (e) {
-      isLoading.value = false;
-      Get.showSnackbar(GetSnackBar(
-        messageText: Text(e.toString()),
-        icon: const Icon(Icons.error_outline),
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.TOP,
-      ));
-    }
-    if (File(_result).existsSync()) {
-      File(_result).deleteSync();
+      if (File(_result).existsSync()) {
+        File(_result).deleteSync();
+      }
     }
     isLoading.value = false;
 
-    return _isEncDone;
+    return _fileOut;
   }
 
   Future<String> filesDocDir() async {
@@ -257,16 +261,14 @@ class EncryptDecryptController extends GetxController {
     }
   }
 
-  Future<bool?> doEncryption(
-      bool? _isEncDone, String _result, String? _sourceUrl) async {
+  Future<String?> doEncryption(
+      String _result, String? _sourceUrl, String? fileName) async {
     try {
-      String _fileOut = '$_result.enc';
-      String _filename = _fileOut.split('/').last;
-      _fileOut = '${await filesDocDir()}/$_filename';
+      String _fileOut = '${await filesDocDir()}/$fileName.enc';
       final secretKey = await FileEncrypter.generatekey();
       final iv = await FileEncrypter.generateiv();
       if (secretKey != null && iv != null) {
-        _isEncDone = await FileEncrypter.encrypt(
+        await FileEncrypter.encrypt(
           key: secretKey,
           iv: iv,
           inFilename: _result,
@@ -301,7 +303,7 @@ class EncryptDecryptController extends GetxController {
         'intialPageNumber': 0,
       };
       GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
-      return _isEncDone;
+      return _fileOut;
     } on PlatformException {
       isLoading.value = false;
 
@@ -311,11 +313,11 @@ class EncryptDecryptController extends GetxController {
         icon: const Icon(Icons.error_outline),
         snackPosition: SnackPosition.TOP,
       ));
-      return false;
+      return null;
     }
   }
 
-  Future<bool> doFileCopy(
+  Future<String?> doFileCopy(
     String _result,
   ) async {
     try {
@@ -339,13 +341,13 @@ class EncryptDecryptController extends GetxController {
             'intialPageNumber': 0,
           };
           GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
-          return true;
+          return _fileOut;
         }
-        return false;
+        return null;
         // ! Use of Cloud Function
         // *Using Cloud Firestore temporarily
       }
-      return false;
+      return null;
     } on PlatformException catch (e) {
       isLoading.value = false;
       Get.showSnackbar(GetSnackBar(
@@ -354,7 +356,7 @@ class EncryptDecryptController extends GetxController {
         icon: const Icon(Icons.error_outline),
         snackPosition: SnackPosition.TOP,
       ));
-      return false;
+      return null;
     }
   }
 

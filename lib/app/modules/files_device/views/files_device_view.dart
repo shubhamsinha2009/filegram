@@ -41,7 +41,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                     final _sourceUrl = _pdfDetails?['sourceUrl'];
                     if (_currentfile is File) {
                       return Slidable(
-                        key: ValueKey(index),
+                        key: UniqueKey(),
                         startActionPane: ActionPane(
                           dismissible: DismissiblePane(
                             motion: const BehindMotion(),
@@ -71,8 +71,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                 },
                               );
                             },
-                            onDismissed: () {
-                              _currentfile.deleteSync();
+                            onDismissed: () async {
+                              await _currentfile.delete();
                               GetStorageDbService.getRemove(
                                   key: _currentfile.path);
                               controller.onInitialisation();
@@ -160,8 +160,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                 },
                               );
                             },
-                            onDismissed: () {
-                              _currentfile.deleteSync();
+                            onDismissed: () async {
+                              await _currentfile.delete();
                               GetStorageDbService.getRemove(
                                   key: _currentfile.path);
                               controller.onInitialisation();
