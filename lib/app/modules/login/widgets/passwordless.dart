@@ -15,19 +15,18 @@ class PasswordlessEncryption extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          const SizedBox(
+            height: 10,
+          ),
           const Text(
             'Passwordless Encryption',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Lottie.asset(
-            'assets/encryption.json',
-            fit: BoxFit.fill,
-          ),
-          const SizedBox(
-            height: 10,
+          Expanded(
+            child: Lottie.asset(
+              'assets/encryption.json',
+              fit: BoxFit.contain,
+            ),
           ),
           const Text(
             'No need to remember passwords of so many files',

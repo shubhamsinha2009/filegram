@@ -15,13 +15,18 @@ class PocketPdf extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          const SizedBox(
+            height: 10,
+          ),
           const Text(
             'Protect/Secure Pdf Files',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
-          Lottie.asset(
-            'assets/pocket_pdf.json',
-            fit: BoxFit.fill,
+          Expanded(
+            child: Lottie.asset(
+              'assets/pocket_pdf.json',
+              fit: BoxFit.contain,
+            ),
           ),
           const Text(
             '1.Prevent Pdf from theft(sharing,copying etc)\n\n2.Built in Pdf Viewer\n\n3.Owner Recognition & Source Link feature.',

@@ -15,14 +15,21 @@ class NoCloud extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          const SizedBox(
+            height: 10,
+          ),
           const Text(
             'All Files On Your Device Only',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
-          Lottie.asset(
-            'assets/no_cloud.json',
-            width: 200,
-            fit: BoxFit.fill,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(60.0),
+              child: Lottie.asset(
+                'assets/no_cloud.json',
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
           const Text(
             'We never upload your files to our servers/clouds.',

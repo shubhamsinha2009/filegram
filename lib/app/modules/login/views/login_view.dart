@@ -26,25 +26,28 @@ class LoginView extends GetView<LoginController> {
     final _lastpage = _items.length - 1;
     return Obx(() => controller.isInternetConnected.isTrue
         ? Scaffold(
-            body: FlutterCarousel(
-              carouselController: controller.buttonCarouselController,
-              options: CarouselOptions(
-                  enableInfiniteScroll: false,
-                  autoPlay: true,
-                  initialPage: 0,
-                  aspectRatio: 9 / 16,
-                  showIndicator: false,
-                  enlargeCenterPage: true,
-                  floatingIndicator: false,
-                  onPageChanged: (page, reason) =>
-                      controller.page.value = page),
-              items: _items,
+            body: SafeArea(
+              child: FlutterCarousel(
+                carouselController: controller.buttonCarouselController,
+                options: CarouselOptions(
+                    height: context.height - 200,
+                    enableInfiniteScroll: false,
+                    autoPlay: true,
+                    initialPage: 0,
+                    aspectRatio: 9 / 16,
+                    showIndicator: false,
+                    enlargeCenterPage: true,
+                    floatingIndicator: false,
+                    onPageChanged: (page, reason) =>
+                        controller.page.value = page),
+                items: _items,
+              ),
             ),
             bottomSheet: controller.page.value == _lastpage
                 ? null
                 : Container(
                     margin: const EdgeInsets.all(20),
-                    height: 150,
+                    height: 100,
                     width: double.infinity,
                     decoration: BoxDecoration(
                         gradient: const LinearGradient(
