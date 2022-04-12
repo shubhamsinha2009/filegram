@@ -127,7 +127,7 @@ class EncryptDecryptController extends GetxController {
                     children: [
                       OutlinedButton(
                         onPressed: () {
-                          while (Get.isOverlaysOpen) {
+                          if (Get.isOverlaysOpen) {
                             Get.back();
                           }
                           if (File(_result).existsSync()) {
@@ -147,7 +147,7 @@ class EncryptDecryptController extends GetxController {
                       OutlinedButton(
                         onPressed: () {
                           if (validateRename(_fileName)) {
-                            while (Get.isOverlaysOpen) {
+                            if (Get.isOverlaysOpen) {
                               Get.back();
                             }
                             isLoading.toggle();
@@ -396,7 +396,7 @@ class EncryptDecryptController extends GetxController {
       ));
     });
 
-    // For sharing images coming from outside the app while the app is closed
+    // For sharing images coming from outside the app if the app is closed
     ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
       if (value.isNotEmpty) {
         //  print('Your file name ---------------------------------' +

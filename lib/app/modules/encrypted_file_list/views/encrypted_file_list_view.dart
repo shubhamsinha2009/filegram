@@ -127,7 +127,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () async {
-                                            while (Get.isOverlaysOpen) {
+                                            if (Get.isOverlaysOpen) {
                                               Get.back();
                                             }
                                           },
@@ -160,7 +160,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
-                                          while (Get.isOverlaysOpen) {
+                                          if (Get.isOverlaysOpen) {
                                             Get.back();
                                           }
                                         },
@@ -168,8 +168,8 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          while (Get.isOverlaysOpen) {
-                                            Get.back();
+                                          if (Get.isOverlaysOpen) {
+                                            Get.back(closeOverlays: true);
                                           }
                                           // ! Sometimes due to async document gets deleted before views
                                           FirestoreData.deleteViewsAndUploads(
@@ -258,8 +258,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                 children: [
                                                   OutlinedButton(
                                                     onPressed: () {
-                                                      while (
-                                                          Get.isOverlaysOpen) {
+                                                      if (Get.isOverlaysOpen) {
                                                         Get.back();
                                                       }
                                                       Get.showSnackbar(
@@ -277,8 +276,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                   ),
                                                   OutlinedButton(
                                                     onPressed: () {
-                                                      while (
-                                                          Get.isOverlaysOpen) {
+                                                      if (Get.isOverlaysOpen) {
                                                         Get.back();
                                                       }
                                                       // await interstitialAdController

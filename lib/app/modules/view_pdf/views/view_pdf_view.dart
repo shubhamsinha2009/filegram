@@ -67,7 +67,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                       actions: <Widget>[
                         TextButton(
                           onPressed: () async {
-                            while (Get.isOverlaysOpen) {
+                            if (Get.isOverlaysOpen) {
                               Get.back(closeOverlays: true, canPop: true);
                             }
                           },

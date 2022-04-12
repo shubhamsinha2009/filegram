@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../no_internet/controllers/no_internet_controller.dart';
 import '../../../data/model/user_model.dart';
 import '../../../data/provider/firestore_data.dart';
@@ -25,9 +27,11 @@ class HomeController extends GetxController {
       user(await firestoreData.getUser(_uid));
     }
 
-    if ((await InAppUpdate.checkForUpdate()).updateAvailability ==
-        UpdateAvailability.updateAvailable) {
-      await InAppUpdate.performImmediateUpdate();
+    if (kReleaseMode) {
+      if ((await InAppUpdate.checkForUpdate()).updateAvailability ==
+          UpdateAvailability.updateAvailable) {
+        InAppUpdate.performImmediateUpdate().catchError((e) {});
+      }
     }
 
     super.onInit();

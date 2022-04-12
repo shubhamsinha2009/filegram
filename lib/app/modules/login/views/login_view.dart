@@ -36,7 +36,10 @@ class LoginView extends GetView<LoginController> {
                     initialPage: 0,
                     aspectRatio: 9 / 16,
                     showIndicator: false,
-                    enlargeCenterPage: true,
+                    viewportFraction: 1,
+
+                    // enlargeCenterPage: true,
+
                     floatingIndicator: false,
                     onPageChanged: (page, reason) =>
                         controller.page.value = page),

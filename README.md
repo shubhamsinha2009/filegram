@@ -30,6 +30,9 @@ A App made for controlling pdfs files privacy
 - [x] Action View Filter
 - [] Playstore
 - [] Open License and Versions
+- [] Link Saver
+- [] Manage My Files
+- [] Use Bytes instead of files
 
 ## BUGS
 
