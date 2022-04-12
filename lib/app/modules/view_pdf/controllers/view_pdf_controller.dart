@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
@@ -28,11 +27,12 @@ class ViewPdfController extends GetxController {
   late File file;
   late String fileOut;
   String? sourceUrl;
+
   Future<bool> doDecryption(
     String _fileIn,
   ) async {
-    bool? _isEncDone;
     try {
+      bool? _isEncDone;
       final _checkKey = await FileEncrypter.getFileIv(inFilename: _fileIn);
       if (_checkKey != null) {
         final _document = await FirestoreData.getSecretKey(
@@ -52,23 +52,46 @@ class ViewPdfController extends GetxController {
 
         sourceUrl = _document?.sourceUrl;
       }
-    } on PlatformException catch (e) {
-      Get.showSnackbar(GetSnackBar(
-        duration: const Duration(seconds: 5),
-        messageText: Text(e.message ?? e.details),
-        icon: const Icon(Icons.error_outline),
-        snackPosition: SnackPosition.TOP,
-      ));
+      return _isEncDone ?? false;
+    } catch (e) {
+      rethrow;
     }
-    return _isEncDone ?? false;
   }
 
   @override
   void onInit() async {
     filePath = Get.arguments;
-    fileOut = '${(await getTemporaryDirectory()).path}/current.pdf';
-
-    isDecryptionDone.value = await doDecryption(filePath);
+    fileOut = '${(await getTemporaryDirectory()).path}/_';
+    try {
+      isDecryptionDone.value = await doDecryption(filePath);
+    } catch (e) {
+      Get.dialog(
+        AlertDialog(
+          alignment: Alignment.center,
+          backgroundColor: Colors.black,
+          title: const Icon(Icons.error_outline),
+          content: Text(
+            e.toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 20,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                if (Get.isOverlaysOpen) {
+                  Get.back(closeOverlays: true, canPop: true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+        barrierDismissible: false,
+      );
+    }
 
     final Map<String, dynamic>? _pdfDetails =
         GetStorageDbService.getRead(key: filePath);
@@ -89,7 +112,10 @@ class ViewPdfController extends GetxController {
 
   @override
   void onClose() async {
-    await File(fileOut).delete();
+    if (File(fileOut).existsSync()) {
+      await File(fileOut).delete();
+    }
+
     await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     final Map<String, dynamic> _pdfDetails = {
       'photoUrl': photoUrl,

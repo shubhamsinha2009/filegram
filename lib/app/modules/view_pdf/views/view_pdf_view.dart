@@ -36,7 +36,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
             : PDFView(
                 key: GlobalKey(),
                 filePath: controller.fileOut,
-                // pdfData: ,
+                // pdfData: File(controller.fileOut).readAsBytesSync(),
                 enableSwipe: true,
                 swipeHorizontal: controller.swipehorizontal.value,
                 autoSpacing: false,
