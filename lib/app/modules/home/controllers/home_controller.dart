@@ -1,4 +1,7 @@
+import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';
+import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter/foundation.dart';
+import 'package:quick_actions/quick_actions.dart';
 
 import '../../no_internet/controllers/no_internet_controller.dart';
 import '../../../data/model/user_model.dart';
@@ -15,6 +18,7 @@ class HomeController extends GetxController {
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
   final selectedIndex = 0.obs;
+  final QuickActions quickActions = const QuickActions();
 
   void onBottomBarSelected(value) {
     selectedIndex.value = value;
@@ -34,6 +38,25 @@ class HomeController extends GetxController {
       }
     }
 
+    quickActions.setShortcutItems(<ShortcutItem>[
+      const ShortcutItem(
+          type: 'click_to_chat',
+          localizedTitle: 'Whatsapp Click to Chat',
+          icon: 'icon_whatsapp'),
+      const ShortcutItem(
+          type: 'action_upload_file',
+          localizedTitle: 'Upload File(Pdf)',
+          icon: 'icon_upload')
+    ]);
+
+    quickActions.initialize((shortcutType) {
+      if (shortcutType == 'click_to_chat') {
+        Get.toNamed(Routes.whatsappChat);
+      } else if (shortcutType == 'action_upload_file') {
+        Get.find<EncryptDecryptController>().pickFile();
+      }
+      // More handling code...
+    });
     super.onInit();
   }
 }

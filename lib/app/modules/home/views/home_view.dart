@@ -4,12 +4,12 @@ import '../../no_internet/views/no_internet_view.dart';
 
 import '../../encrypted_file_list/views/encrypted_file_list_view.dart';
 
-import '../../app_drawer/views/app_drawer_view.dart';
 import '../../encrypt_decrypt/views/encrypt_decrypt_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../settings/views/settings_view.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -20,7 +20,7 @@ class HomeView extends GetView<HomeController> {
     List<Widget> bodyPages = [
       const FilesDeviceView(),
       const EncryptedFileListView(),
-      const AppDrawerView(),
+      const SettingsView(),
     ];
     return Obx(
       () => controller.isInternetConnected.isTrue

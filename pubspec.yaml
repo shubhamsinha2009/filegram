@@ -1,5 +1,5 @@
 name: filegram
-version: 1.1.4+32
+version: 1.1.5+33
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -13,6 +13,7 @@ dependencies:
   firebase_analytics: ^9.0.5
   firebase_auth: ^3.3.5
   firebase_core: ^1.11.0
+  firebase_crashlytics: ^2.6.2
   flutter:
     sdk: flutter
   flutter_carousel_widget: ^1.0.5
@@ -31,6 +32,7 @@ dependencies:
   lottie: ^1.2.1
   open_as_default: ^0.0.3
   path_provider: ^2.0.8
+  quick_actions: ^0.6.0+10
   receive_sharing_intent: ^1.4.5
   share_plus: ^3.0.4
   simple_connection_checker: ^0.2.1

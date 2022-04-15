@@ -1,6 +1,6 @@
+import 'package:filegram/app/modules/settings/bindings/settings_binding.dart';
 import 'package:get/get.dart';
 
-import '../modules/app_drawer/bindings/app_drawer_binding.dart';
 import '../modules/encrypt_decrypt/bindings/encrypt_decrypt_binding.dart';
 import '../modules/encrypted_file_list/bindings/encrypted_file_list_binding.dart';
 import '../modules/files_device/bindings/files_device_binding.dart';
@@ -29,7 +29,7 @@ class AppPages {
       bindings: [
         HomeBinding(),
         EncryptDecryptBinding(),
-        AppDrawerBinding(),
+        SettingsBinding(),
         EncryptedFileListBinding(),
         NoInternetBinding(),
         FilesDeviceBinding(),

@@ -195,8 +195,11 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                 //     .logEvent(name: 'shared_file', parameters: {
                                 //   'file_path': _currentfile.path,
                                 // });
-                                Share.shareFiles(
+                                // Todo: Add text and subject app link and more
+                                await Share.shareFiles(
                                   [_currentfile.path],
+                                  text:
+                                      'Download Filegram to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
                                 );
                               },
                               backgroundColor: Colors.orange,

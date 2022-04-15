@@ -15,7 +15,7 @@ A App made for controlling pdfs files privacy
 - [] Money Earning For Content Creators
 - [] Terms,Policy and Many More Things
 - [] Created By
-- [] Intro Screens
+- [x] Intro Screens
 - [] Promotions Options
 - [] UI Designers
 - [x] share url
@@ -23,8 +23,8 @@ A App made for controlling pdfs files privacy
 - [] Get ota update feature
 - [] Themes Flutter
 - [] Wake Lock
-- [] Feature Discovery
-- [] Onboarding Screens
+- [] Feature Discovery/ShowCaseView
+- [x] Onboarding Screens
 - [x] Whatsapp Tools
 - [] Different User Name
 - [x] Action View Filter
@@ -33,6 +33,12 @@ A App made for controlling pdfs files privacy
 - [] Link Saver
 - [] Manage My Files
 - [] Use Bytes instead of files
+- [] Firebase Implementation
+- [] Google Sign In Terms Conditions
+- [] Share plus files with text
+- [] Quick Actions Click to Chat
+- [] Crashlytics Advanced
+- [] Dynamic Links
 
 ## BUGS
 
