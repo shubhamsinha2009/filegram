@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -64,14 +62,14 @@ class GullakView extends GetView<GullakController> {
           padding: const EdgeInsets.all(10),
           shrinkWrap: true,
           children: [
-            Text('${controller.gullak.value.sikka} 🟡',
+            Obx(() => Text('${controller.gullak.value.sikka} 🟡',
                 textAlign: TextAlign.center,
                 softWrap: true,
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w800,
                   color: Colors.amber,
-                )),
+                ))),
             const SizedBox(
               height: 20,
             ),
@@ -87,20 +85,21 @@ class GullakView extends GetView<GullakController> {
             const SizedBox(
               height: 20,
             ),
-            LinearProgressIndicator(
-              value: controller.getLinearValue(controller.gullak.value.sikka),
-              backgroundColor: Colors.grey,
-              color: Colors.purple,
-              minHeight: 10,
-            ),
+            Obx(() => LinearProgressIndicator(
+                  value:
+                      controller.getLinearValue(controller.gullak.value.sikka),
+                  backgroundColor: Colors.grey,
+                  color: Colors.purple,
+                  minHeight: 10,
+                )),
             const SizedBox(
               height: 10,
             ),
-            Text(
-              "You've reached ${controller.getLinearValue(controller.gullak.value.sikka)}% of your payment threshold(1,00,000 Sikka)",
-              softWrap: true,
-              textAlign: TextAlign.center,
-            ),
+            Obx(() => Text(
+                  "You've reached ${controller.getLinearValue(controller.gullak.value.sikka)}% of your payment threshold(1,00,000 Sikka)",
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                )),
             const SizedBox(
               height: 20,
             ),

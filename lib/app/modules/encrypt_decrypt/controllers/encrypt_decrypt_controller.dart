@@ -188,7 +188,6 @@ class EncryptDecryptController extends GetxController {
           isDismissible: false,
         );
       } else {
-        interstitialAdController.showInterstitialAd();
         encryptDecrypt(pickedFile).then((value) {
           if (value != null) {
             Get.showSnackbar(
@@ -198,6 +197,9 @@ class EncryptDecryptController extends GetxController {
                 snackPosition: SnackPosition.TOP,
               ),
             );
+            final _ownerId =
+                GetStorageDbService.getRead(key: value)?['ownerId'];
+            interstitialAdController.showInterstitialAd(uid: _ownerId);
             Get.toNamed(Routes.viewPdf, arguments: value);
           } else {
             Get.showSnackbar(
@@ -333,16 +335,18 @@ class EncryptDecryptController extends GetxController {
         final _secretKey = _document?.secretKey;
         if (_secretKey != null) {
           String _fileOut = '${await filesDocDir()}/${_document?.documentName}';
-          await File(_result).copy(_fileOut);
-          await FirestoreData.updateUploads(_document?.documentId);
-          final Map<String, dynamic> _pdfDetails = {
-            'photoUrl': _document?.ownerPhotoUrl,
-            'ownerName': _document?.ownerName,
-            'sourceUrl': _document?.sourceUrl,
-            'ownerId': _document?.ownerId,
-            'intialPageNumber': 0,
-          };
-          GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
+          if (!File(_fileOut).existsSync()) {
+            await File(_result).copy(_fileOut);
+            await FirestoreData.updateUploads(_document?.documentId);
+            final Map<String, dynamic> _pdfDetails = {
+              'photoUrl': _document?.ownerPhotoUrl,
+              'ownerName': _document?.ownerName,
+              'sourceUrl': _document?.sourceUrl,
+              'ownerId': _document?.ownerId,
+              'intialPageNumber': 0,
+            };
+            GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
+          }
           return _fileOut;
         }
         return null;

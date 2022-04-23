@@ -52,7 +52,7 @@ class InterstitialAdsController extends GetxController {
         });
         interstitialAd!.show();
       }
-    } on Exception catch (e) {
+    } on Exception {
       // TODO
     }
   }
