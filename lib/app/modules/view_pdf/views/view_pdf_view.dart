@@ -93,8 +93,8 @@ class ViewPdfView extends GetView<ViewPdfController> {
 
                 onPageChanged: (int? page, int? total) {
                   if (page != null && total != null) {
-                    controller.intialPageNumber =
-                        controller.currentPageNumber.value = page;
+                    controller.intialPageNumber = page;
+                    controller.currentPageNumber.value = page;
                     controller.pages.value = total;
                   } //  print('page change: /');
                 },

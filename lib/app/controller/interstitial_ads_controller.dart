@@ -1,4 +1,5 @@
 import 'package:filegram/app/core/helpers/ad_helper.dart';
+import 'package:filegram/app/data/provider/firestore_data.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -32,20 +33,27 @@ class InterstitialAdsController extends GetxController {
     );
   }
 
-  Future<void> showInterstitialAd() async {
-    if (interstitialAd != null) {
-      interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-        onAdDismissedFullScreenContent: (InterstitialAd ad) {
+  Future<void> showInterstitialAd({String? uid}) async {
+    try {
+      if (interstitialAd != null) {
+        interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (InterstitialAd ad) {
           ad.dispose();
           adDismissed.value = true;
           createInterstitialAd();
-        },
-        onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+        }, onAdFailedToShowFullScreenContent:
+                (InterstitialAd ad, AdError error) {
           ad.dispose();
           createInterstitialAd();
-        },
-      );
-      interstitialAd!.show();
+        }, onAdShowedFullScreenContent: (InterstitialAd ad) {
+          if (uid != null) {
+            FirestoreData.updateSikka(uid);
+          }
+        });
+        interstitialAd!.show();
+      }
+    } on Exception catch (e) {
+      // TODO
     }
   }
 

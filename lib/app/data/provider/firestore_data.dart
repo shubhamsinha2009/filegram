@@ -3,6 +3,7 @@ import 'package:filegram/app/data/model/views_model.dart';
 import '../enums/docpermission.dart';
 import 'package:flutter/services.dart';
 import '../model/documents_model.dart';
+import '../model/gullak_mode.dart';
 import '../model/user_model.dart';
 
 class FirestoreData {
@@ -355,6 +356,53 @@ class FirestoreData {
         emailId: _data["emailId"] as String,
         photoUrl: _data["photoUrl"] as String,
         name: _data["name"] as String,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> createGullak(String? userId) async {
+    try {
+      await _firestore.collection("gullak").doc(userId).set(
+        {
+          "sikka": 0,
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Stream<GullakModel> getGullak(String uid) {
+    try {
+      Stream<DocumentSnapshot> _snapshot =
+          _firestore.collection("gullak").doc(uid).snapshots();
+
+      return _snapshot.map((_doc) {
+        if (!_doc.exists) {
+          createGullak(uid).then((value) => _firestore
+              .collection("gullak")
+              .doc(uid)
+              .snapshots()
+              .map((event) => _doc = event));
+        }
+
+        return GullakModel(
+          sikka: _doc["sikka"],
+        );
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> updateSikka(String uid) async {
+    try {
+      await _firestore.collection("gullak").doc(uid).update(
+        {
+          "sikka": FieldValue.increment(1),
+        },
       );
     } catch (e) {
       rethrow;

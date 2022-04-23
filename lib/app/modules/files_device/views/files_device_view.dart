@@ -39,6 +39,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                         'https://source.unsplash.com/random';
                     final _ownerName = _pdfDetails?['ownerName'] ?? 'Unknown';
                     final _sourceUrl = _pdfDetails?['sourceUrl'];
+                    final _ownerId = _pdfDetails?['ownerId'];
                     if (_currentfile is File) {
                       return Slidable(
                         key: UniqueKey(),
@@ -105,6 +106,17 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                               label: 'Rename',
                               spacing: 10,
                             ),
+                            // Todo: Decrypt
+                            // SlidableAction(
+                            //   onPressed: (context) =>
+                            //       controller.save(_currentfile.path),
+                            //   backgroundColor: Colors.orange,
+                            //   foregroundColor: Colors.black,
+                            //   icon: Icons.save_alt_rounded,
+                            //   autoClose: true,
+                            //   label: 'Decrypt',
+                            //   spacing: 10,
+                            // ),
                             // SlidableAction(
                             //   onPressed: (context) {
                             //     _currentfile.deleteSync();
@@ -184,7 +196,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                   controller.save(_currentfile.path),
                               backgroundColor: Colors.teal,
                               foregroundColor: Colors.black,
-                              icon: Icons.drive_file_rename_outline,
+                              icon: Icons.download_rounded,
                               autoClose: true,
                               label: 'Save',
                               spacing: 10,
@@ -248,9 +260,14 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                           ),
                           onTap: () {
                             controller.interstitialAdController
-                                .showInterstitialAd();
+                                .showInterstitialAd(uid: _ownerId);
+
                             Get.toNamed(Routes.viewPdf,
                                 arguments: _currentfile.path);
+                            // ?.then((value) => controller
+                            //     .interstitialAdController
+                            //     .showInterstitialAd());
+
                             // await controller.analytics
                             //     .setCurrentScreen(screenName: 'pdf');
                             // await controller.analytics

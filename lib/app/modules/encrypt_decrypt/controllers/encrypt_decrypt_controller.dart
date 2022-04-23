@@ -300,6 +300,7 @@ class EncryptDecryptController extends GetxController {
         'photoUrl': _ownerPhotoUrl,
         'ownerName': _ownerName,
         'sourceUrl': _sourceUrl,
+        'ownerId': _userId,
         'intialPageNumber': 0,
       };
       GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
@@ -338,6 +339,7 @@ class EncryptDecryptController extends GetxController {
             'photoUrl': _document?.ownerPhotoUrl,
             'ownerName': _document?.ownerName,
             'sourceUrl': _document?.sourceUrl,
+            'ownerId': _document?.ownerId,
             'intialPageNumber': 0,
           };
           GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);

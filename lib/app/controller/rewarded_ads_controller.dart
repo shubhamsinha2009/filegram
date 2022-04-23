@@ -5,7 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class RewardedAdsController extends GetxController {
   final int maxFailedLoadAttempts = 3;
   int rewardLoadAttempts = 0;
-  late RewardedAd rewardedAd;
+  late RewardedInterstitialAd rewardedInterstitialAd;
   final isRewardedAdReady = false.obs;
 
   AdWidget adWidget({required AdWithView ad}) {
@@ -13,12 +13,12 @@ class RewardedAdsController extends GetxController {
   }
 
   void createRewardedAd() {
-    RewardedAd.load(
+    RewardedInterstitialAd.load(
       adUnitId: AdHelper.rewardedAdUnitId,
       request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (RewardedAd ad) {
-          rewardedAd = ad;
+      rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
+        onAdLoaded: (RewardedInterstitialAd ad) {
+          rewardedInterstitialAd = ad;
           rewardLoadAttempts = 0;
 
           ad.fullScreenContentCallback = FullScreenContentCallback(
@@ -50,7 +50,7 @@ class RewardedAdsController extends GetxController {
 
   @override
   void onClose() {
-    rewardedAd.dispose();
+    rewardedInterstitialAd.dispose();
     super.onClose();
   }
 }

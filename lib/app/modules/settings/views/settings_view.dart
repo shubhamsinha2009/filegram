@@ -45,6 +45,18 @@ class SettingsView extends GetView<SettingsController> {
           onTap: () => Get.toNamed(Routes.whatsappChat),
         ),
         ListTile(
+          title: const Text(
+            'Gullak',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          leading: const Icon(
+            Icons.savings_outlined,
+          ),
+          onTap: () => Get.toNamed(Routes.gullak),
+        ),
+        ListTile(
             title: const Text(
               'Rate Us',
               style: TextStyle(

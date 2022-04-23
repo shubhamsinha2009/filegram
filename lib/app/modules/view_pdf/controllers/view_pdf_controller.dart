@@ -22,15 +22,14 @@ class ViewPdfController extends GetxController {
   late final String filePath;
   final currentPageNumber = 0.obs;
   late int intialPageNumber;
-  late final String photoUrl;
-  late final String ownerName;
+  String? photoUrl;
+  String? ownerName;
   late File file;
   late String fileOut;
   String? sourceUrl;
+  String? ownerId;
 
-  Future<bool> doDecryption(
-    String _fileIn,
-  ) async {
+  Future<bool> doDecryption(String _fileIn) async {
     try {
       bool? _isEncDone;
       final _checkKey = await FileEncrypter.getFileIv(inFilename: _fileIn);
@@ -49,8 +48,10 @@ class ViewPdfController extends GetxController {
           );
         }
         await FirestoreData.updateViews(_document?.documentId);
-
         sourceUrl = _document?.sourceUrl;
+        ownerId = _document?.ownerId;
+        ownerName = _document?.ownerName;
+        photoUrl = _document?.ownerPhotoUrl;
       }
       return _isEncDone ?? false;
     } catch (e) {
@@ -96,9 +97,6 @@ class ViewPdfController extends GetxController {
     final Map<String, dynamic>? _pdfDetails =
         GetStorageDbService.getRead(key: filePath);
     intialPageNumber = _pdfDetails?['intialPageNumber'] ?? 0;
-    photoUrl = _pdfDetails?['photoUrl'] ?? 'https://source.unsplash.com/random';
-    ownerName = _pdfDetails?['ownerName'] ?? 'Unknown';
-    sourceUrl = _pdfDetails?['sourceUrl'];
 
     super.onInit();
   }
@@ -120,7 +118,8 @@ class ViewPdfController extends GetxController {
     final Map<String, dynamic> _pdfDetails = {
       'photoUrl': photoUrl,
       'ownerName': ownerName,
-      'intialPageNumber': currentPageNumber.value,
+      'intialPageNumber': intialPageNumber,
+      'ownerId': ownerId,
       'sourceUrl': sourceUrl,
     };
     GetStorageDbService.getWrite(key: filePath, value: _pdfDetails);

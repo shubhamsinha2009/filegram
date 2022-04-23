@@ -1,5 +1,6 @@
 import 'package:filegram/app/modules/files_device/views/files_device_view.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../no_internet/views/no_internet_view.dart';
 
 import '../../encrypted_file_list/views/encrypted_file_list_view.dart';
@@ -31,14 +32,21 @@ class HomeView extends GetView<HomeController> {
                   "assets/app_bar.png",
                 ),
                 actions: [
-                  IconButton(
-                      onPressed: () => Get.showSnackbar(const GetSnackBar(
-                            messageText: Text('Rewards/Payouts Coming Soon'),
-                            icon: Icon(Icons.auto_awesome),
-                            snackPosition: SnackPosition.TOP,
-                            duration: Duration(seconds: 3),
-                          )),
-                      icon: const Icon(Icons.account_balance_wallet))
+                  // IconButton(
+                  //   onPressed: () => Get.toNamed(Routes.gullak),
+                  //   icon: const Icon(Icons.savings_rounded,
+                  //       color: Color.fromARGB(255, 194, 103, 70)),
+                  // ),
+
+                  ActionChip(
+                    onPressed: () => Get.toNamed(Routes.gullak),
+                    label: Text('${controller.gullak.value.sikka} 🟡'),
+                    avatar: const Icon(Icons.savings_rounded,
+                        color: Color.fromARGB(255, 194, 103, 70)),
+                    labelPadding: const EdgeInsets.only(
+                      left: 10,
+                    ),
+                  ),
                 ],
               ),
               body: bodyPages[controller.selectedIndex.value],

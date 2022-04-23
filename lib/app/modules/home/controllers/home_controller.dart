@@ -1,3 +1,4 @@
+import 'package:filegram/app/data/model/gullak_mode.dart';
 import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';
 import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +20,7 @@ class HomeController extends GetxController {
       Get.find<NoInternetController>().isInternetConnected;
   final selectedIndex = 0.obs;
   final QuickActions quickActions = const QuickActions();
-
+  final gullak = GullakModel().obs;
   void onBottomBarSelected(value) {
     selectedIndex.value = value;
   }
@@ -28,6 +29,7 @@ class HomeController extends GetxController {
   void onInit() async {
     if (auth.currentUser?.uid != null) {
       final String _uid = auth.currentUser?.uid ?? '';
+      gullak.bindStream(firestoreData.getGullak(_uid));
       user(await firestoreData.getUser(_uid));
     }
 

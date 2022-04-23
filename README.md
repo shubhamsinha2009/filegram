@@ -33,12 +33,17 @@ A App made for controlling pdfs files privacy
 - [] Link Saver
 - [] Manage My Files
 - [] Use Bytes instead of files
-- [] Firebase Implementation
+- [] Firebase Analytics Implementation
 - [] Google Sign In Terms Conditions
 - [] Share plus files with text
 - [] Quick Actions Click to Chat
 - [] Crashlytics Advanced
 - [] Dynamic Links
+- [] Ads Options - For Users
+- [] Saved Real Pdf Option
+- [] Landscape Support
+- [] Toast
+- [] login Flow using Cloud Functions
 
 ## BUGS
 

@@ -48,6 +48,12 @@ class GoogleLogin extends StatelessWidget {
                       signUpMethod: 'google_sign_in',
                     );
                   }
+                  if (await controller.userNotExists()) {
+                    await controller.createNewUser();
+                    await AnalyticsService.analytics.logSignUp(
+                      signUpMethod: 'google_sign_in',
+                    );
+                  }
                   controller.isSomethingLoading.toggle();
                   await AnalyticsService.analytics
                       .logScreenView(screenName: '/home');
