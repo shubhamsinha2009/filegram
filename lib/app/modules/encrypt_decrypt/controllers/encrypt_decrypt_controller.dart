@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'package:filegram/app/controller/interstitial_ads_controller.dart';
-import 'package:filegram/app/controller/rewarded_ads_controller.dart';
 import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_as_default/open_as_default.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../core/helpers/ad_helper.dart';
 import '../../../core/services/firebase_analytics.dart';
 import '../../../data/model/documents_model.dart';
 import '../../../data/provider/firestore_data.dart';
@@ -24,9 +24,11 @@ class EncryptDecryptController extends GetxController {
   final _documentModel = DocumentModel().obs;
   final analytics = AnalyticsService.analytics;
   final homeController = Get.find<HomeController>();
-  final interstitialAdController = Get.put(InterstitialAdsController());
-  final rewardedAdController = Get.put(RewardedAdsController());
   late StreamSubscription _intentDataStreamSubscription;
+  InterstitialAd? interstitialAd;
+  final int maxFailedLoadAttempts = 3;
+  int interstitialLoadAttempts = 0;
+  final adDismissed = false.obs;
 
   Future<void> pickFile() async {
     try {
@@ -153,7 +155,7 @@ class EncryptDecryptController extends GetxController {
                               Get.back();
                             }
                             isLoading.toggle();
-                            interstitialAdController.showInterstitialAd();
+                            showInterstitialAd();
                             encryptDecrypt(pickedFile,
                                     fileName: _fileName, sourceUrl: _sourceUrl)
                                 .then((_fileOut) {
@@ -201,17 +203,18 @@ class EncryptDecryptController extends GetxController {
             final _ownerId =
                 GetStorageDbService.getRead(key: value)?['ownerId'];
 
-            try {
-              rewardedAdController.rewardedInterstitialAd.show(
-                  onUserEarnedReward: (ad, reward) {
-                FirestoreData.updateSikka(_ownerId);
+            //  try {
+            // rewardedAdController.rewardedInterstitialAd.show(
+            //     onUserEarnedReward: (ad, reward) {
+            //   FirestoreData.updateSikka(_ownerId);
 
-                interstitialAdController.showInterstitialAd(uid: _ownerId);
-                Get.toNamed(Routes.viewPdf, arguments: value);
-              });
-            } catch (e) {
-              Get.toNamed(Routes.viewPdf, arguments: value);
-            }
+            showInterstitialAd(uid: _ownerId);
+            Get.toNamed(Routes.viewPdf, arguments: value)
+                ?.then((value) => showInterstitialAd(uid: _ownerId));
+            // });
+            // } catch (e) {
+            //   Get.toNamed(Routes.viewPdf, arguments: value);
+            // }
           } else {
             Get.showSnackbar(
               const GetSnackBar(
@@ -432,8 +435,56 @@ class EncryptDecryptController extends GetxController {
     });
   }
 
+  void createInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          interstitialAd = ad;
+          interstitialLoadAttempts = 0;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          interstitialLoadAttempts += 1;
+          interstitialAd = null;
+          if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
+            createInterstitialAd();
+          }
+        },
+      ),
+    );
+  }
+
+// AdWidget adWidget({required AdWithView ad}) {
+//     return AdWidget(ad: ad);
+//   }
+  Future<void> showInterstitialAd({String? uid}) async {
+    try {
+      if (interstitialAd != null) {
+        interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (InterstitialAd ad) {
+          ad.dispose();
+          adDismissed.value = true;
+          createInterstitialAd();
+        }, onAdFailedToShowFullScreenContent:
+                (InterstitialAd ad, AdError error) {
+          ad.dispose();
+          createInterstitialAd();
+        }, onAdShowedFullScreenContent: (InterstitialAd ad) {
+          if (uid != null) {
+            FirestoreData.updateSikka(uid);
+          }
+        });
+        interstitialAd!.show();
+      }
+    } on Exception {
+      // TODO
+    }
+  }
+
   @override
   void onInit() {
+    createInterstitialAd();
     receiveSharing();
     OpenAsDefault.getFileIntent.then((value) {
       if (value != null) {
@@ -455,6 +506,7 @@ class EncryptDecryptController extends GetxController {
 
   @override
   void onClose() {
+    interstitialAd?.dispose();
     _intentDataStreamSubscription.cancel();
     super.onClose();
   }

@@ -1,23 +1,27 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'package:filegram/app/controller/interstitial_ads_controller.dart';
+
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../controller/rewarded_ads_controller.dart';
+import '../../../core/helpers/ad_helper.dart';
 import '../../../core/services/getstorage.dart';
+import '../../../data/provider/firestore_data.dart';
 
 class FilesDeviceController extends GetxController {
-  final interstitialAdController = Get.put(InterstitialAdsController());
   final rename = ''.obs;
   // late StreamSubscription _intentDataStreamSubscription;
   final filesList = <FileSystemEntity>[].obs;
   final inlineAdIndex = 0;
-  final rewardedAdController = Get.put(RewardedAdsController());
+  InterstitialAd? interstitialAd;
+  final int maxFailedLoadAttempts = 3;
+  int interstitialLoadAttempts = 0;
+  final adDismissed = false.obs;
 
 // final analytics = AnalyticsService.analytics;
   // AppUpdateInfo? _updateInfo;
@@ -102,9 +106,58 @@ class FilesDeviceController extends GetxController {
     }
   }
 
+  void createInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          interstitialAd = ad;
+          interstitialLoadAttempts = 0;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          interstitialLoadAttempts += 1;
+          interstitialAd = null;
+          if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
+            createInterstitialAd();
+          }
+        },
+      ),
+    );
+  }
+
+// AdWidget adWidget({required AdWithView ad}) {
+//     return AdWidget(ad: ad);
+//   }
+  Future<void> showInterstitialAd({String? uid}) async {
+    try {
+      if (interstitialAd != null) {
+        interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (InterstitialAd ad) {
+          ad.dispose();
+          adDismissed.value = true;
+          createInterstitialAd();
+        }, onAdFailedToShowFullScreenContent:
+                (InterstitialAd ad, AdError error) {
+          ad.dispose();
+          createInterstitialAd();
+        }, onAdShowedFullScreenContent: (InterstitialAd ad) {
+          if (uid != null) {
+            FirestoreData.updateSikka(uid);
+          }
+        });
+        interstitialAd!.show();
+      }
+    } on Exception {
+      // TODO
+    }
+  }
+
   @override
   void onInit() async {
+    createInterstitialAd();
     await onInitialisation();
+
     // await receiveSharing();
     //  await analytics.setCurrentScreen(screenName: 'main_screen');
     // _updateInfo?.updateAvailability == UpdateAvailability.updateAvailable
@@ -116,5 +169,11 @@ class FilesDeviceController extends GetxController {
     //     : null;
 
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    interstitialAd?.dispose();
+    super.onClose();
   }
 }

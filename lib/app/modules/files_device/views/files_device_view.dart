@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../data/provider/firestore_data.dart';
 import '../controllers/files_device_controller.dart';
 
 class FilesDeviceView extends GetView<FilesDeviceController> {
@@ -260,29 +259,27 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                             ),
                           ),
                           onTap: () {
-                            try {
-                              controller
-                                  .rewardedAdController.rewardedInterstitialAd
-                                  .show(onUserEarnedReward: (ad, reward) {
-                                FirestoreData.updateSikka(_ownerId);
+                            //try {
+                            // controller
+                            //     .rewardedAdController.rewardedInterstitialAd
+                            //     .show(onUserEarnedReward: (ad, reward) {
+                            //   FirestoreData.updateSikka(_ownerId);
 
-                                controller.interstitialAdController
-                                    .showInterstitialAd(uid: _ownerId);
-                                Get.toNamed(Routes.viewPdf,
-                                    arguments: _currentfile.path);
-                                // ?.then((value) => controller
-                                //     .interstitialAdController
-                                //     .showInterstitialAd());
-                              });
-                            } catch (e) {
-                              controller.interstitialAdController
-                                  .showInterstitialAd(uid: _ownerId);
-                              Get.toNamed(Routes.viewPdf,
-                                  arguments: _currentfile.path);
-                              // ?.then((value) => controller
-                              //     .interstitialAdController
-                              //     .showInterstitialAd());
-                            }
+                            controller.showInterstitialAd(uid: _ownerId);
+                            Get.toNamed(Routes.viewPdf,
+                                    arguments: _currentfile.path)
+                                ?.then((value) => controller.showInterstitialAd(
+                                    uid: _ownerId));
+                            // });
+                            // } catch (e) {
+                            //   controller.interstitialAdController
+                            //       .showInterstitialAd(uid: _ownerId);
+                            //   Get.toNamed(Routes.viewPdf,
+                            //       arguments: _currentfile.path);
+                            //   // ?.then((value) => controller
+                            //   //     .interstitialAdController
+                            //   //     .showInterstitialAd());
+                            // }
                           },
                           subtitle: Text(
                             _ownerName +
