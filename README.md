@@ -12,7 +12,7 @@ A App made for controlling pdfs files privacy
 - [] Automatic Refresh After Uploading Files
 - [x] Receive Files Options
 - [] Subscription Feature
-- [] Money Earning For Content Creators
+- [x] Money Earning For Content Creators
 - [] Terms,Policy and Many More Things
 - [] Created By
 - [x] Intro Screens
@@ -28,7 +28,7 @@ A App made for controlling pdfs files privacy
 - [x] Whatsapp Tools
 - [] Different User Name
 - [x] Action View Filter
-- [] Playstore
+- [x] Playstore
 - [] Open License and Versions
 - [] Link Saver
 - [] Manage My Files
@@ -52,6 +52,7 @@ A App made for controlling pdfs files privacy
 - [] Search Feature for Pdfs
 - [] Cloud Upload Pdfs
 - [] Feature Request
+- [] Google drive Integration
 
 ## BUGS
 
