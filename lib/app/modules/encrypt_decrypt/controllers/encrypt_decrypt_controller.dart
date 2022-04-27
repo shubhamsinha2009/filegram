@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:filegram/app/controller/interstitial_ads_controller.dart';
+import 'package:filegram/app/controller/rewarded_ads_controller.dart';
 import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class EncryptDecryptController extends GetxController {
   final analytics = AnalyticsService.analytics;
   final homeController = Get.find<HomeController>();
   final interstitialAdController = Get.put(InterstitialAdsController());
+  final rewardedAdController = Get.put(RewardedAdsController());
   late StreamSubscription _intentDataStreamSubscription;
 
   Future<void> pickFile() async {
@@ -151,7 +153,6 @@ class EncryptDecryptController extends GetxController {
                               Get.back();
                             }
                             isLoading.toggle();
-
                             interstitialAdController.showInterstitialAd();
                             encryptDecrypt(pickedFile,
                                     fileName: _fileName, sourceUrl: _sourceUrl)
@@ -199,8 +200,18 @@ class EncryptDecryptController extends GetxController {
             );
             final _ownerId =
                 GetStorageDbService.getRead(key: value)?['ownerId'];
-            interstitialAdController.showInterstitialAd(uid: _ownerId);
-            Get.toNamed(Routes.viewPdf, arguments: value);
+
+            try {
+              rewardedAdController.rewardedInterstitialAd.show(
+                  onUserEarnedReward: (ad, reward) {
+                FirestoreData.updateSikka(_ownerId);
+
+                interstitialAdController.showInterstitialAd(uid: _ownerId);
+                Get.toNamed(Routes.viewPdf, arguments: value);
+              });
+            } catch (e) {
+              Get.toNamed(Routes.viewPdf, arguments: value);
+            }
           } else {
             Get.showSnackbar(
               const GetSnackBar(

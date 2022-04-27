@@ -12,6 +12,7 @@ abstract class Routes {
   static const viewPdf = _Paths.viewPdf;
   static const whatsappChat = _Paths.whatsappChat;
   static const gullak = _Paths.gullak;
+  static const updatePhoneNumber = _Paths.updatePhoneNumber;
 }
 
 abstract class _Paths {
@@ -26,4 +27,5 @@ abstract class _Paths {
   static const viewPdf = '/view-pdf';
   static const whatsappChat = '/whatsappChat';
   static const gullak = '/gullak';
+  static const updatePhoneNumber = '/update-phone-number';
 }

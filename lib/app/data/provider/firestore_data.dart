@@ -3,7 +3,7 @@ import 'package:filegram/app/data/model/views_model.dart';
 import '../enums/docpermission.dart';
 import 'package:flutter/services.dart';
 import '../model/documents_model.dart';
-import '../model/gullak_mode.dart';
+import '../model/gullak_model.dart';
 import '../model/user_model.dart';
 
 class FirestoreData {
@@ -172,6 +172,17 @@ class FirestoreData {
           "name": user.name,
         },
       );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> updatePhoneUser(
+      {required String id, required String phoneNumber}) async {
+    try {
+      await _firestore.collection("users").doc(id).update({
+        "phoneNumber": phoneNumber,
+      });
     } catch (e) {
       rethrow;
     }
@@ -367,6 +378,7 @@ class FirestoreData {
       await _firestore.collection("gullak").doc(userId).set(
         {
           "sikka": 0,
+          "withdrawalLink": "",
         },
       );
     } catch (e) {
@@ -387,9 +399,12 @@ class FirestoreData {
               .snapshots()
               .map((event) => _doc = event));
         }
-
+        Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
         return GullakModel(
-          sikka: _doc["sikka"],
+          sikka: _data["sikka"],
+          withdrawalLink: _data.containsKey("withdrawalLink")
+              ? _data["withdrawalLink"]
+              : "",
         );
       });
     } catch (e) {

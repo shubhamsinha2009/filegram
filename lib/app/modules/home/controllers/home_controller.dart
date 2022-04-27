@@ -1,7 +1,6 @@
-import 'package:filegram/app/data/model/gullak_mode.dart';
+import 'package:filegram/app/data/model/gullak_model.dart';
 import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';
 import 'package:filegram/app/routes/app_pages.dart';
-import 'package:flutter/foundation.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 import '../../no_internet/controllers/no_internet_controller.dart';
@@ -27,38 +26,48 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
-    if (auth.currentUser?.uid != null) {
-      final String _uid = auth.currentUser?.uid ?? '';
-      gullak.bindStream(firestoreData.getGullak(_uid));
-      user(await firestoreData.getUser(_uid));
-    }
+    try {
+      if (auth.currentUser?.uid != null) {
+        final String _uid = auth.currentUser?.uid ?? '';
+        gullak.bindStream(firestoreData.getGullak(_uid));
+        user(await firestoreData.getUser(_uid));
+      }
 
-    if (kReleaseMode) {
+      quickActions.setShortcutItems(<ShortcutItem>[
+        const ShortcutItem(
+            type: 'click_to_chat',
+            localizedTitle: 'Whatsapp Click to Chat',
+            icon: 'icon_whatsapp'),
+        const ShortcutItem(
+            type: 'action_upload_file',
+            localizedTitle: 'Upload File(Pdf)',
+            icon: 'icon_upload')
+      ]);
+
+      quickActions.initialize((shortcutType) {
+        if (shortcutType == 'click_to_chat') {
+          Get.toNamed(Routes.whatsappChat);
+        } else if (shortcutType == 'action_upload_file') {
+          Get.find<EncryptDecryptController>().pickFile();
+        }
+        // TODO: More handling code...
+      });
+    } catch (e) {
+      //TODO: do nothing
+    }
+    super.onInit();
+  }
+
+  @override
+  void onReady() async {
+    try {
       if ((await InAppUpdate.checkForUpdate()).updateAvailability ==
           UpdateAvailability.updateAvailable) {
         InAppUpdate.performImmediateUpdate().catchError((e) {});
       }
+    } catch (e) {
+      // TODO:  do Nothing
     }
-
-    quickActions.setShortcutItems(<ShortcutItem>[
-      const ShortcutItem(
-          type: 'click_to_chat',
-          localizedTitle: 'Whatsapp Click to Chat',
-          icon: 'icon_whatsapp'),
-      const ShortcutItem(
-          type: 'action_upload_file',
-          localizedTitle: 'Upload File(Pdf)',
-          icon: 'icon_upload')
-    ]);
-
-    quickActions.initialize((shortcutType) {
-      if (shortcutType == 'click_to_chat') {
-        Get.toNamed(Routes.whatsappChat);
-      } else if (shortcutType == 'action_upload_file') {
-        Get.find<EncryptDecryptController>().pickFile();
-      }
-      // More handling code...
-    });
-    super.onInit();
+    super.onReady();
   }
 }

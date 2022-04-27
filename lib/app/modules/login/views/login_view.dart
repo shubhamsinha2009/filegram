@@ -2,14 +2,13 @@ import 'package:filegram/app/modules/login/widgets/click_to_chat.dart';
 import 'package:filegram/app/modules/login/widgets/no_cloud.dart';
 import 'package:filegram/app/modules/login/widgets/passwordless.dart';
 import 'package:filegram/app/modules/login/widgets/pocket_pdf.dart';
-
 import '../../no_internet/views/no_internet_view.dart';
-
 import '../controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import '../widgets/google_login.dart';
+import '../widgets/gullak.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({Key? key}) : super(key: key);
@@ -17,9 +16,10 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _items = [
-      PasswordlessEncryption(controller: controller),
-      NoCloud(controller: controller),
       PocketPdf(controller: controller),
+      Gullak(controller: controller),
+      NoCloud(controller: controller),
+      PasswordlessEncryption(controller: controller),
       ClicktoChat(controller: controller),
       GoogleLogin(controller: controller),
     ];

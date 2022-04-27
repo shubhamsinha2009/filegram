@@ -7,7 +7,7 @@ A App made for controlling pdfs files privacy
 - [x] Pdf Viewer Update with Settings
 - [x] Rename Feature
 - [x] Check Cached file before decrypting files
-- [] Implement Rewarded Ads
+- [x] Implement Rewarded Ads
 - [x] Only Pdf Upload
 - [] Automatic Refresh After Uploading Files
 - [x] Receive Files Options
@@ -35,8 +35,8 @@ A App made for controlling pdfs files privacy
 - [] Use Bytes instead of files
 - [] Firebase Analytics Implementation
 - [] Google Sign In Terms Conditions
-- [] Share plus files with text
-- [] Quick Actions Click to Chat
+- [x] Share plus files with text
+- [x] Quick Actions Click to Chat
 - [] Crashlytics Advanced
 - [] Dynamic Links
 - [] Ads Options - For Users
@@ -44,6 +44,14 @@ A App made for controlling pdfs files privacy
 - [] Landscape Support
 - [] Toast
 - [] login Flow using Cloud Functions
+- [] Use Firebase Products
+- [] Flutter Local Notification
+- [] ADMOB Mediation
+- [] Profile Update Feature
+- [x] Phone Number Linked
+- [] Search Feature for Pdfs
+- [] Cloud Upload Pdfs
+- [] Feature Request
 
 ## BUGS
 

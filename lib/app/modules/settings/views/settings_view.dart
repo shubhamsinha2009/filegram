@@ -21,7 +21,7 @@ class SettingsView extends GetView<SettingsController> {
               controller.homeController.user.value.name ?? 'User Name',
             ),
             accountEmail: Text(
-              controller.homeController.user.value.emailId ?? 'User ID',
+              controller.homeController.user.value.emailId ?? 'User Email Id',
             ),
             currentAccountPicture: CachedNetworkImage(
               imageUrl: controller.homeController.user.value.photoUrl ??
@@ -31,7 +31,18 @@ class SettingsView extends GetView<SettingsController> {
             ),
           ),
         ),
-
+        // ListTile(
+        //   title: const Text(
+        //     'Update Phone Number',
+        //     style: TextStyle(
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //   ),
+        //   leading: const Icon(
+        //     Icons.phone_android_outlined,
+        //   ),
+        //   onTap: () => Get.toNamed(Routes.updatePhoneNumber),
+        // ),
         ListTile(
           title: const Text(
             'Whatsapp Click to Chat',

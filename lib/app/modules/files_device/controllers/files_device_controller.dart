@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../controller/rewarded_ads_controller.dart';
 import '../../../core/services/getstorage.dart';
 
 class FilesDeviceController extends GetxController {
@@ -16,6 +17,7 @@ class FilesDeviceController extends GetxController {
   // late StreamSubscription _intentDataStreamSubscription;
   final filesList = <FileSystemEntity>[].obs;
   final inlineAdIndex = 0;
+  final rewardedAdController = Get.put(RewardedAdsController());
 
 // final analytics = AnalyticsService.analytics;
   // AppUpdateInfo? _updateInfo;
