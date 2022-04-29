@@ -18,6 +18,7 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.newVersion.showAlertIfNecessary(context: context);
     List<Widget> bodyPages = [
       const FilesDeviceView(),
       const EncryptedFileListView(),
@@ -27,7 +28,7 @@ class HomeView extends GetView<HomeController> {
       () => controller.isInternetConnected.isTrue
           ? Scaffold(
               appBar: AppBar(
-                title: const Text('Filegram Beta'),
+                title: const Text('Filegram'),
                 leading: Image.asset(
                   "assets/app_bar.png",
                 ),

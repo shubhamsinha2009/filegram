@@ -207,7 +207,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                 //     .logEvent(name: 'shared_file', parameters: {
                                 //   'file_path': _currentfile.path,
                                 // });
-                                // Todo: Add text and subject app link and more
+                                // TODO: Add text and subject app link and more
                                 await Share.shareFiles(
                                   [_currentfile.path],
                                   text:

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:new_version/new_version.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../routes/app_pages.dart';
@@ -102,6 +103,32 @@ class SettingsView extends GetView<SettingsController> {
           ),
           onTap: () => Share.share(
               "Send your pdf files through filegram and earn money -- Check Out Filegram here for many more exciting features for you ----  https://play.google.com/store/apps/details?id=com.sks.filegram"),
+        ),
+        ListTile(
+          onTap: () async {
+            final newVersion = NewVersion();
+            final status = await newVersion.getVersionStatus();
+            if (status != null) {
+              debugPrint(status.releaseNotes);
+              debugPrint(status.appStoreLink);
+              debugPrint(status.localVersion);
+              debugPrint(status.storeVersion);
+              debugPrint(status.canUpdate.toString());
+              newVersion.showUpdateDialog(
+                context: context,
+                versionStatus: status,
+                dialogTitle: 'Custom Title',
+                dialogText: 'Custom Text',
+              );
+            }
+          },
+          leading: const Icon(Icons.system_update_outlined),
+          title: const Text(
+            'Check For Update',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
         ListTile(
           onTap: controller.signOut,

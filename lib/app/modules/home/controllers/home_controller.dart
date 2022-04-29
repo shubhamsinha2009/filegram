@@ -1,6 +1,7 @@
 import 'package:filegram/app/data/model/gullak_model.dart';
 import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';
 import 'package:filegram/app/routes/app_pages.dart';
+import 'package:new_version/new_version.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 import '../../no_internet/controllers/no_internet_controller.dart';
@@ -8,13 +9,14 @@ import '../../../data/model/user_model.dart';
 import '../../../data/provider/firestore_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:in_app_update/in_app_update.dart';
 
 class HomeController extends GetxController {
   final isFileDeviceOpen = true.obs;
   final user = UserModel().obs;
   final auth = FirebaseAuth.instance;
   final firestoreData = FirestoreData();
+  final newVersion = NewVersion(forceAppVersion: "1.1.0+30");
+
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
   final selectedIndex = 0.obs;
@@ -56,18 +58,5 @@ class HomeController extends GetxController {
       //TODO: do nothing
     }
     super.onInit();
-  }
-
-  @override
-  void onReady() async {
-    try {
-      if ((await InAppUpdate.checkForUpdate()).updateAvailability ==
-          UpdateAvailability.updateAvailable) {
-        InAppUpdate.performImmediateUpdate().catchError((e) {});
-      }
-    } catch (e) {
-      // TODO:  do Nothing
-    }
-    super.onReady();
   }
 }

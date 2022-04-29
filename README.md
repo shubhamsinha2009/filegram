@@ -53,6 +53,7 @@ A App made for controlling pdfs files privacy
 - [] Cloud Upload Pdfs
 - [] Feature Request
 - [] Google drive Integration
+- [] Features
 
 ## BUGS
 

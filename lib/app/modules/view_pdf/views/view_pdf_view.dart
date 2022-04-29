@@ -24,6 +24,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
               icon: const Icon(Icons.rotate_90_degrees_ccw_outlined)),
         ],
       ),
+      // bottomNavigationBar: ,
       //top: false,
       body: Obx(
         () => controller.isDecryptionDone.isFalse
