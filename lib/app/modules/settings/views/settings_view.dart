@@ -107,20 +107,7 @@ class SettingsView extends GetView<SettingsController> {
         ListTile(
           onTap: () async {
             final newVersion = NewVersion();
-            final status = await newVersion.getVersionStatus();
-            if (status != null) {
-              debugPrint(status.releaseNotes);
-              debugPrint(status.appStoreLink);
-              debugPrint(status.localVersion);
-              debugPrint(status.storeVersion);
-              debugPrint(status.canUpdate.toString());
-              newVersion.showUpdateDialog(
-                context: context,
-                versionStatus: status,
-                dialogTitle: 'Custom Title',
-                dialogText: 'Custom Text',
-              );
-            }
+            newVersion.showAlertIfNecessary(context: context);
           },
           leading: const Icon(Icons.system_update_outlined),
           title: const Text(

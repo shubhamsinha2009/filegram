@@ -18,7 +18,6 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.newVersion.showAlertIfNecessary(context: context);
     List<Widget> bodyPages = [
       const FilesDeviceView(),
       const EncryptedFileListView(),

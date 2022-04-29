@@ -435,8 +435,8 @@ class EncryptDecryptController extends GetxController {
     });
   }
 
-  void createInterstitialAd() {
-    InterstitialAd.load(
+  Future<void> createInterstitialAd() async {
+    await InterstitialAd.load(
       adUnitId: AdHelper.interstitialAdUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
@@ -483,8 +483,8 @@ class EncryptDecryptController extends GetxController {
   }
 
   @override
-  void onInit() {
-    createInterstitialAd();
+  void onInit() async {
+    await createInterstitialAd();
     receiveSharing();
     OpenAsDefault.getFileIntent.then((value) {
       if (value != null) {

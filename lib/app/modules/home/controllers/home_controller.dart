@@ -15,7 +15,6 @@ class HomeController extends GetxController {
   final user = UserModel().obs;
   final auth = FirebaseAuth.instance;
   final firestoreData = FirestoreData();
-  final newVersion = NewVersion(forceAppVersion: "1.1.0+30");
 
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
@@ -57,6 +56,17 @@ class HomeController extends GetxController {
     } catch (e) {
       //TODO: do nothing
     }
+
     super.onInit();
+  }
+
+  @override
+  void onReady() async {
+    // TODO : Implemnt firestore false allow dissmisal
+    final newVersion = NewVersion();
+    if (Get.context != null) {
+      newVersion.showAlertIfNecessary(context: Get.context!);
+    }
+    super.onReady();
   }
 }
