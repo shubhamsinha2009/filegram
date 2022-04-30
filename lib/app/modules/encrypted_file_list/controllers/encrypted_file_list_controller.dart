@@ -17,7 +17,6 @@ class EncryptedFileListController extends GetxController
   final sharedEmailIds = <String>[].obs;
   String? sourceUrl;
   final TextEditingController textEditingController = TextEditingController();
-  // final String? _ownerId = Get.find<HomeController>().auth.currentUser?.uid;
   final groupValue = DocumentPermission.public.obs;
   final inlineAdIndex = 0;
 
@@ -26,13 +25,6 @@ class EncryptedFileListController extends GetxController
     await findAllEncryptedFiles();
     super.onInit();
   }
-
-  // int getListViewItemIndex(int index) {
-  //   if (index >= inlineAdIndex && adsController.isInlineBannerAdLoaded.value) {
-  //     return index - 1;
-  //   }
-  //   return index;
-  // }
 
   Future<void> findAllEncryptedFiles() async {
     await FirestoreData.getDocumentsListFromCache(

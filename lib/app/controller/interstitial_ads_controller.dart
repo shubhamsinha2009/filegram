@@ -9,28 +9,32 @@
 //   int interstitialLoadAttempts = 0;
 //   final adDismissed = false.obs;
 
-//   AdWidget adWidget({required AdWithView ad}) {
-//     return AdWidget(ad: ad);
-//   }
+  // AdWidget adWidget({required AdWithView ad}) {
+  //   return AdWidget(ad: ad);
+  // }
 
 //   void createInterstitialAd() {
-//     InterstitialAd.load(
-//       adUnitId: AdHelper.interstitialAdUnitId,
-//       request: const AdRequest(),
-//       adLoadCallback: InterstitialAdLoadCallback(
-//         onAdLoaded: (InterstitialAd ad) {
-//           interstitialAd = ad;
-//           interstitialLoadAttempts = 0;
-//         },
-//         onAdFailedToLoad: (LoadAdError error) {
-//           interstitialLoadAttempts += 1;
-//           interstitialAd = null;
-//           if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
-//             createInterstitialAd();
-//           }
-//         },
-//       ),
-//     );
+//     try {
+//       InterstitialAd.load(
+//         adUnitId: AdHelper.interstitialAdUnitId,
+//         request: const AdRequest(),
+//         adLoadCallback: InterstitialAdLoadCallback(
+//           onAdLoaded: (InterstitialAd ad) {
+//             interstitialAd = ad;
+//             interstitialLoadAttempts = 0;
+//           },
+//           onAdFailedToLoad: (LoadAdError error) {
+//             interstitialLoadAttempts += 1;
+//             interstitialAd = null;
+//             if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
+//               createInterstitialAd();
+//             }
+//           },
+//         ),
+//       );
+//     } on Exception catch (e) {
+//       // TODO
+//     }
 //   }
 
 //   Future<void> showInterstitialAd({String? uid}) async {
@@ -59,7 +63,11 @@
 
 //   @override
 //   void onInit() {
-//     createInterstitialAd();
+//     try {
+//       createInterstitialAd();
+//     } on Exception catch (e) {
+//       // TODO
+//     }
 //     super.onInit();
 //   }
 

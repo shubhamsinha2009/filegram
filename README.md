@@ -54,6 +54,7 @@ A App made for controlling pdfs files privacy
 - [] Feature Request
 - [] Google drive Integration
 - [] Features
+- [] Timer Ads
 
 ## BUGS
 

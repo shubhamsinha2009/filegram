@@ -44,13 +44,6 @@ class FilesDeviceController extends GetxController {
     return '${DateFormat.yMMMMd('en_US').add_jm().format(time)} - ${((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i]}';
   }
 
-  // int getListViewItemIndex(int index) {
-  //   if (index >= inlineAdIndex && adsController.isInlineBannerAdLoaded.value) {
-  //     return index - 1;
-  //   }
-  //   return index;
-  // }
-
   String nameOfFile(String _currentfilePath) =>
       _currentfilePath.split('/').last;
 
@@ -106,24 +99,28 @@ class FilesDeviceController extends GetxController {
     }
   }
 
-  void createInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: AdHelper.interstitialAdUnitId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (InterstitialAd ad) {
-          interstitialAd = ad;
-          interstitialLoadAttempts = 0;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          interstitialLoadAttempts += 1;
-          interstitialAd = null;
-          if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
-            createInterstitialAd();
-          }
-        },
-      ),
-    );
+  Future<void> createInterstitialAd() async {
+    try {
+      await InterstitialAd.load(
+        adUnitId: AdHelper.openPdf,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            interstitialAd = ad;
+            interstitialLoadAttempts = 0;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            interstitialLoadAttempts += 1;
+            interstitialAd = null;
+            if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
+              createInterstitialAd();
+            }
+          },
+        ),
+      );
+    } on Exception catch (e) {
+      // TODO
+    }
   }
 
 // AdWidget adWidget({required AdWithView ad}) {
@@ -148,7 +145,7 @@ class FilesDeviceController extends GetxController {
         });
         interstitialAd!.show();
       }
-    } on Exception {
+    } on Exception catch (e) {
       // TODO
     }
   }

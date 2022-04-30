@@ -24,7 +24,13 @@ class ViewPdfView extends GetView<ViewPdfController> {
               icon: const Icon(Icons.rotate_90_degrees_ccw_outlined)),
         ],
       ),
-      // bottomNavigationBar: ,
+      // bottomNavigationBar: controller.isBottomBannerAdLoaded.isTrue
+      //     ? SizedBox(
+      //         height: controller.bottomBannerAd.size.height.toDouble(),
+      //         width: controller.bottomBannerAd.size.width.toDouble(),
+      //         child: controller.adWidget(ad: controller.bottomBannerAd),
+      //       )
+      //     : null,
       //top: false,
       body: Obx(
         () => controller.isDecryptionDone.isFalse

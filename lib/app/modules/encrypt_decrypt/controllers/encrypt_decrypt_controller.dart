@@ -155,7 +155,7 @@ class EncryptDecryptController extends GetxController {
                               Get.back();
                             }
                             isLoading.toggle();
-                            showInterstitialAd();
+                            showInterstitialAd().catchError((e) {});
                             encryptDecrypt(pickedFile,
                                     fileName: _fileName, sourceUrl: _sourceUrl)
                                 .then((_fileOut) {
@@ -203,18 +203,14 @@ class EncryptDecryptController extends GetxController {
             final _ownerId =
                 GetStorageDbService.getRead(key: value)?['ownerId'];
 
-            //  try {
             // rewardedAdController.rewardedInterstitialAd.show(
             //     onUserEarnedReward: (ad, reward) {
             //   FirestoreData.updateSikka(_ownerId);
 
-            showInterstitialAd(uid: _ownerId);
-            Get.toNamed(Routes.viewPdf, arguments: value)
-                ?.then((value) => showInterstitialAd(uid: _ownerId));
+            showInterstitialAd(uid: _ownerId).catchError((e) {});
+            Get.toNamed(Routes.viewPdf, arguments: value);
             // });
-            // } catch (e) {
-            //   Get.toNamed(Routes.viewPdf, arguments: value);
-            // }
+
           } else {
             Get.showSnackbar(
               const GetSnackBar(
@@ -436,23 +432,27 @@ class EncryptDecryptController extends GetxController {
   }
 
   Future<void> createInterstitialAd() async {
-    await InterstitialAd.load(
-      adUnitId: AdHelper.interstitialAdUnitId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (InterstitialAd ad) {
-          interstitialAd = ad;
-          interstitialLoadAttempts = 0;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          interstitialLoadAttempts += 1;
-          interstitialAd = null;
-          if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
-            createInterstitialAd();
-          }
-        },
-      ),
-    );
+    try {
+      await InterstitialAd.load(
+        adUnitId: AdHelper.viewInterstitial,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            interstitialAd = ad;
+            interstitialLoadAttempts = 0;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            interstitialLoadAttempts += 1;
+            interstitialAd = null;
+            if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
+              createInterstitialAd();
+            }
+          },
+        ),
+      );
+    } on Exception catch (e) {
+      // TODO
+    }
   }
 
 // AdWidget adWidget({required AdWithView ad}) {
@@ -483,8 +483,8 @@ class EncryptDecryptController extends GetxController {
   }
 
   @override
-  void onInit() async {
-    await createInterstitialAd();
+  void onInit() {
+    createInterstitialAd().catchError((e) {});
     receiveSharing();
     OpenAsDefault.getFileIntent.then((value) {
       if (value != null) {

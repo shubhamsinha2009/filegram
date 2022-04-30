@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../core/helpers/ad_helper.dart';
 import '../../../data/provider/firestore_data.dart';
 import '../../encrypt_decrypt/services/file_encrypter.dart';
 import '../../home/controllers/home_controller.dart';
@@ -28,6 +30,13 @@ class ViewPdfController extends GetxController {
   late String fileOut;
   String? sourceUrl;
   String? ownerId;
+  InterstitialAd? interstitialAd;
+  final int maxFailedLoadAttempts = 3;
+  int interstitialLoadAttempts = 0;
+  final adDismissed = false.obs;
+  Timer? timer;
+  // final isBottomBannerAdLoaded = false.obs;
+  // late BannerAd bottomBannerAd;
 
   Future<bool> doDecryption(String _fileIn) async {
     try {
@@ -58,6 +67,75 @@ class ViewPdfController extends GetxController {
       rethrow;
     }
   }
+
+  Future<void> createInterstitialAd() async {
+    try {
+      await InterstitialAd.load(
+        adUnitId: AdHelper.viewPdf,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            interstitialAd = ad;
+            interstitialLoadAttempts = 0;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            interstitialLoadAttempts += 1;
+            interstitialAd = null;
+            if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
+              createInterstitialAd();
+            }
+          },
+        ),
+      );
+    } on Exception catch (e) {
+      // TODO
+    }
+  }
+
+  Future<void> showInterstitialAd({String? uid}) async {
+    try {
+      if (interstitialAd != null) {
+        interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (InterstitialAd ad) {
+          ad.dispose();
+          adDismissed.value = true;
+          createInterstitialAd();
+        }, onAdFailedToShowFullScreenContent:
+                (InterstitialAd ad, AdError error) {
+          ad.dispose();
+          createInterstitialAd();
+        }, onAdShowedFullScreenContent: (InterstitialAd ad) {
+          if (uid != null) {
+            FirestoreData.updateSikka(uid);
+          }
+        });
+        interstitialAd!.show();
+      }
+    } on Exception {
+      // TODO
+    }
+  }
+
+  // void _createBottomBannerAd() {
+  //   bottomBannerAd = BannerAd(
+  //     adUnitId: AdHelper.viewPdfBanner,
+  //     size: AdSize.banner,
+  //     request: const AdRequest(),
+  //     listener: BannerAdListener(
+  //       onAdLoaded: (_) {
+  //         isBottomBannerAdLoaded.value = true;
+  //       },
+  //       onAdFailedToLoad: (ad, error) {
+  //         ad.dispose();
+  //       },
+  //     ),
+  //   );
+  //   bottomBannerAd.load();
+  // }
+
+  // AdWidget adWidget({required AdWithView ad}) {
+  //   return AdWidget(ad: ad);
+  // }
 
   @override
   void onInit() async {
@@ -98,6 +176,18 @@ class ViewPdfController extends GetxController {
         GetStorageDbService.getRead(key: filePath);
     intialPageNumber = _pdfDetails?['intialPageNumber'] ?? 0;
 
+    timer = Timer.periodic(
+      const Duration(minutes: 3),
+      (timer) {
+        showInterstitialAd(uid: ownerId).catchError((e) {});
+      },
+    );
+    try {
+      createInterstitialAd();
+      // _createBottomBannerAd();
+    } on Exception catch (e) {
+      // TODO
+    }
     super.onInit();
   }
 
@@ -110,6 +200,10 @@ class ViewPdfController extends GetxController {
 
   @override
   void onClose() async {
+    timer?.cancel();
+    interstitialAd?.dispose();
+    //  bottomBannerAd.dispose();
+
     if (File(fileOut).existsSync()) {
       await File(fileOut).delete();
     }

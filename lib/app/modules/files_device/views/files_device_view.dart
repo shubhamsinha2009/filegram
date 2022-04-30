@@ -265,11 +265,11 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                             //     .show(onUserEarnedReward: (ad, reward) {
                             //   FirestoreData.updateSikka(_ownerId);
 
-                            controller.showInterstitialAd(uid: _ownerId);
+                            controller
+                                .showInterstitialAd(uid: _ownerId)
+                                .catchError((e) {});
                             Get.toNamed(Routes.viewPdf,
-                                    arguments: _currentfile.path)
-                                ?.then((value) => controller.showInterstitialAd(
-                                    uid: _ownerId));
+                                arguments: _currentfile.path);
                             // });
                             // } catch (e) {
                             //   controller.interstitialAdController
