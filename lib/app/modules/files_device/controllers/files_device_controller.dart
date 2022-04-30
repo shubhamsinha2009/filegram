@@ -17,11 +17,13 @@ class FilesDeviceController extends GetxController {
   final rename = ''.obs;
   // late StreamSubscription _intentDataStreamSubscription;
   final filesList = <FileSystemEntity>[].obs;
-  final inlineAdIndex = 0;
   InterstitialAd? interstitialAd;
   final int maxFailedLoadAttempts = 3;
   int interstitialLoadAttempts = 0;
   final adDismissed = false.obs;
+  final inlineAdIndex = 2;
+  late BannerAd inlineBannerAd;
+  final isInlineBannerAdLoaded = false.obs;
 
 // final analytics = AnalyticsService.analytics;
   // AppUpdateInfo? _updateInfo;
@@ -123,9 +125,10 @@ class FilesDeviceController extends GetxController {
     }
   }
 
-// AdWidget adWidget({required AdWithView ad}) {
-//     return AdWidget(ad: ad);
-//   }
+  AdWidget adWidget({required AdWithView ad}) {
+    return AdWidget(ad: ad);
+  }
+
   Future<void> showInterstitialAd({String? uid}) async {
     try {
       if (interstitialAd != null) {
@@ -150,11 +153,37 @@ class FilesDeviceController extends GetxController {
     }
   }
 
+  void _createInlineBannerAd() {
+    inlineBannerAd = BannerAd(
+      size: AdSize.largeBanner,
+      adUnitId: AdHelper.libraryBanner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          isInlineBannerAdLoaded.value = true;
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+    inlineBannerAd.load();
+  }
+
+  int getListViewItemIndex(int index) {
+    if (index >= inlineAdIndex &&
+        isInlineBannerAdLoaded.isTrue &&
+        (filesList.length >= inlineAdIndex)) {
+      return index - 1;
+    }
+    return index;
+  }
+
   @override
   void onInit() async {
     createInterstitialAd();
     await onInitialisation();
-
+    _createInlineBannerAd();
     // await receiveSharing();
     //  await analytics.setCurrentScreen(screenName: 'main_screen');
     // _updateInfo?.updateAvailability == UpdateAvailability.updateAvailable
@@ -171,6 +200,7 @@ class FilesDeviceController extends GetxController {
   @override
   void onClose() {
     interstitialAd?.dispose();
+    inlineBannerAd.dispose();
     super.onClose();
   }
 }

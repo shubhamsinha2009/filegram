@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:new_version/new_version.dart';
 import 'package:quick_actions/quick_actions.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../../no_internet/controllers/no_internet_controller.dart';
 import '../../../data/model/user_model.dart';
@@ -48,7 +49,7 @@ class HomeController extends GetxController {
         snackPosition: SnackPosition.TOP,
         duration: Duration(seconds: 3),
       ));
-      Timer(const Duration(seconds: 3), (() => SystemNavigator.pop()));
+      Timer(const Duration(seconds: 5), (() => SystemNavigator.pop()));
     }
   }
 
@@ -87,6 +88,8 @@ class HomeController extends GetxController {
     if (kReleaseMode) {
       await checkJailBreak();
     }
+
+    Wakelock.toggle(enable: true);
 
     super.onInit();
   }

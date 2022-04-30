@@ -1,8 +1,8 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AdHelper {
-  static String get viewPdfBanner {
-    return dotenv.get('viewPdfBanner');
+  static String get gullakBanner {
+    return dotenv.get('gullakBanner');
   }
 
   static String get viewInterstitial {
@@ -21,7 +21,15 @@ class AdHelper {
     return dotenv.get('appOpenAd');
   }
 
-  static String get rewardedAdUnitId {
-    return dotenv.get('rewardedAd');
+  static String get rewardedAdWithdrawal {
+    return dotenv.get('rewardedAdWithdrawal');
+  }
+
+  static String get libraryBanner {
+    return dotenv.get('libraryBanner');
+  }
+
+  static String get encryptedBanner {
+    return dotenv.get('encryptedBanner');
   }
 }

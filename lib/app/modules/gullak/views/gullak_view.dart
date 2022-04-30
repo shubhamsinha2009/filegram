@@ -26,6 +26,18 @@ class GullakView extends GetView<GullakController> {
         //     color: Color.fromARGB(255, 194, 103, 70)),
       ),
       body: ListView(children: [
+        Obx(
+          () => controller.istopBannerAdLoaded.isTrue
+              ? SizedBox(
+                  height: controller.topBannerAd.size.height.toDouble(),
+                  width: controller.topBannerAd.size.width.toDouble(),
+                  child: controller.adWidget(ad: controller.topBannerAd),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
+        ),
         AnimatedContainer(
           duration: const Duration(milliseconds: 500),
           width: double.infinity,
@@ -87,8 +99,7 @@ class GullakView extends GetView<GullakController> {
                 height: 20,
               ),
               Obx(() => LinearProgressIndicator(
-                    value: controller
-                        .getLinearValue(controller.gullak.value.sikka),
+                    value: controller.gullak.value.sikka / 100000,
                     backgroundColor: Colors.grey,
                     color: Colors.purple,
                     minHeight: 10,
@@ -97,7 +108,7 @@ class GullakView extends GetView<GullakController> {
                 height: 10,
               ),
               Obx(() => Text(
-                    "You've reached ${controller.getLinearValue(controller.gullak.value.sikka)}% of your payment threshold(1,00,000 Sikka)",
+                    "You've reached ${controller.gullak.value.sikka / 1000}% of your payment threshold(1,00,000 Sikka)",
                     softWrap: true,
                     textAlign: TextAlign.center,
                   )),
@@ -105,22 +116,26 @@ class GullakView extends GetView<GullakController> {
                 height: 20,
               ),
               OutlinedButton(
-                onPressed: () async {
+                onPressed: () {
                   try {
-                    controller.gullak.value.withdrawalLink.isEmpty
-                        ? Get.dialog(AlertDialog(
-                            title: const Text(
-                                'Sorry , Yet Not Qualified for Withdrawal '),
-                            content: const Text(
-                                'You can withdraw money between 1st - 5th day of every month only if your payment threshold is compleleted '),
-                            actions: [
-                              OutlinedButton(
-                                  onPressed: () => Get.back(),
-                                  child: const Text('OK'))
-                            ],
-                            backgroundColor: Colors.black,
-                          ))
-                        : await launch(controller.gullak.value.withdrawalLink);
+                    controller.rewardedInterstitialAd.show(
+                        onUserEarnedReward: (ad, reward) async {
+                      controller.gullak.value.withdrawalLink.isEmpty
+                          ? Get.dialog(AlertDialog(
+                              title: const Text(
+                                  'Sorry , Yet Not Qualified for Withdrawal '),
+                              content: const Text(
+                                  'You can withdraw money between 1st - 5th day of every month only if your payment threshold is compleleted '),
+                              actions: [
+                                OutlinedButton(
+                                    onPressed: () => Get.back(),
+                                    child: const Text('OK'))
+                              ],
+                              backgroundColor: Colors.black,
+                            ))
+                          : await launch(
+                              controller.gullak.value.withdrawalLink);
+                    });
                   } on Exception {
                     Get.showSnackbar(const GetSnackBar(
                       messageText: Text('Could not  able to open it'),
@@ -154,6 +169,7 @@ class GullakView extends GetView<GullakController> {
             ],
           ),
         ),
+
         // Container(
         //   width: double.infinity,
         //   padding: const EdgeInsets.only(

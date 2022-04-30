@@ -8,6 +8,7 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../../../core/helpers/ad_helper.dart';
 import '../../../data/provider/firestore_data.dart';
@@ -23,7 +24,7 @@ class ViewPdfController extends GetxController {
   final isVisible = true.obs;
   late final String filePath;
   final currentPageNumber = 0.obs;
-  late int intialPageNumber;
+  int intialPageNumber = 0;
   String? photoUrl;
   String? ownerName;
   late File file;
@@ -34,7 +35,8 @@ class ViewPdfController extends GetxController {
   final int maxFailedLoadAttempts = 3;
   int interstitialLoadAttempts = 0;
   final adDismissed = false.obs;
-  Timer? timer;
+  Timer? _timer1;
+  Timer? _timer2;
   // final isBottomBannerAdLoaded = false.obs;
   // late BannerAd bottomBannerAd;
 
@@ -174,20 +176,24 @@ class ViewPdfController extends GetxController {
 
     final Map<String, dynamic>? _pdfDetails =
         GetStorageDbService.getRead(key: filePath);
-    intialPageNumber = _pdfDetails?['intialPageNumber'] ?? 0;
+    intialPageNumber = _pdfDetails?['intialPageNumber'];
 
-    timer = Timer.periodic(
+    _timer1 = Timer.periodic(
       const Duration(minutes: 3),
       (timer) {
         showInterstitialAd(uid: ownerId).catchError((e) {});
       },
     );
+
+    _timer2 = Timer(const Duration(seconds: 10),
+        () => showInterstitialAd(uid: ownerId).catchError((e) {}));
     try {
       createInterstitialAd();
       // _createBottomBannerAd();
     } on Exception catch (e) {
       // TODO
     }
+    Wakelock.toggle(enable: true);
     super.onInit();
   }
 
@@ -200,7 +206,8 @@ class ViewPdfController extends GetxController {
 
   @override
   void onClose() async {
-    timer?.cancel();
+    _timer1?.cancel();
+    _timer2?.cancel();
     interstitialAd?.dispose();
     //  bottomBannerAd.dispose();
 

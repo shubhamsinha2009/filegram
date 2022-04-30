@@ -1,3 +1,6 @@
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import '../../../core/helpers/ad_helper.dart';
 import '../../../data/enums/docpermission.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -18,12 +21,38 @@ class EncryptedFileListController extends GetxController
   String? sourceUrl;
   final TextEditingController textEditingController = TextEditingController();
   final groupValue = DocumentPermission.public.obs;
-  final inlineAdIndex = 0;
+  final inlineAdIndex = 2;
+  late BannerAd inlineBannerAd;
+  final isInlineBannerAdLoaded = false.obs;
 
-  @override
-  void onInit() async {
-    await findAllEncryptedFiles();
-    super.onInit();
+  AdWidget adWidget({required AdWithView ad}) {
+    return AdWidget(ad: ad);
+  }
+
+  void _createInlineBannerAd() {
+    inlineBannerAd = BannerAd(
+      size: AdSize.mediumRectangle,
+      adUnitId: AdHelper.libraryBanner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          isInlineBannerAdLoaded.value = true;
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+    inlineBannerAd.load();
+  }
+
+  int getListViewItemIndex(int index) {
+    if (index >= inlineAdIndex &&
+        isInlineBannerAdLoaded.isTrue &&
+        (documents.length >= inlineAdIndex)) {
+      return index - 1;
+    }
+    return index;
   }
 
   Future<void> findAllEncryptedFiles() async {
@@ -49,8 +78,16 @@ class EncryptedFileListController extends GetxController
   }
 
   @override
+  void onInit() async {
+    await findAllEncryptedFiles();
+    _createInlineBannerAd();
+    super.onInit();
+  }
+
+  @override
   void onClose() {
     textEditingController.dispose();
+    inlineBannerAd.dispose();
     super.onClose();
   }
 

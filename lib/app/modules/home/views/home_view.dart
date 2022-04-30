@@ -39,7 +39,9 @@ class HomeView extends GetView<HomeController> {
                   // ),
 
                   ActionChip(
-                    onPressed: () => Get.toNamed(Routes.gullak),
+                    onPressed: () {
+                      Get.toNamed(Routes.gullak);
+                    },
                     label: Text('${controller.gullak.value.sikka} 🟡'),
                     avatar: const Icon(Icons.savings_rounded,
                         color: Color.fromARGB(255, 194, 103, 70)),
