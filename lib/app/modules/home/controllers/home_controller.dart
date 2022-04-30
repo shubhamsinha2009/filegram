@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:filegram/app/data/model/gullak_model.dart';
 import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';
 import 'package:filegram/app/routes/app_pages.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:new_version/new_version.dart';
 import 'package:quick_actions/quick_actions.dart';
 
@@ -23,6 +28,28 @@ class HomeController extends GetxController {
   final gullak = GullakModel().obs;
   void onBottomBarSelected(value) {
     selectedIndex.value = value;
+  }
+
+  Future<void> checkJailBreak() async {
+    bool jailbroken;
+    bool developerMode;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      jailbroken = await FlutterJailbreakDetection.jailbroken;
+      developerMode = await FlutterJailbreakDetection.developerMode;
+    } on PlatformException {
+      jailbroken = true;
+      developerMode = true;
+    }
+    if (jailbroken || developerMode) {
+      Get.showSnackbar(const GetSnackBar(
+        message:
+            'Please Make Sure Developer Mode is Off and Your Phone is Not Jail Broked',
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 3),
+      ));
+      Timer(const Duration(seconds: 3), (() => SystemNavigator.pop()));
+    }
   }
 
   @override
@@ -55,6 +82,10 @@ class HomeController extends GetxController {
       });
     } catch (e) {
       //TODO: do nothing
+    }
+
+    if (kReleaseMode) {
+      await checkJailBreak();
     }
 
     super.onInit();
