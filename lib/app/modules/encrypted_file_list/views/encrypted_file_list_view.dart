@@ -124,40 +124,44 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                         '${_document?.documentPermission.name.capitalize}'),
                                   ),
                                   OutlinedButton(
-                                    onPressed: () async {
-                                      final _views = await FirestoreData
-                                          .readViewsAndUploads(
-                                              _document?.documentId);
-                                      // controller.adsController.rewardedAd.show(
-                                      //   onUserEarnedReward: (ad, reward) {
-                                      Get.dialog(
-                                        AlertDialog(
-                                          alignment: Alignment.center,
-                                          backgroundColor: Colors.black,
-                                          // title: const Text(
-                                          //   ' Number of Views',
-                                          // ),
-                                          content: Text(
-                                            'Number of Views : ${_views.views} \n \n & \n \n  Number of Uploads : ${_views.numberOfUploads} ',
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 20,
+                                    onPressed: () {
+                                      controller.rewardedInterstitialAd.show(
+                                          onUserEarnedReward:
+                                              (ad, reward) async {
+                                        final _views = await FirestoreData
+                                            .readViewsAndUploads(
+                                                _document?.documentId);
+                                        // controller.adsController.rewardedAd.show(
+                                        //   onUserEarnedReward: (ad, reward) {
+                                        Get.dialog(
+                                          AlertDialog(
+                                            alignment: Alignment.center,
+                                            backgroundColor: Colors.black,
+                                            // title: const Text(
+                                            //   ' Number of Views',
+                                            // ),
+                                            content: Text(
+                                              'Number of Views : ${_views.views} \n \n & \n \n  Number of Uploads : ${_views.numberOfUploads} ',
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 20,
+                                              ),
                                             ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () async {
+                                                  if (Get.isOverlaysOpen) {
+                                                    Get.back();
+                                                  }
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () async {
-                                                if (Get.isOverlaysOpen) {
-                                                  Get.back();
-                                                }
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        ),
-                                        barrierDismissible: false,
-                                      );
+                                          barrierDismissible: false,
+                                        );
+                                      });
                                     },
                                     //  );
                                     // },
@@ -167,74 +171,83 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     // onPressed: () => controller
                                     //     .adsController.rewardedAd
                                     //     .show(onUserEarnedReward: (ad, reward) {
-                                    onPressed: () => Get.dialog(
-                                      AlertDialog(
-                                        titleTextStyle: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                        backgroundColor: Colors.black,
-                                        title: Text(
-                                          '"Are you sure you wish to delete this file ${_document?.documentName} forever from servers?',
-                                        ),
-                                        content: const Text(
-                                            'After you delete your file, Nobody will be able to decrypt this file ever'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              if (Get.isOverlaysOpen) {
-                                                Get.back();
-                                              }
-                                            },
-                                            child: const Text('Cancel'),
+                                    onPressed: () => controller
+                                        .rewardedInterstitialAd
+                                        .show(onUserEarnedReward: (ad, reward) {
+                                      Get.dialog(
+                                        AlertDialog(
+                                          titleTextStyle: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                          backgroundColor: Colors.black,
+                                          title: Text(
+                                            '"Are you sure you wish to delete this file ${_document?.documentName} forever from servers?',
                                           ),
-                                          TextButton(
-                                            onPressed: () {
-                                              if (Get.isOverlaysOpen) {
-                                                Get.back(closeOverlays: true);
-                                              }
-                                              // ! Sometimes due to async document gets deleted before views
-                                              FirestoreData
-                                                      .deleteViewsAndUploads(
-                                                          _document?.documentId)
-                                                  .then((value) =>
-                                                      FirestoreData.deleteDocument(
-                                                              documentId: _document
-                                                                  ?.documentId)
-                                                          .then((value) {
-                                                        controller.documents
-                                                            .clear();
-                                                        controller
-                                                                .getFirstData =
-                                                            false;
-                                                        controller
-                                                            .findAllEncryptedFiles();
+                                          content: const Text(
+                                              'After you delete your file, Nobody will be able to decrypt this file ever'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                if (Get.isOverlaysOpen) {
+                                                  Get.back();
+                                                }
+                                              },
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                if (Get.isOverlaysOpen) {
+                                                  Get.back(closeOverlays: true);
+                                                }
+                                                // ! Sometimes due to async document gets deleted before views
+                                                FirestoreData
+                                                        .deleteViewsAndUploads(
+                                                            _document
+                                                                ?.documentId)
+                                                    .then((value) =>
+                                                        FirestoreData.deleteDocument(
+                                                                documentId:
+                                                                    _document
+                                                                        ?.documentId)
+                                                            .then((value) {
+                                                          controller.documents
+                                                              .clear();
+                                                          controller
+                                                                  .getFirstData =
+                                                              false;
+                                                          controller
+                                                              .findAllEncryptedFiles();
 
-                                                        Get.showSnackbar(
-                                                            GetSnackBar(
-                                                          messageText: Text(
-                                                              'The File ${_document?.documentName} is deleted from server'),
-                                                          icon: const Icon(Icons
-                                                              .delete_forever_rounded),
-                                                          snackPosition:
-                                                              SnackPosition.TOP,
-                                                          duration:
-                                                              const Duration(
-                                                                  seconds: 3),
-                                                        ));
-                                                      }));
-                                            },
-                                            child: const Text('Delete'),
-                                          ),
-                                        ],
-                                      ),
-                                      barrierDismissible: false,
-                                    ),
-                                    // }),
+                                                          Get.showSnackbar(
+                                                              GetSnackBar(
+                                                            messageText: Text(
+                                                                'The File ${_document?.documentName} is deleted from server'),
+                                                            icon: const Icon(Icons
+                                                                .delete_forever_rounded),
+                                                            snackPosition:
+                                                                SnackPosition
+                                                                    .TOP,
+                                                            duration:
+                                                                const Duration(
+                                                                    seconds: 3),
+                                                          ));
+                                                        }));
+                                              },
+                                              child: const Text('Delete'),
+                                            ),
+                                          ],
+                                        ),
+                                        barrierDismissible: false,
+                                      );
+                                    }),
                                     child: const Text('Delete'),
                                   ),
                                   OutlinedButton(
-                                      onPressed: () => Get.bottomSheet(
-                                            Container(
+                                      onPressed: () => controller
+                                              .rewardedInterstitialAd
+                                              .show(onUserEarnedReward:
+                                                  (ad, reward) {
+                                            Get.bottomSheet(Container(
                                               color: Colors.black,
                                               margin: const EdgeInsets.all(16),
                                               padding: const EdgeInsets.all(16),
@@ -359,8 +372,8 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                          ),
+                                            ));
+                                          }),
                                       child: const Text('Link')),
                                 ],
                               )

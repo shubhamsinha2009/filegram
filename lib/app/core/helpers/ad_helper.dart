@@ -32,4 +32,16 @@ class AdHelper {
   static String get encryptedBanner {
     return dotenv.get('encryptedBanner');
   }
+
+  static String get bottomBanner {
+    return dotenv.get('bottomBanner');
+  }
+
+  static String get settingsBanner {
+    return dotenv.get('settingsBanner');
+  }
+
+  static String get rewardedAdManage {
+    return dotenv.get('rewardedAdManage');
+  }
 }

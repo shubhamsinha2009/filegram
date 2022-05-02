@@ -329,49 +329,49 @@ class FirestoreData {
     }
   }
 
-  Future<UserModel> getUser(String uid) async {
-    try {
-      DocumentSnapshot _doc = await _firestore
-          .collection("users")
-          .doc(uid)
-          .get(const GetOptions(source: Source.cache));
-      if (!_doc.exists) {
-        _doc = await _firestore
-            .collection("users")
-            .doc(uid)
-            .get(const GetOptions(source: Source.serverAndCache));
-      }
-      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+  // Future<UserModel> getUser(String uid) async {
+  //   try {
+  //     DocumentSnapshot _doc = await _firestore
+  //         .collection("users")
+  //         .doc(uid)
+  //         .get(const GetOptions(source: Source.cache));
+  //     if (!_doc.exists) {
+  //       _doc = await _firestore
+  //           .collection("users")
+  //           .doc(uid)
+  //           .get(const GetOptions(source: Source.serverAndCache));
+  //     }
+  //     Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
-      return UserModel(
-        emailId: _data["emailId"] as String,
-        photoUrl: _data["photoUrl"] as String,
-        name: _data["name"] as String,
-        id: _doc.id,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //     return UserModel(
+  //       emailId: _data["emailId"] as String,
+  //       photoUrl: _data["photoUrl"] as String,
+  //       name: _data["name"] as String,
+  //       id: _doc.id,
+  //     );
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
-  Future<UserModel> getUserFromServer(String uid) async {
-    try {
-      DocumentSnapshot _doc = await _firestore
-          .collection("users")
-          .doc(uid)
-          .get(const GetOptions(source: Source.serverAndCache));
+  // Future<UserModel> getUserFromServer(String uid) async {
+  //   try {
+  //     DocumentSnapshot _doc = await _firestore
+  //         .collection("users")
+  //         .doc(uid)
+  //         .get(const GetOptions(source: Source.serverAndCache));
 
-      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+  //     Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
-      return UserModel(
-        emailId: _data["emailId"] as String,
-        photoUrl: _data["photoUrl"] as String,
-        name: _data["name"] as String,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //     return UserModel(
+  //       emailId: _data["emailId"] as String,
+  //       photoUrl: _data["photoUrl"] as String,
+  //       name: _data["name"] as String,
+  //     );
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   static Future<void> createGullak(String? userId) async {
     try {

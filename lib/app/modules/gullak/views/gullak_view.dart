@@ -87,7 +87,7 @@ class GullakView extends GetView<GullakController> {
                 height: 20,
               ),
               const Text(
-                '100 Sikka in Gullak = Rs 10.00',
+                '10 Sikka in Gullak = Rs 1.00',
                 textAlign: TextAlign.center,
                 softWrap: true,
                 style: TextStyle(
@@ -99,7 +99,7 @@ class GullakView extends GetView<GullakController> {
                 height: 20,
               ),
               Obx(() => LinearProgressIndicator(
-                    value: controller.gullak.value.sikka / 100000,
+                    value: controller.gullak.value.sikka / 10000,
                     backgroundColor: Colors.grey,
                     color: Colors.purple,
                     minHeight: 10,
@@ -108,7 +108,7 @@ class GullakView extends GetView<GullakController> {
                 height: 10,
               ),
               Obx(() => Text(
-                    "You've reached ${controller.gullak.value.sikka / 1000}% of your payment threshold(1,00,000 Sikka)",
+                    "You've reached ${controller.gullak.value.sikka / 100}% of your payment threshold(10,000 Sikka)",
                     softWrap: true,
                     textAlign: TextAlign.center,
                   )),
@@ -155,7 +155,7 @@ class GullakView extends GetView<GullakController> {
                 height: 10,
               ),
               const Text(
-                '*** Paid monthly if the total is at least 1,00,000 🟡(Sikka)***',
+                '*** Paid monthly if the total is at least 10,000 🟡(Sikka)***',
                 softWrap: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(

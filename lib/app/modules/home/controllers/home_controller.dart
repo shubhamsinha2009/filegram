@@ -6,12 +6,14 @@ import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:new_version/new_version.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../../no_internet/controllers/no_internet_controller.dart';
+import '../../../core/helpers/ad_helper.dart';
 import '../../../data/model/user_model.dart';
+import '../../no_internet/controllers/no_internet_controller.dart';
 import '../../../data/provider/firestore_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -21,12 +23,14 @@ class HomeController extends GetxController {
   final user = UserModel().obs;
   final auth = FirebaseAuth.instance;
   final firestoreData = FirestoreData();
-
+  final isBottomBannerAdLoaded = false.obs;
+  late BannerAd bottomBannerAd;
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
   final selectedIndex = 0.obs;
   final QuickActions quickActions = const QuickActions();
   final gullak = GullakModel().obs;
+
   void onBottomBarSelected(value) {
     selectedIndex.value = value;
   }
@@ -53,14 +57,44 @@ class HomeController extends GetxController {
     }
   }
 
+  void _createBottomBannerAd() {
+    bottomBannerAd = BannerAd(
+      adUnitId: AdHelper.bottomBanner,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          isBottomBannerAdLoaded.value = true;
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+    bottomBannerAd.load();
+  }
+
+  AdWidget adWidget({required AdWithView ad}) {
+    return AdWidget(ad: ad);
+  }
+
   @override
   void onInit() async {
     try {
       if (auth.currentUser?.uid != null) {
         final String _uid = auth.currentUser?.uid ?? '';
         gullak.bindStream(firestoreData.getGullak(_uid));
-        user(await firestoreData.getUser(_uid));
+        // user(await firestoreData.getUser(_uid));
+        user(UserModel(
+          id: auth.currentUser?.uid,
+          emailId: auth.currentUser?.email,
+          photoUrl: auth.currentUser?.photoURL,
+          name: auth.currentUser?.displayName,
+          phoneNumber: auth.currentUser?.phoneNumber,
+        ));
       }
+
+      _createBottomBannerAd();
 
       quickActions.setShortcutItems(<ShortcutItem>[
         const ShortcutItem(
@@ -102,5 +136,12 @@ class HomeController extends GetxController {
       newVersion.showAlertIfNecessary(context: Get.context!);
     }
     super.onReady();
+  }
+
+  @override
+  void onClose() {
+    bottomBannerAd.dispose();
+
+    super.onClose();
   }
 }

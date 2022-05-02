@@ -68,6 +68,16 @@ class SettingsView extends GetView<SettingsController> {
           ),
           onTap: () => Get.toNamed(Routes.gullak),
         ),
+        controller.isSettingsBannerAdLoaded.isTrue
+            ? SizedBox(
+                height: controller.settingsBannerAd.size.height.toDouble(),
+                width: controller.settingsBannerAd.size.width.toDouble(),
+                child: controller.adWidget(ad: controller.settingsBannerAd),
+              )
+            : const SizedBox(
+                height: 0,
+                width: 0,
+              ),
         ListTile(
             title: const Text(
               'Rate Us',

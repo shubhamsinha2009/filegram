@@ -51,6 +51,20 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ],
               ),
+              persistentFooterButtons: [
+                controller.isBottomBannerAdLoaded.isTrue
+                    ? SizedBox(
+                        height:
+                            controller.bottomBannerAd.size.height.toDouble(),
+                        width: controller.bottomBannerAd.size.width.toDouble(),
+                        child:
+                            controller.adWidget(ad: controller.bottomBannerAd),
+                      )
+                    : const SizedBox(
+                        height: 0,
+                        width: 0,
+                      ),
+              ],
               body: bodyPages[controller.selectedIndex.value],
               floatingActionButton: const EncryptDecryptView(),
               floatingActionButtonLocation:

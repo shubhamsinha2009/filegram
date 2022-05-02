@@ -144,26 +144,29 @@ class DocumentPermissionBottomSheet extends StatelessWidget {
                     child: const Text('Back'),
                   ),
                   OutlinedButton(
-                    onPressed: () async {
-                      const _isList = DeepCollectionEquality.unordered();
-                      if (DocumentPermission.values
-                                  .byName(_document.documentPermission.name) !=
-                              _controller.groupValue.value ||
-                          !_isList.equals(_controller.sharedEmailIds,
-                              _document.sharedEmailIds)) {
-                        await FirestoreData.updateDocumentPermission(
-                            documentId: _document.documentId,
-                            documentPermission: _controller.groupValue.value,
-                            emailIds: _controller.sharedEmailIds);
-                        await FirestoreData.getDocumentAfterUpdate(
-                            _document.documentId);
-                        _controller.documents.clear();
+                    onPressed: () {
+                      _controller.rewardedInterstitialAd.show(
+                          onUserEarnedReward: (ad, reward) async {
+                        const _isList = DeepCollectionEquality.unordered();
+                        if (DocumentPermission.values.byName(
+                                    _document.documentPermission.name) !=
+                                _controller.groupValue.value ||
+                            !_isList.equals(_controller.sharedEmailIds,
+                                _document.sharedEmailIds)) {
+                          await FirestoreData.updateDocumentPermission(
+                              documentId: _document.documentId,
+                              documentPermission: _controller.groupValue.value,
+                              emailIds: _controller.sharedEmailIds);
+                          await FirestoreData.getDocumentAfterUpdate(
+                              _document.documentId);
+                          _controller.documents.clear();
 
-                        await _controller.findAllEncryptedFiles();
-                        _controller.sharedEmailIds.clear();
+                          await _controller.findAllEncryptedFiles();
+                          _controller.sharedEmailIds.clear();
 
-                        Get.back(closeOverlays: true);
-                      }
+                          Get.back(closeOverlays: true);
+                        }
+                      });
                     },
                     child: const Text('Save'),
                   ),

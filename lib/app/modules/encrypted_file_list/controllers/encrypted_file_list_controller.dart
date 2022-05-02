@@ -21,9 +21,14 @@ class EncryptedFileListController extends GetxController
   String? sourceUrl;
   final TextEditingController textEditingController = TextEditingController();
   final groupValue = DocumentPermission.public.obs;
-  final inlineAdIndex = 2;
+  final inlineAdIndex = 1;
   late BannerAd inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
+
+  final int maxFailedLoadAttempts = 3;
+  int rewardLoadAttempts = 0;
+  late RewardedInterstitialAd rewardedInterstitialAd;
+  final isRewardedAdReady = false.obs;
 
   AdWidget adWidget({required AdWithView ad}) {
     return AdWidget(ad: ad);
@@ -31,7 +36,7 @@ class EncryptedFileListController extends GetxController
 
   void _createInlineBannerAd() {
     inlineBannerAd = BannerAd(
-      size: AdSize.mediumRectangle,
+      size: AdSize.largeBanner,
       adUnitId: AdHelper.libraryBanner,
       request: const AdRequest(),
       listener: BannerAdListener(
@@ -77,10 +82,41 @@ class EncryptedFileListController extends GetxController
     });
   }
 
+  void createRewardedAd() {
+    RewardedInterstitialAd.load(
+      adUnitId: AdHelper.rewardedAdManage,
+      request: const AdRequest(),
+      rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
+        onAdLoaded: (RewardedInterstitialAd ad) {
+          rewardedInterstitialAd = ad;
+          rewardLoadAttempts = 0;
+
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              isRewardedAdReady.value = false;
+
+              createRewardedAd();
+            },
+          );
+
+          isRewardedAdReady.value = true;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          // print('Failed to load a rewarded ad: ${err.message}');
+          rewardLoadAttempts += 1;
+          if (rewardLoadAttempts <= maxFailedLoadAttempts) {
+            createRewardedAd();
+          }
+        },
+      ),
+    );
+  }
+
   @override
   void onInit() async {
     await findAllEncryptedFiles();
     _createInlineBannerAd();
+    createRewardedAd();
     super.onInit();
   }
 
@@ -88,6 +124,7 @@ class EncryptedFileListController extends GetxController
   void onClose() {
     textEditingController.dispose();
     inlineBannerAd.dispose();
+    rewardedInterstitialAd.dispose();
     super.onClose();
   }
 
