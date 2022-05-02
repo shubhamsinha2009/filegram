@@ -42,7 +42,12 @@ class HomeView extends GetView<HomeController> {
                     onPressed: () {
                       Get.toNamed(Routes.gullak);
                     },
-                    label: Text('${controller.gullak.value.sikka} 🟡'),
+                    label: Row(
+                      children: [
+                        Text('${controller.gullak.value.sikka}'),
+                        const Icon(Icons.circle, color: Colors.amber),
+                      ],
+                    ),
                     avatar: const Icon(Icons.savings_rounded,
                         color: Color.fromARGB(255, 194, 103, 70)),
                     labelPadding: const EdgeInsets.only(

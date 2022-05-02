@@ -131,7 +131,7 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     // TODO : Implemnt firestore false allow dissmisal
-    final newVersion = NewVersion(forceAppVersion: "1.0.0");
+    final newVersion = NewVersion();
     if (Get.context != null) {
       newVersion.getVersionStatus().then((status) {
         if (status != null) {

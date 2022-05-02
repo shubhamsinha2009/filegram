@@ -75,14 +75,20 @@ class GullakView extends GetView<GullakController> {
               ]),
           child: Column(
             children: [
-              Obx(() => Text('${controller.gullak.value.sikka} 🟡',
-                  textAlign: TextAlign.center,
-                  softWrap: true,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.amber,
-                  ))),
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('${controller.gullak.value.sikka}',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: const TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.amber,
+                          )),
+                      const Icon(Icons.circle, color: Colors.amber, size: 30),
+                    ],
+                  )),
               const SizedBox(
                 height: 20,
               ),
@@ -155,7 +161,7 @@ class GullakView extends GetView<GullakController> {
                 height: 10,
               ),
               const Text(
-                '*** Paid monthly if the total is at least 10,000 🟡(Sikka)*** ',
+                '*** Paid monthly if the total is at least 10,000 (Sikka)*** ',
                 softWrap: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -164,7 +170,7 @@ class GullakView extends GetView<GullakController> {
                 ),
               ),
               const Text(
-                '*** Everytime someone open pdf you get few Sikka 🟡 (which depends on number of ads shown - Ad is shown in every 3 minutes of pdf reading and when you open your pdf.)*** ',
+                '*** Everytime someone open pdf you get few Sikka (which depends on number of ads shown - Ad is shown in every 3 minutes of pdf reading and when you open your pdf.)*** ',
                 softWrap: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(
