@@ -155,7 +155,16 @@ class GullakView extends GetView<GullakController> {
                 height: 10,
               ),
               const Text(
-                '*** Paid monthly if the total is at least 10,000 🟡(Sikka)***',
+                '*** Paid monthly if the total is at least 10,000 🟡(Sikka)*** ',
+                softWrap: true,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 10,
+                ),
+              ),
+              const Text(
+                '*** Everytime someone open pdf you get few Sikka 🟡 (which depends on number of ads shown - Ad is shown in every 3 minutes of pdf reading and when you open your pdf.)*** ',
                 softWrap: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(

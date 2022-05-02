@@ -129,11 +129,21 @@ class HomeController extends GetxController {
   }
 
   @override
-  void onReady() async {
+  void onReady() {
     // TODO : Implemnt firestore false allow dissmisal
-    final newVersion = NewVersion();
+    final newVersion = NewVersion(forceAppVersion: "1.0.0");
     if (Get.context != null) {
-      newVersion.showAlertIfNecessary(context: Get.context!);
+      newVersion.getVersionStatus().then((status) {
+        if (status != null) {
+          newVersion.showUpdateDialog(
+            context: Get.context!,
+            versionStatus: status,
+            dialogTitle: 'Update Available',
+            dialogText:
+                "What's New!\n${status.releaseNotes}\n You can now update this app from ${status.localVersion} to ${status.storeVersion}",
+          );
+        }
+      });
     }
     super.onReady();
   }

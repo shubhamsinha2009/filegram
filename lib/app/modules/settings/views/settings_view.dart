@@ -115,9 +115,21 @@ class SettingsView extends GetView<SettingsController> {
               "Send your pdf files through filegram and earn money -- Check Out Filegram here for many more exciting features for you ----  https://play.google.com/store/apps/details?id=com.sks.filegram"),
         ),
         ListTile(
-          onTap: () async {
+          onTap: () {
             final newVersion = NewVersion();
-            newVersion.showAlertIfNecessary(context: context);
+            if (Get.context != null) {
+              newVersion.getVersionStatus().then((status) {
+                if (status != null) {
+                  newVersion.showUpdateDialog(
+                    context: Get.context!,
+                    versionStatus: status,
+                    dialogTitle: 'Update Available',
+                    dialogText:
+                        "What's New!\n${status.releaseNotes}\n You can now update this app from ${status.localVersion} to ${status.storeVersion}",
+                  );
+                }
+              });
+            }
           },
           leading: const Icon(Icons.system_update_outlined),
           title: const Text(
@@ -128,12 +140,100 @@ class SettingsView extends GetView<SettingsController> {
           ),
         ),
         ListTile(
+          onTap: () async {
+            try {
+              await launch(
+                  "https://docs.google.com/forms/d/e/1FAIpQLSfjp_SNlap2NRH6lwZOb0iHrSrxsdsI2gH9IITMwxFPZUh1fw/viewform?usp=sf_link");
+            } on PlatformException {
+              Get.showSnackbar(const GetSnackBar(
+                messageText: Text('Unable to open '),
+                icon: Icon(Icons.error_outline),
+                snackPosition: SnackPosition.TOP,
+                duration: Duration(seconds: 3),
+              ));
+            }
+          },
+          leading: const Icon(Icons.feedback),
+          title: const Text(
+            'Feedback',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () async {
+            try {
+              await launch(
+                  "https://sites.google.com/view/filegram/privacypolicy");
+            } on PlatformException {
+              Get.showSnackbar(const GetSnackBar(
+                messageText: Text('Unable to open '),
+                icon: Icon(Icons.error_outline),
+                snackPosition: SnackPosition.TOP,
+                duration: Duration(seconds: 3),
+              ));
+            }
+          },
+          leading: const Icon(Icons.privacy_tip),
+          title: const Text(
+            'Privacy Policy',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () async {
+            try {
+              await launch(
+                  "https://sites.google.com/view/filegram/terms_and_conditions");
+            } on PlatformException {
+              Get.showSnackbar(const GetSnackBar(
+                messageText: Text('Unable to open '),
+                icon: Icon(Icons.error_outline),
+                snackPosition: SnackPosition.TOP,
+                duration: Duration(seconds: 3),
+              ));
+            }
+          },
+          leading: const Icon(Icons.note_alt),
+          title: const Text(
+            'Terms And Conditions',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+
+        ListTile(
           onTap: controller.signOut,
           leading: const Icon(
             Icons.logout_outlined,
           ),
           title: const Text(
             'Log Out',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: () async {
+            try {
+              await launch("https://sites.google.com/view/filegram");
+            } on PlatformException {
+              Get.showSnackbar(const GetSnackBar(
+                messageText: Text('Unable to open '),
+                icon: Icon(Icons.error_outline),
+                snackPosition: SnackPosition.TOP,
+                duration: Duration(seconds: 3),
+              ));
+            }
+          },
+          leading: const Icon(Icons.web),
+          title: const Text(
+            'Our Website',
             style: TextStyle(
               fontWeight: FontWeight.w500,
             ),
