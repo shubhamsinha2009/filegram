@@ -31,6 +31,7 @@ class AppPages {
     GetPage(
       name: _Paths.home,
       page: () => const HomeView(),
+      transition: Transition.rightToLeftWithFade,
       bindings: [
         HomeBinding(),
         EncryptDecryptBinding(),
@@ -44,6 +45,7 @@ class AppPages {
     GetPage(
       name: _Paths.login,
       page: () => const LoginView(),
+      transition: Transition.leftToRightWithFade,
       bindings: [
         LoginBinding(),
         NoInternetBinding(),
@@ -78,17 +80,19 @@ class AppPages {
       name: _Paths.whatsappChat,
       page: () => const WhatsappChatView(),
       binding: WhatsappChatBinding(),
+      transition: Transition.rightToLeftWithFade,
     ),
     GetPage(
       name: _Paths.gullak,
       page: () => const GullakView(),
       binding: GullakBinding(),
+      transition: Transition.rightToLeftWithFade,
       middlewares: [GullakMiddleware()],
     ),
     GetPage(
-      name: _Paths.updatePhoneNumber,
-      page: () => const UpdatePhoneNumberView(),
-      binding: UpdatePhoneNumberBinding(),
-    ),
+        name: _Paths.updatePhoneNumber,
+        page: () => const UpdatePhoneNumberView(),
+        binding: UpdatePhoneNumberBinding(),
+        transition: Transition.leftToRightWithFade),
   ];
 }

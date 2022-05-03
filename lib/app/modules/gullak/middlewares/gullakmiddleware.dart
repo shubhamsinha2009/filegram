@@ -10,7 +10,8 @@ class GullakMiddleware extends GetMiddleware {
     final auth = FirebaseAuth.instance;
 
     bool checkPhoneNumberLinked() {
-      return auth.currentUser?.phoneNumber != null ? true : false;
+      final phoneNumber = auth.currentUser?.phoneNumber;
+      return phoneNumber != null && phoneNumber.isNotEmpty ? true : false;
     }
 
     if (checkPhoneNumberLinked()) {

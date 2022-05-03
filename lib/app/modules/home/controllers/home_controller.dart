@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:filegram/app/data/model/gullak_model.dart';
 import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';
 import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -37,23 +40,51 @@ class HomeController extends GetxController {
 
   Future<void> checkJailBreak() async {
     bool jailbroken;
-    bool developerMode;
+
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       jailbroken = await FlutterJailbreakDetection.jailbroken;
-      developerMode = await FlutterJailbreakDetection.developerMode;
     } on PlatformException {
       jailbroken = true;
+    }
+
+    if (jailbroken) {
+      Get.defaultDialog(
+          title: 'ALERT -- JAIL BROKEN !!!',
+          titleStyle: const TextStyle(color: Colors.red),
+          buttonColor: Colors.red,
+          backgroundColor: Colors.grey[900],
+          middleText: ' Your Phone is Not Jail Broken.',
+          onWillPop: () async => false,
+          barrierDismissible: false,
+          textConfirm: 'OK ',
+          onConfirm: () {
+            SystemNavigator.pop();
+          });
+    }
+  }
+
+  Future<void> checkDevelopmentMode() async {
+    bool developerMode;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      developerMode = await FlutterJailbreakDetection.developerMode;
+    } on PlatformException {
       developerMode = true;
     }
-    if (jailbroken || developerMode) {
-      Get.showSnackbar(const GetSnackBar(
-        message:
-            'Please Make Sure Developer Mode is Off and Your Phone is Not Jail Broked',
-        snackPosition: SnackPosition.TOP,
-        duration: Duration(seconds: 3),
-      ));
-      Timer(const Duration(seconds: 5), (() => SystemNavigator.pop()));
+
+    if (developerMode) {
+      Get.defaultDialog(
+          title: 'ALERT --- DEVELOPER MODE ON !!!',
+          titleStyle: const TextStyle(color: Colors.red),
+          buttonColor: Colors.red,
+          backgroundColor: Colors.grey[900],
+          middleText: 'Please Make Sure Developer Mode is Off.',
+          onWillPop: () async => false,
+          barrierDismissible: false,
+          textConfirm: 'OK ',
+          onConfirm: () =>
+              AppSettings.openDevelopmentSettings(asAnotherTask: true));
     }
   }
 
@@ -120,9 +151,9 @@ class HomeController extends GetxController {
     }
 
     if (kReleaseMode) {
-      await checkJailBreak();
+      await checkDevelopmentMode();
     }
-
+    await checkJailBreak();
     Wakelock.toggle(enable: true);
 
     super.onInit();
@@ -131,10 +162,10 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     // TODO : Implemnt firestore false allow dissmisal
-    final newVersion = NewVersion();
+    final newVersion = NewVersion(androidId: "com.sks.filegram");
     if (Get.context != null) {
       newVersion.getVersionStatus().then((status) {
-        if (status != null) {
+        if (status != null && (status.localVersion != status.storeVersion)) {
           newVersion.showUpdateDialog(
             context: Get.context!,
             versionStatus: status,

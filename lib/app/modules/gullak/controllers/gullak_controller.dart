@@ -68,8 +68,11 @@ class GullakController extends GetxController {
 
   @override
   void onInit() {
-    createRewardedAd();
-    _createBottomBannerAd();
+    try {
+      createRewardedAd();
+      _createBottomBannerAd();
+    } catch (e) {}
+
     super.onInit();
   }
 

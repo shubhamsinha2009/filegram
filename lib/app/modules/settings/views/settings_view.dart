@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,10 +117,11 @@ class SettingsView extends GetView<SettingsController> {
         ),
         ListTile(
           onTap: () {
-            final newVersion = NewVersion();
+            final newVersion = NewVersion(androidId: "com.sks.filegram");
             if (Get.context != null) {
               newVersion.getVersionStatus().then((status) {
-                if (status != null) {
+                if (status != null &&
+                    (status.localVersion != status.storeVersion)) {
                   newVersion.showUpdateDialog(
                     context: Get.context!,
                     versionStatus: status,
@@ -127,6 +129,14 @@ class SettingsView extends GetView<SettingsController> {
                     dialogText:
                         "What's New!\n${status.releaseNotes}\n You can now update this app from ${status.localVersion} to ${status.storeVersion}",
                   );
+                } else {
+                  Get.showSnackbar(GetSnackBar(
+                    messageText:
+                        Text("You have latest version ${status?.localVersion}"),
+                    icon: const Icon(Icons.error_outline),
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 3),
+                  ));
                 }
               });
             }
@@ -205,7 +215,18 @@ class SettingsView extends GetView<SettingsController> {
             ),
           ),
         ),
-
+        ListTile(
+          onTap: () => AppSettings.openAppSettings(),
+          leading: const Icon(
+            Icons.app_settings_alt,
+          ),
+          title: const Text(
+            'App Settings',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
         ListTile(
           onTap: controller.signOut,
           leading: const Icon(
@@ -218,6 +239,7 @@ class SettingsView extends GetView<SettingsController> {
             ),
           ),
         ),
+
         ListTile(
           onTap: () async {
             try {
