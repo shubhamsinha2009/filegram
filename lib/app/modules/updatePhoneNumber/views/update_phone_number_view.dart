@@ -80,7 +80,7 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                       OutlinedButton(
                                           onPressed: () async {
                                             try {
-                                              await controller
+                                              controller
                                                   .signInWithPhoneNumber(
                                                       controller.smsCode)
                                                   .then((value) async {
@@ -96,6 +96,7 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                                         phoneNumber: controller
                                                             .phoneNumber);
                                                   }
+                                                  Get.back(closeOverlays: true);
                                                   Get.showSnackbar(
                                                       const GetSnackBar(
                                                     duration:
@@ -107,7 +108,6 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                                     snackPosition:
                                                         SnackPosition.TOP,
                                                   ));
-                                                  Get.back();
                                                 }
                                               });
                                             } catch (e) {

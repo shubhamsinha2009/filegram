@@ -58,6 +58,7 @@ A App made for controlling pdfs files privacy
 - [x] JailBreak
 - [] Local Auth
 - [] Report a bug
+- [] Firebase App Check
 
 ## BUGS
 

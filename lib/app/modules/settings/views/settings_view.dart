@@ -92,7 +92,8 @@ class SettingsView extends GetView<SettingsController> {
             onTap: () async {
               try {
                 await launch(
-                    "https://play.google.com/store/apps/details?id=com.sks.filegram");
+                  "https://play.google.com/store/apps/details?id=com.sks.filegram",
+                );
               } on PlatformException {
                 Get.showSnackbar(const GetSnackBar(
                   messageText: Text('Unable to open App'),
@@ -153,7 +154,11 @@ class SettingsView extends GetView<SettingsController> {
           onTap: () async {
             try {
               await launch(
-                  "https://docs.google.com/forms/d/e/1FAIpQLSfjp_SNlap2NRH6lwZOb0iHrSrxsdsI2gH9IITMwxFPZUh1fw/viewform?usp=sf_link");
+                "https://docs.google.com/forms/d/e/1FAIpQLSfjp_SNlap2NRH6lwZOb0iHrSrxsdsI2gH9IITMwxFPZUh1fw/viewform?usp=sf_link",
+                forceWebView: true,
+                enableJavaScript: true,
+                enableDomStorage: true,
+              );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
                 messageText: Text('Unable to open '),
@@ -175,7 +180,11 @@ class SettingsView extends GetView<SettingsController> {
           onTap: () async {
             try {
               await launch(
-                  "https://sites.google.com/view/filegram/privacypolicy");
+                "https://sites.google.com/view/filegram/privacypolicy",
+                forceWebView: true,
+                enableJavaScript: true,
+                enableDomStorage: true,
+              );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
                 messageText: Text('Unable to open '),
@@ -197,7 +206,11 @@ class SettingsView extends GetView<SettingsController> {
           onTap: () async {
             try {
               await launch(
-                  "https://sites.google.com/view/filegram/terms_and_conditions");
+                "https://sites.google.com/view/filegram/terms_and_conditions",
+                forceWebView: true,
+                enableJavaScript: true,
+                enableDomStorage: true,
+              );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
                 messageText: Text('Unable to open '),
@@ -243,7 +256,12 @@ class SettingsView extends GetView<SettingsController> {
         ListTile(
           onTap: () async {
             try {
-              await launch("https://sites.google.com/view/filegram");
+              await launch(
+                "https://sites.google.com/view/filegram",
+                forceWebView: true,
+                enableJavaScript: true,
+                enableDomStorage: true,
+              );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
                 messageText: Text('Unable to open '),

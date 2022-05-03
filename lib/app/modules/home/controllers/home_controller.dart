@@ -76,15 +76,21 @@ class HomeController extends GetxController {
     if (developerMode) {
       Get.defaultDialog(
           title: 'ALERT --- DEVELOPER MODE ON !!!',
-          titleStyle: const TextStyle(color: Colors.red),
-          buttonColor: Colors.red,
+          titleStyle: const TextStyle(color: Colors.red, fontSize: 20),
+          // buttonColor: Colors.redAccent,
           backgroundColor: Colors.grey[900],
+          // cancelTextColor: Colors.redAccent,
           middleText: 'Please Make Sure Developer Mode is Off.',
           onWillPop: () async => false,
           barrierDismissible: false,
-          textConfirm: 'OK ',
-          onConfirm: () =>
-              AppSettings.openDevelopmentSettings(asAnotherTask: true));
+          textConfirm: 'Close',
+          onConfirm: () async {
+            if (await FlutterJailbreakDetection.developerMode) {
+              AppSettings.openDevelopmentSettings(asAnotherTask: true);
+            } else {
+              Get.back();
+            }
+          });
     }
   }
 
@@ -162,20 +168,23 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     // TODO : Implemnt firestore false allow dissmisal
-    final newVersion = NewVersion(androidId: "com.sks.filegram");
-    if (Get.context != null) {
-      newVersion.getVersionStatus().then((status) {
-        if (status != null && (status.localVersion != status.storeVersion)) {
-          newVersion.showUpdateDialog(
-            context: Get.context!,
-            versionStatus: status,
-            dialogTitle: 'Update Available',
-            dialogText:
-                "What's New!\n${status.releaseNotes}\n You can now update this app from ${status.localVersion} to ${status.storeVersion}",
-          );
-        }
-      });
-    }
+    try {
+      final newVersion = NewVersion(androidId: "com.sks.filegram");
+      if (Get.context != null) {
+        newVersion.getVersionStatus().then((status) {
+          if (status != null && (status.localVersion != status.storeVersion)) {
+            newVersion.showUpdateDialog(
+              context: Get.context!,
+              versionStatus: status,
+              dialogTitle: 'Update Available',
+              dialogText:
+                  "What's New!\n${status.releaseNotes}\n You can now update this app from ${status.localVersion} to ${status.storeVersion}",
+            );
+          }
+        }).catchError((e) {});
+      }
+    } catch (e) {}
+
     super.onReady();
   }
 

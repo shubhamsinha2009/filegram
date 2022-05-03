@@ -13,9 +13,14 @@ class UpdatePhoneNumberController extends GetxController {
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await auth.currentUser?.linkWithCredential(credential);
-
-          Get.snackbar("Log In ",
-              "Phone number automatically verified and user signed in: ${auth.currentUser?.uid}");
+          Get.back(closeOverlays: true);
+          Get.showSnackbar(GetSnackBar(
+            duration: const Duration(seconds: 10),
+            title: '"Loggged In "',
+            message:
+                "Phone number automatically verified and user signed in: ${auth.currentUser?.uid}",
+            snackPosition: SnackPosition.TOP,
+          ));
         },
         verificationFailed: (FirebaseAuthException authException) {
           if (authException.code == 'invalid-phone-number') {
@@ -38,7 +43,7 @@ class UpdatePhoneNumberController extends GetxController {
         codeSent: (String verificationId, int? forceResendingToken) async {
           Get.showSnackbar(const GetSnackBar(
             duration: Duration(seconds: 5),
-            title: "'OTP' ",
+            title: "OTP ",
             message: 'Please check your phone for the verification code.',
             snackPosition: SnackPosition.TOP,
           ));
@@ -53,7 +58,6 @@ class UpdatePhoneNumberController extends GetxController {
           ));
           verificationID = verificationId;
         },
-        timeout: const Duration(seconds: 5),
       );
     } catch (e) {
       Get.showSnackbar(GetSnackBar(
