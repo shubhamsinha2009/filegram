@@ -292,7 +292,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                   .showInterstitialAd(uid: _ownerId)
                                   .catchError((e) {});
                               Get.toNamed(Routes.viewPdf,
-                                  arguments: _currentfile.path);
+                                  arguments: [_currentfile.path, false]);
                               // });
                               // } catch (e) {
                               //   controller.interstitialAdController

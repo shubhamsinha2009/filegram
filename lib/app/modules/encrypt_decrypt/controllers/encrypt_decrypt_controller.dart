@@ -176,7 +176,8 @@ class EncryptDecryptController extends GetxController {
                                   ),
                                 );
                               }
-                              Get.toNamed(Routes.viewPdf, arguments: _fileOut);
+                              Get.toNamed(Routes.viewPdf,
+                                  arguments: [_fileOut, true]);
                             });
                           }
                         },
@@ -208,7 +209,7 @@ class EncryptDecryptController extends GetxController {
             //   FirestoreData.updateSikka(_ownerId);
 
             showInterstitialAd(uid: _ownerId).catchError((e) {});
-            Get.toNamed(Routes.viewPdf, arguments: value);
+            Get.toNamed(Routes.viewPdf, arguments: [value, true]);
             // });
 
           } else {

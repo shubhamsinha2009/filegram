@@ -141,7 +141,7 @@ class ViewPdfController extends GetxController {
 
   @override
   void onInit() async {
-    filePath = Get.arguments;
+    filePath = Get.arguments[0];
     fileOut = '${(await getTemporaryDirectory()).path}/_';
     try {
       isDecryptionDone.value = await doDecryption(filePath);
@@ -181,7 +181,9 @@ class ViewPdfController extends GetxController {
     _timer1 = Timer.periodic(
       const Duration(minutes: 3),
       (timer) {
-        showInterstitialAd(uid: ownerId).catchError((e) {});
+        if (Get.arguments[1]) {
+          showInterstitialAd(uid: ownerId).catchError((e) {});
+        }
       },
     );
 
