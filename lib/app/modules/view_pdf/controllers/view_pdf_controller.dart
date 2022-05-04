@@ -181,14 +181,15 @@ class ViewPdfController extends GetxController {
     _timer1 = Timer.periodic(
       const Duration(minutes: 3),
       (timer) {
-        if (Get.arguments[1]) {
-          showInterstitialAd(uid: ownerId).catchError((e) {});
-        }
+        showInterstitialAd(uid: ownerId).catchError((e) {});
       },
     );
 
-    _timer2 = Timer(const Duration(seconds: 10),
-        () => showInterstitialAd(uid: ownerId).catchError((e) {}));
+    _timer2 = Timer(const Duration(seconds: 10), () {
+      if (Get.arguments[1]) {
+        showInterstitialAd(uid: ownerId).catchError((e) {});
+      }
+    });
     try {
       createInterstitialAd();
       // _createBottomBannerAd();
