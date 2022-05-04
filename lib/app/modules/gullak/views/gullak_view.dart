@@ -124,24 +124,39 @@ class GullakView extends GetView<GullakController> {
               OutlinedButton(
                 onPressed: () {
                   try {
-                    controller.rewardedInterstitialAd.show(
-                        onUserEarnedReward: (ad, reward) async {
-                      controller.gullak.value.withdrawalLink.isEmpty
-                          ? Get.dialog(AlertDialog(
-                              title: const Text(
-                                  'Sorry , Yet Not Qualified for Withdrawal '),
-                              content: const Text(
-                                  'You can withdraw money between 1st - 5th day of every month only if your payment threshold is compleleted '),
-                              actions: [
-                                OutlinedButton(
-                                    onPressed: () => Get.back(),
-                                    child: const Text('OK'))
-                              ],
-                              backgroundColor: Colors.black,
-                            ))
-                          : await launch(
-                              controller.gullak.value.withdrawalLink);
-                    });
+                    Get.dialog(AlertDialog(
+                      title: const Text('Rewarded Feature'),
+                      content: const Text(
+                          'Please watch full rewarded ad to withdraw money and Please click withdraw only if you qualified else you will not get any reward. You can withdraw money between 1st - 5th day of every month only if your payment threshold is compleleted '),
+                      actions: [
+                        OutlinedButton(
+                            onPressed: () => Get.back(),
+                            child: const Text('Back')),
+                        OutlinedButton(
+                            onPressed: () {
+                              controller.rewardedInterstitialAd.show(
+                                  onUserEarnedReward: (ad, reward) async {
+                                controller.gullak.value.withdrawalLink.isEmpty
+                                    ? Get.dialog(AlertDialog(
+                                        title: const Text(
+                                            'Sorry , Yet Not Qualified for Withdrawal '),
+                                        content: const Text(
+                                            'You can withdraw money between 1st - 5th day of every month only if your payment threshold is compleleted '),
+                                        actions: [
+                                          OutlinedButton(
+                                              onPressed: () => Get.back(),
+                                              child: const Text('OK'))
+                                        ],
+                                        backgroundColor: Colors.black,
+                                      ))
+                                    : await launch(
+                                        controller.gullak.value.withdrawalLink);
+                              });
+                            },
+                            child: const Text('Withdraw'))
+                      ],
+                      backgroundColor: Colors.black,
+                    ));
                   } on Exception {
                     Get.showSnackbar(const GetSnackBar(
                       messageText: Text('Could not  able to open it'),

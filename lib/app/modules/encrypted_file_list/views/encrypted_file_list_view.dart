@@ -125,43 +125,67 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                   ),
                                   OutlinedButton(
                                     onPressed: () {
-                                      controller.rewardedInterstitialAd.show(
-                                          onUserEarnedReward:
-                                              (ad, reward) async {
-                                        final _views = await FirestoreData
-                                            .readViewsAndUploads(
-                                                _document?.documentId);
-                                        // controller.adsController.rewardedAd.show(
-                                        //   onUserEarnedReward: (ad, reward) {
-                                        Get.dialog(
-                                          AlertDialog(
-                                            alignment: Alignment.center,
-                                            backgroundColor: Colors.black,
-                                            // title: const Text(
-                                            //   ' Number of Views',
-                                            // ),
-                                            content: Text(
-                                              'Number of Views : ${_views.views} \n \n & \n \n  Number of Uploads : ${_views.numberOfUploads} ',
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () async {
-                                                  if (Get.isOverlaysOpen) {
-                                                    Get.back();
-                                                  }
-                                                },
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          ),
-                                          barrierDismissible: false,
-                                        );
-                                      });
+                                      Get.dialog(AlertDialog(
+                                        title: const Text('Rewarded Feature'),
+                                        content: const Text(
+                                            'Please watch full rewarded ad to see number of views and uploads '),
+                                        actions: [
+                                          OutlinedButton(
+                                              onPressed: () => Get.back(),
+                                              child: const Text('Back')),
+                                          OutlinedButton(
+                                              onPressed: () {
+                                                controller
+                                                    .rewardedInterstitialAd
+                                                    .show(onUserEarnedReward:
+                                                        (ad, reward) async {
+                                                  final _views =
+                                                      await FirestoreData
+                                                          .readViewsAndUploads(
+                                                              _document
+                                                                  ?.documentId);
+                                                  // controller.adsController.rewardedAd.show(
+                                                  //   onUserEarnedReward: (ad, reward) {
+                                                  Get.dialog(
+                                                    AlertDialog(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      // title: const Text(
+                                                      //   ' Number of Views',
+                                                      // ),
+                                                      content: Text(
+                                                        'Number of Views : ${_views.views} \n \n & \n \n  Number of Uploads : ${_views.numberOfUploads} ',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            if (Get
+                                                                .isOverlaysOpen) {
+                                                              Get.back();
+                                                            }
+                                                          },
+                                                          child:
+                                                              const Text('OK'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    barrierDismissible: false,
+                                                  );
+                                                });
+                                              },
+                                              child: const Text('OK'))
+                                        ],
+                                        backgroundColor: Colors.black,
+                                      ));
                                     },
                                     //  );
                                     // },
@@ -193,46 +217,73 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              controller.rewardedInterstitialAd
-                                                  .show(onUserEarnedReward:
-                                                      (ad, reward) {
-                                                if (Get.isOverlaysOpen) {
-                                                  Get.back(closeOverlays: true);
-                                                }
-                                                // ! Sometimes due to async document gets deleted before views
-                                                FirestoreData
-                                                        .deleteViewsAndUploads(
-                                                            _document
-                                                                ?.documentId)
-                                                    .then((value) =>
-                                                        FirestoreData.deleteDocument(
-                                                                documentId:
-                                                                    _document
-                                                                        ?.documentId)
-                                                            .then((value) {
-                                                          controller.documents
-                                                              .clear();
-                                                          controller
-                                                                  .getFirstData =
-                                                              false;
-                                                          controller
-                                                              .findAllEncryptedFiles();
+                                              Get.dialog(AlertDialog(
+                                                title: const Text(
+                                                    'Rewarded Feature'),
+                                                content: const Text(
+                                                    'Please watch full rewarded ad to delete '),
+                                                actions: [
+                                                  OutlinedButton(
+                                                      onPressed: () =>
+                                                          Get.back(),
+                                                      child:
+                                                          const Text('Back')),
+                                                  OutlinedButton(
+                                                      onPressed: () {
+                                                        controller
+                                                            .rewardedInterstitialAd
+                                                            .show(
+                                                                onUserEarnedReward:
+                                                                    (ad,
+                                                                        reward) {
+                                                          if (Get
+                                                              .isOverlaysOpen) {
+                                                            Get.back(
+                                                                closeOverlays:
+                                                                    true);
+                                                          }
+                                                          // ! Sometimes due to async document gets deleted before views
+                                                          FirestoreData.deleteViewsAndUploads(
+                                                                  _document
+                                                                      ?.documentId)
+                                                              .then((value) =>
+                                                                  FirestoreData.deleteDocument(
+                                                                          documentId: _document
+                                                                              ?.documentId)
+                                                                      .then(
+                                                                          (value) {
+                                                                    controller
+                                                                        .documents
+                                                                        .clear();
+                                                                    controller
+                                                                            .getFirstData =
+                                                                        false;
+                                                                    controller
+                                                                        .findAllEncryptedFiles();
 
-                                                          Get.showSnackbar(
-                                                              GetSnackBar(
-                                                            messageText: Text(
-                                                                'The File ${_document?.documentName} is deleted from server'),
-                                                            icon: const Icon(Icons
-                                                                .delete_forever_rounded),
-                                                            snackPosition:
-                                                                SnackPosition
-                                                                    .TOP,
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 3),
-                                                          ));
-                                                        }));
-                                              });
+                                                                    Get.showSnackbar(
+                                                                        GetSnackBar(
+                                                                      messageText:
+                                                                          Text(
+                                                                              'The File ${_document?.documentName} is deleted from server'),
+                                                                      icon: const Icon(
+                                                                          Icons
+                                                                              .delete_forever_rounded),
+                                                                      snackPosition:
+                                                                          SnackPosition
+                                                                              .TOP,
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              3),
+                                                                    ));
+                                                                  }));
+                                                        });
+                                                      },
+                                                      child:
+                                                          const Text('Delete'))
+                                                ],
+                                                backgroundColor: Colors.black,
+                                              ));
                                             },
                                             child: const Text('Delete'),
                                           ),
@@ -317,56 +368,66 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                     ),
                                                     OutlinedButton(
                                                       onPressed: () {
-                                                        controller
-                                                            .rewardedInterstitialAd
-                                                            .show(
-                                                                onUserEarnedReward:
-                                                                    (ad,
-                                                                        reward) {
-                                                          if (Get
-                                                              .isOverlaysOpen) {
-                                                            Get.back();
-                                                          }
-                                                          // await interstitialAdController
-                                                          //     .showInterstitialAd();
+                                                        Get.dialog(AlertDialog(
+                                                          title: const Text(
+                                                              'Rewarded Feature'),
+                                                          content: const Text(
+                                                              'Please watch full rewarded ad to add source link '),
+                                                          actions: [
+                                                            OutlinedButton(
+                                                                onPressed: () =>
+                                                                    Get.back(),
+                                                                child:
+                                                                    const Text(
+                                                                        'Back')),
+                                                            OutlinedButton(
+                                                                onPressed: () {
+                                                                  controller
+                                                                      .rewardedInterstitialAd
+                                                                      .show(onUserEarnedReward:
+                                                                          (ad,
+                                                                              reward) {
+                                                                    if (Get
+                                                                        .isOverlaysOpen) {
+                                                                      Get.back();
+                                                                    }
+                                                                    // await interstitialAdController
+                                                                    //     .showInterstitialAd();
 
-                                                          try {
-                                                            FirestoreData.setSourceUrl(
-                                                                    documentId:
-                                                                        _document
-                                                                            ?.documentId,
-                                                                    sourceUrl:
-                                                                        controller
-                                                                            .sourceUrl)
-                                                                .then((value) =>
-                                                                    Get.showSnackbar(
-                                                                      const GetSnackBar(
-                                                                        message:
-                                                                            'Link Changed',
-                                                                        // backgroundColor: Colors.amber,
-                                                                        duration:
-                                                                            Duration(seconds: 3),
-                                                                        snackPosition:
-                                                                            SnackPosition.TOP,
-                                                                      ),
-                                                                    ));
-                                                          } on Exception catch (e) {
-                                                            Get.showSnackbar(
-                                                              GetSnackBar(
-                                                                message: e
-                                                                    .toString(),
-                                                                // backgroundColor: Colors.amber,
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            3),
-                                                                snackPosition:
-                                                                    SnackPosition
-                                                                        .TOP,
-                                                              ),
-                                                            );
-                                                          }
-                                                        });
+                                                                    try {
+                                                                      FirestoreData.setSourceUrl(
+                                                                              documentId: _document?.documentId,
+                                                                              sourceUrl: controller.sourceUrl)
+                                                                          .then((value) => Get.showSnackbar(
+                                                                                const GetSnackBar(
+                                                                                  message: 'Link Changed',
+                                                                                  // backgroundColor: Colors.amber,
+                                                                                  duration: Duration(seconds: 3),
+                                                                                  snackPosition: SnackPosition.TOP,
+                                                                                ),
+                                                                              ));
+                                                                    } on Exception catch (e) {
+                                                                      Get.showSnackbar(
+                                                                        GetSnackBar(
+                                                                          message:
+                                                                              e.toString(),
+                                                                          // backgroundColor: Colors.amber,
+                                                                          duration:
+                                                                              const Duration(seconds: 3),
+                                                                          snackPosition:
+                                                                              SnackPosition.TOP,
+                                                                        ),
+                                                                      );
+                                                                    }
+                                                                  });
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        'OK'))
+                                                          ],
+                                                          backgroundColor:
+                                                              Colors.black,
+                                                        ));
                                                       },
                                                       child: const Text('Save'),
                                                     ),
