@@ -81,11 +81,11 @@ class HomeView extends GetView<HomeController> {
                     label: 'Library',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.tips_and_updates_outlined),
-                    label: 'Manage Encrypted',
+                    icon: Icon(Icons.analytics),
+                    label: 'My Files',
                   ),
                   NavigationDestination(
-                    icon: Icon(Icons.settings),
+                    icon: Icon(Icons.manage_accounts),
                     label: 'Settings',
                   ),
                 ],

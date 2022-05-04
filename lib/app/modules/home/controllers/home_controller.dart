@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:filegram/app/data/model/gullak_model.dart';
 import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';

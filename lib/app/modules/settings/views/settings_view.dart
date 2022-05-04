@@ -155,9 +155,7 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launch(
                 "https://docs.google.com/forms/d/e/1FAIpQLSfjp_SNlap2NRH6lwZOb0iHrSrxsdsI2gH9IITMwxFPZUh1fw/viewform?usp=sf_link",
-                forceWebView: true,
-                enableJavaScript: true,
-                enableDomStorage: true,
+              
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
@@ -181,9 +179,7 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launch(
                 "https://sites.google.com/view/filegram/privacypolicy",
-                forceWebView: true,
-                enableJavaScript: true,
-                enableDomStorage: true,
+               
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
@@ -207,9 +203,7 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launch(
                 "https://sites.google.com/view/filegram/terms_and_conditions",
-                forceWebView: true,
-                enableJavaScript: true,
-                enableDomStorage: true,
+              
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
@@ -258,9 +252,7 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launch(
                 "https://sites.google.com/view/filegram",
-                forceWebView: true,
-                enableJavaScript: true,
-                enableDomStorage: true,
+               
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(

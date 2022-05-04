@@ -13,7 +13,7 @@ A App made for controlling pdfs files privacy
 - [x] Receive Files Options
 - [] Subscription Feature
 - [x] Money Earning For Content Creators
-- [] Terms,Policy and Many More Things
+- [x] Terms,Policy and Many More Things
 - [] Created By
 - [x] Intro Screens
 - [] Promotions Options
@@ -22,7 +22,7 @@ A App made for controlling pdfs files privacy
 - [x] night mode pdf
 - [] Get ota update feature
 - [] Themes Flutter
-- [] Wake Lock
+- [x] Wake Lock
 - [] Feature Discovery/ShowCaseView
 - [x] Onboarding Screens
 - [x] Whatsapp Tools
