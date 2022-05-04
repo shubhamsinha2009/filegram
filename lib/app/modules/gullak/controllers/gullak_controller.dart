@@ -9,8 +9,8 @@ class GullakController extends GetxController {
 
   final int maxFailedLoadAttempts = 3;
   int rewardLoadAttempts = 0;
-  late RewardedInterstitialAd rewardedInterstitialAd;
-  final isRewardedAdReady = false.obs;
+  // late RewardedInterstitialAd rewardedInterstitialAd;
+  // final isRewardedAdReady = false.obs;
   late BannerAd topBannerAd;
   final istopBannerAdLoaded = false.obs;
 
@@ -18,35 +18,35 @@ class GullakController extends GetxController {
     return AdWidget(ad: ad);
   }
 
-  void createRewardedAd() {
-    RewardedInterstitialAd.load(
-      adUnitId: AdHelper.rewardedAdWithdrawal,
-      request: const AdRequest(),
-      rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
-        onAdLoaded: (RewardedInterstitialAd ad) {
-          rewardedInterstitialAd = ad;
-          rewardLoadAttempts = 0;
+  // void createRewardedAd() {
+  //   RewardedInterstitialAd.load(
+  //     adUnitId: AdHelper.rewardedAdWithdrawal,
+  //     request: const AdRequest(),
+  //     rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
+  //       onAdLoaded: (RewardedInterstitialAd ad) {
+  //         rewardedInterstitialAd = ad;
+  //         rewardLoadAttempts = 0;
 
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              isRewardedAdReady.value = false;
+  //         ad.fullScreenContentCallback = FullScreenContentCallback(
+  //           onAdDismissedFullScreenContent: (ad) {
+  //             isRewardedAdReady.value = false;
 
-              createRewardedAd();
-            },
-          );
+  //             createRewardedAd();
+  //           },
+  //         );
 
-          isRewardedAdReady.value = true;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          // print('Failed to load a rewarded ad: ${err.message}');
-          rewardLoadAttempts += 1;
-          if (rewardLoadAttempts <= maxFailedLoadAttempts) {
-            createRewardedAd();
-          }
-        },
-      ),
-    );
-  }
+  //         isRewardedAdReady.value = true;
+  //       },
+  //       onAdFailedToLoad: (LoadAdError error) {
+  //         // print('Failed to load a rewarded ad: ${err.message}');
+  //         rewardLoadAttempts += 1;
+  //         if (rewardLoadAttempts <= maxFailedLoadAttempts) {
+  //           createRewardedAd();
+  //         }
+  //       },
+  //     ),
+  //   );
+  // }
 
   void _createBottomBannerAd() {
     topBannerAd = BannerAd(
@@ -69,7 +69,7 @@ class GullakController extends GetxController {
   @override
   void onInit() {
     try {
-      createRewardedAd();
+      // createRewardedAd();
       _createBottomBannerAd();
     } catch (e) {}
 
@@ -78,7 +78,7 @@ class GullakController extends GetxController {
 
   @override
   void onClose() {
-    rewardedInterstitialAd.dispose();
+    //rewardedInterstitialAd.dispose();
     topBannerAd.dispose();
     super.onClose();
   }
