@@ -12,20 +12,15 @@ class ViewPdfView extends GetView<ViewPdfController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Obx(() => Text(
-                "${controller.currentPageNumber + 1}/${controller.pages}")),
-            const SizedBox(
-              width: 20,
-            ),
-            Obx(() => Text(
-                  '${controller.countdownTimer.value}',
-                  softWrap: true,
-                )),
-          ],
-        ),
-
+        title: Obx(() => Chip(
+              backgroundColor: Colors.teal,
+              label: Text(
+                'Ad in ${controller.countdownTimer.value} sec',
+                softWrap: true,
+              ),
+            )),
+        // Obx(() => Text(
+        //               "${controller.currentPageNumber + 1}/${controller.pages}")),
         // Text("${controller.currentPageNumber + 1}/${controller.pages}")),
         actions: [
           //  Obx(() => Text('${controller.countdownTimer.value}')),
