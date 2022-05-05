@@ -12,9 +12,23 @@ class ViewPdfView extends GetView<ViewPdfController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() =>
-            Text("${controller.currentPageNumber + 1}/${controller.pages}")),
+        title: Row(
+          children: [
+            Obx(() => Text(
+                "${controller.currentPageNumber + 1}/${controller.pages}")),
+            const SizedBox(
+              width: 20,
+            ),
+            Obx(() => Text(
+                  '${controller.countdownTimer.value}',
+                  softWrap: true,
+                )),
+          ],
+        ),
+
+        // Text("${controller.currentPageNumber + 1}/${controller.pages}")),
         actions: [
+          //  Obx(() => Text('${controller.countdownTimer.value}')),
           IconButton(
               onPressed: () async => await Share.shareFiles(
                     [controller.filePath],
@@ -32,6 +46,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
               icon: const Icon(Icons.rotate_90_degrees_ccw_outlined)),
         ],
       ),
+
       bottomNavigationBar: Obx(() => controller.isBottomBannerAdLoaded.isTrue
           ? SizedBox(
               height: 50,

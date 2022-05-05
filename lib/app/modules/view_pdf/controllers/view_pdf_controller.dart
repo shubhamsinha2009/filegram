@@ -36,9 +36,10 @@ class ViewPdfController extends GetxController {
   int interstitialLoadAttempts = 0;
   final adDismissed = false.obs;
   Timer? _timer1;
-  Timer? _timer2;
   final isBottomBannerAdLoaded = false.obs;
   late BannerAd bottomBannerAd;
+  final countdownTimer = 200.obs;
+  bool _shouldAdPlay = Get.arguments[1];
 
   Future<bool> doDecryption(String _fileIn) async {
     try {
@@ -179,17 +180,22 @@ class ViewPdfController extends GetxController {
     intialPageNumber = _pdfDetails?['intialPageNumber'];
 
     _timer1 = Timer.periodic(
-      const Duration(minutes: 3),
+      const Duration(seconds: 1),
       (timer) {
-        showInterstitialAd(uid: ownerId).catchError((e) {});
+        if (countdownTimer.value == 0) {
+          showInterstitialAd(uid: ownerId)
+              .then((value) => countdownTimer.value = 200)
+              .catchError((e) {});
+        } else {
+          countdownTimer.value--;
+        }
+        if (_shouldAdPlay && countdownTimer.value == 10) {
+          _shouldAdPlay = false;
+          showInterstitialAd(uid: ownerId).catchError((e) {});
+        }
       },
     );
 
-    _timer2 = Timer(const Duration(seconds: 10), () {
-      if (Get.arguments[1]) {
-        showInterstitialAd(uid: ownerId).catchError((e) {});
-      }
-    });
     try {
       createInterstitialAd();
       _createBottomBannerAd();
@@ -210,7 +216,6 @@ class ViewPdfController extends GetxController {
   @override
   void onClose() async {
     _timer1?.cancel();
-    _timer2?.cancel();
     interstitialAd?.dispose();
     bottomBannerAd.dispose();
 
