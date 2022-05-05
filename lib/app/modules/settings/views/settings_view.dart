@@ -69,16 +69,18 @@ class SettingsView extends GetView<SettingsController> {
           ),
           onTap: () => Get.toNamed(Routes.gullak),
         ),
-        controller.isSettingsBannerAdLoaded.isTrue
-            ? SizedBox(
-                height: controller.settingsBannerAd.size.height.toDouble(),
-                width: controller.settingsBannerAd.size.width.toDouble(),
-                child: controller.adWidget(ad: controller.settingsBannerAd),
-              )
-            : const SizedBox(
-                height: 0,
-                width: 0,
-              ),
+        Obx(
+          () => controller.isSettingsBannerAdLoaded.isTrue
+              ? SizedBox(
+                  height: controller.settingsBannerAd.size.height.toDouble(),
+                  width: controller.settingsBannerAd.size.width.toDouble(),
+                  child: controller.adWidget(ad: controller.settingsBannerAd),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
+        ),
         ListTile(
             title: const Text(
               'Rate Us',
@@ -155,7 +157,6 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launch(
                 "https://docs.google.com/forms/d/e/1FAIpQLSfjp_SNlap2NRH6lwZOb0iHrSrxsdsI2gH9IITMwxFPZUh1fw/viewform?usp=sf_link",
-              
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
@@ -179,7 +180,6 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launch(
                 "https://sites.google.com/view/filegram/privacypolicy",
-               
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
@@ -203,7 +203,6 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launch(
                 "https://sites.google.com/view/filegram/terms_and_conditions",
-              
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(
@@ -252,7 +251,6 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launch(
                 "https://sites.google.com/view/filegram",
-               
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(

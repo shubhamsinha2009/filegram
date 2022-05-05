@@ -37,8 +37,8 @@ class ViewPdfController extends GetxController {
   final adDismissed = false.obs;
   Timer? _timer1;
   Timer? _timer2;
-  // final isBottomBannerAdLoaded = false.obs;
-  // late BannerAd bottomBannerAd;
+  final isBottomBannerAdLoaded = false.obs;
+  late BannerAd bottomBannerAd;
 
   Future<bool> doDecryption(String _fileIn) async {
     try {
@@ -118,26 +118,26 @@ class ViewPdfController extends GetxController {
     }
   }
 
-  // void _createBottomBannerAd() {
-  //   bottomBannerAd = BannerAd(
-  //     adUnitId: AdHelper.viewPdfBanner,
-  //     size: AdSize.banner,
-  //     request: const AdRequest(),
-  //     listener: BannerAdListener(
-  //       onAdLoaded: (_) {
-  //         isBottomBannerAdLoaded.value = true;
-  //       },
-  //       onAdFailedToLoad: (ad, error) {
-  //         ad.dispose();
-  //       },
-  //     ),
-  //   );
-  //   bottomBannerAd.load();
-  // }
+  void _createBottomBannerAd() {
+    bottomBannerAd = BannerAd(
+      adUnitId: AdHelper.viewPdfBanner,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          isBottomBannerAdLoaded.value = true;
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+    bottomBannerAd.load();
+  }
 
-  // AdWidget adWidget({required AdWithView ad}) {
-  //   return AdWidget(ad: ad);
-  // }
+  AdWidget adWidget({required AdWithView ad}) {
+    return AdWidget(ad: ad);
+  }
 
   @override
   void onInit() async {
@@ -192,7 +192,7 @@ class ViewPdfController extends GetxController {
     });
     try {
       createInterstitialAd();
-      // _createBottomBannerAd();
+      _createBottomBannerAd();
     } on Exception catch (e) {
       // TODO
     }
@@ -212,7 +212,7 @@ class ViewPdfController extends GetxController {
     _timer1?.cancel();
     _timer2?.cancel();
     interstitialAd?.dispose();
-    //  bottomBannerAd.dispose();
+    bottomBannerAd.dispose();
 
     if (File(fileOut).existsSync()) {
       await File(fileOut).delete();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview_professor/flutter_pdfview_professor.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:share_plus/share_plus.dart';
 import '../controllers/view_pdf_controller.dart';
 
 class ViewPdfView extends GetView<ViewPdfController> {
@@ -15,6 +16,13 @@ class ViewPdfView extends GetView<ViewPdfController> {
             Text("${controller.currentPageNumber + 1}/${controller.pages}")),
         actions: [
           IconButton(
+              onPressed: () async => await Share.shareFiles(
+                    [controller.filePath],
+                    text:
+                        'Download Filegram to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
+                  ),
+              icon: const Icon(Icons.share)),
+          IconButton(
               onPressed: () => controller.nightmode.toggle(),
               icon: const Icon(Icons.settings_display_rounded)),
           IconButton(
@@ -24,13 +32,21 @@ class ViewPdfView extends GetView<ViewPdfController> {
               icon: const Icon(Icons.rotate_90_degrees_ccw_outlined)),
         ],
       ),
-      // bottomNavigationBar: controller.isBottomBannerAdLoaded.isTrue
-      //     ? SizedBox(
-      //         height: controller.bottomBannerAd.size.height.toDouble(),
-      //         width: controller.bottomBannerAd.size.width.toDouble(),
-      //         child: controller.adWidget(ad: controller.bottomBannerAd),
-      //       )
-      //     : null,
+      bottomNavigationBar: Obx(() => controller.isBottomBannerAdLoaded.isTrue
+          ? SizedBox(
+              height: 50,
+              width: 320,
+              child: controller.adWidget(ad: controller.bottomBannerAd),
+            )
+          : SizedBox(
+              height: 50,
+              width: 320,
+              child: Text(
+                controller.filePath.split('/').last,
+                textAlign: TextAlign.center,
+                softWrap: true,
+              ),
+            )),
       //top: false,
       body: Obx(
         () => controller.isDecryptionDone.isFalse

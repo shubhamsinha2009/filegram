@@ -41,6 +41,10 @@ class AdHelper {
     return dotenv.get('settingsBanner');
   }
 
+  static String get viewPdfBanner {
+    return dotenv.get('viewPdfBanner');
+  }
+
   static String get rewardedAdManage {
     return dotenv.get('rewardedAdManage');
   }
