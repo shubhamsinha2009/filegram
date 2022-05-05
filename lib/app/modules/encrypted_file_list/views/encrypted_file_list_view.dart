@@ -315,7 +315,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                       labelText:
                                                           'Source URL / Share Link to redirect',
                                                       hintText:
-                                                          'https://t.me/trust_the_professor',
+                                                          'https://t.me/filegram_app',
                                                       helperMaxLines: 3,
                                                       isDense: true,
                                                       prefixIcon: Icon(Icons

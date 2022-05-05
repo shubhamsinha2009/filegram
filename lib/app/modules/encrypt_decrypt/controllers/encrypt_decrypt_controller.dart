@@ -118,7 +118,7 @@ class EncryptDecryptController extends GetxController {
                         helperText:
                             'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
                         labelText: 'Source URL / Share Link to redirect',
-                        hintText: 'https://t.me/trust_the_professor',
+                        hintText: 'https://t.me/filegram_app',
                         helperMaxLines: 3,
                         isDense: true,
                         prefixIcon: Icon(Icons.add_link_rounded),
