@@ -21,10 +21,6 @@ class AdHelper {
     return dotenv.get('appOpenAd');
   }
 
-  static String get rewardedAdWithdrawal {
-    return dotenv.get('rewardedAdWithdrawal');
-  }
-
   static String get libraryBanner {
     return dotenv.get('libraryBanner');
   }
@@ -43,9 +39,5 @@ class AdHelper {
 
   static String get viewPdfBanner {
     return dotenv.get('viewPdfBanner');
-  }
-
-  static String get rewardedAdManage {
-    return dotenv.get('rewardedAdManage');
   }
 }

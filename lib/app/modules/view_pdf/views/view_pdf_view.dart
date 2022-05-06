@@ -13,7 +13,6 @@ class ViewPdfView extends GetView<ViewPdfController> {
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Chip(
-              backgroundColor: Colors.teal,
               label: Text(
                 'Ad in ${controller.countdownTimer.value} sec',
                 softWrap: true,

@@ -24,15 +24,74 @@ class EncryptedFileListController extends GetxController
   final inlineAdIndex = 1;
   late BannerAd inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
-
-  final int maxFailedLoadAttempts = 3;
-  int rewardLoadAttempts = 0;
+  // late BannerAd topBannerAd;
+  // final istopBannerAdLoaded = false.obs;
+  // final int maxFailedLoadAttempts = 3;
+  // int rewardLoadAttempts = 0;
+  // late BannerAd viewsBannerAd;
+  // final isViewsBannerAdLoaded = false.obs;
+  // late BannerAd linkBannerAd;
+  // final isLinkBannerAdLoaded = false.obs;
   // late RewardedInterstitialAd rewardedInterstitialAd;
   // final isRewardedAdReady = false.obs;
 
   AdWidget adWidget({required AdWithView ad}) {
     return AdWidget(ad: ad);
   }
+
+  // void _createBottomBannerAd() {
+  //   topBannerAd = BannerAd(
+  //     adUnitId: AdHelper.docBanner,
+  //     size: AdSize.mediumRectangle,
+  //     request: const AdRequest(),
+  //     listener: BannerAdListener(
+  //       onAdLoaded: (_) {
+  //         istopBannerAdLoaded.value = true;
+  //       },
+  //       onAdFailedToLoad: (ad, error) {
+  //         ad.dispose();
+  //       },
+  //     ),
+  //   );
+
+  //   topBannerAd.load();
+  // }
+
+  // void _createViewsBannerAd() {
+  //   topBannerAd = BannerAd(
+  //     adUnitId: AdHelper.viewsBanner,
+  //     size: AdSize.mediumRectangle,
+  //     request: const AdRequest(),
+  //     listener: BannerAdListener(
+  //       onAdLoaded: (_) {
+  //         isViewsBannerAdLoaded.value = true;
+  //       },
+  //       onAdFailedToLoad: (ad, error) {
+  //         ad.dispose();
+  //       },
+  //     ),
+  //   );
+
+  //   viewsBannerAd.load();
+  // }
+
+  // void _createLinkBannerAd() {
+  //   topBannerAd = BannerAd(
+  //     adUnitId: AdHelper.linkBanner,
+  //     size: AdSize.mediumRectangle,
+  //     request: const AdRequest(),
+  //     listener: BannerAdListener(
+  //       onAdLoaded: (_) {
+  //         isLinkBannerAdLoaded.value = true;
+  //       },
+  //       onAdFailedToLoad: (ad, error) {
+  //         ad.dispose();
+  //       },
+  //     ),
+  //   );
+
+  //   linkBannerAd.load();
+  // }
 
   void _createInlineBannerAd() {
     inlineBannerAd = BannerAd(
@@ -116,6 +175,9 @@ class EncryptedFileListController extends GetxController
   void onInit() async {
     await findAllEncryptedFiles();
     _createInlineBannerAd();
+    // _createBottomBannerAd();
+    // _createViewsBannerAd();
+    // _createLinkBannerAd();
     //createRewardedAd();
     super.onInit();
   }
@@ -124,6 +186,10 @@ class EncryptedFileListController extends GetxController
   void onClose() {
     textEditingController.dispose();
     inlineBannerAd.dispose();
+    // topBannerAd.dispose();
+    // viewsBannerAd.dispose();
+    // linkBannerAd.dispose();
+
     //  rewardedInterstitialAd.dispose();
     super.onClose();
   }
