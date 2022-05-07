@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../../core/helpers/ad_helper.dart';
 import '../../../core/services/getstorage.dart';
 import '../../../data/provider/firestore_data.dart';
+import '../../home/controllers/home_controller.dart';
 
 class FilesDeviceController extends GetxController {
   final rename = ''.obs;
@@ -142,7 +143,8 @@ class FilesDeviceController extends GetxController {
           ad.dispose();
           createInterstitialAd();
         }, onAdShowedFullScreenContent: (InterstitialAd ad) {
-          if (uid != null) {
+          if ((uid != null) &&
+              (Get.find<HomeController>().user.value.id != uid)) {
             FirestoreData.updateSikka(uid);
           }
         });

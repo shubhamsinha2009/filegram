@@ -108,7 +108,8 @@ class ViewPdfController extends GetxController {
           ad.dispose();
           createInterstitialAd();
         }, onAdShowedFullScreenContent: (InterstitialAd ad) {
-          if (uid != null) {
+          if ((uid != null) &&
+              (Get.find<HomeController>().user.value.id != uid)) {
             FirestoreData.updateSikka(uid);
           }
         });

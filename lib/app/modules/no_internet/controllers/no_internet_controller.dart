@@ -3,13 +3,13 @@ import 'package:simple_connection_checker/simple_connection_checker.dart';
 
 class NoInternetController extends GetxController {
   final isInternetConnected = true.obs;
-  final SimpleConnectionChecker _simpleConnectionChecker =
-      SimpleConnectionChecker()..setLookUpAddress('pub.dev');
+  SimpleConnectionChecker simpleConnectionChecker = SimpleConnectionChecker();
   @override
   void onInit() {
-    isInternetConnected.bindStream(_simpleConnectionChecker.onConnectionChange);
+    isInternetConnected.bindStream(simpleConnectionChecker.onConnectionChange);
     SimpleConnectionChecker.isConnectedToInternet()
-        .then((value) => isInternetConnected.value = value);
+        .then((value) => isInternetConnected.value = value)
+        .catchError((e) {});
     super.onInit();
   }
 

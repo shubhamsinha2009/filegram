@@ -192,6 +192,15 @@ class GullakView extends GetView<GullakController> {
                   fontSize: 10,
                 ),
               ),
+              const Text(
+                '*** Owner will not get any sikka for opening their own pdf.)*** ',
+                softWrap: true,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 10,
+                ),
+              ),
               const SizedBox(
                 height: 10,
               ),
