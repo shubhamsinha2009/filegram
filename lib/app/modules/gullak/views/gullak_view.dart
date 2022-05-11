@@ -185,7 +185,7 @@ class GullakView extends GetView<GullakController> {
                 ),
               ),
               const Text(
-                '*** Everytime someone open pdf you get few Sikka (which depends on number of ads shown - Ad is shown in every 3 minutes of pdf reading and when you open your pdf.)*** ',
+                '*** Everytime someone open pdf you get few Sikka *** ',
                 softWrap: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -194,7 +194,7 @@ class GullakView extends GetView<GullakController> {
                 ),
               ),
               const Text(
-                '*** Owner will not get any sikka for opening their own pdf.)*** ',
+                '*** Owner will not get any sikka for opening their own pdf *** ',
                 softWrap: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(
