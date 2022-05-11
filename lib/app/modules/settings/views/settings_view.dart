@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:new_version/new_version.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/settings_controller.dart';
 
@@ -93,7 +93,7 @@ class SettingsView extends GetView<SettingsController> {
             ),
             onTap: () async {
               try {
-                await launch(
+                await launchUrlString(
                   "https://play.google.com/store/apps/details?id=com.sks.filegram",
                 );
               } on PlatformException {
@@ -155,7 +155,7 @@ class SettingsView extends GetView<SettingsController> {
         ListTile(
           onTap: () async {
             try {
-              await launch(
+              await launchUrlString(
                 "https://docs.google.com/forms/d/e/1FAIpQLSfjp_SNlap2NRH6lwZOb0iHrSrxsdsI2gH9IITMwxFPZUh1fw/viewform?usp=sf_link",
               );
             } on PlatformException {
@@ -178,7 +178,7 @@ class SettingsView extends GetView<SettingsController> {
         ListTile(
           onTap: () async {
             try {
-              await launch(
+              await launchUrlString(
                 "https://sites.google.com/view/filegram/privacypolicy",
               );
             } on PlatformException {
@@ -201,7 +201,7 @@ class SettingsView extends GetView<SettingsController> {
         ListTile(
           onTap: () async {
             try {
-              await launch(
+              await launchUrlString(
                 "https://sites.google.com/view/filegram/terms_and_conditions",
               );
             } on PlatformException {
@@ -249,7 +249,7 @@ class SettingsView extends GetView<SettingsController> {
         ListTile(
           onTap: () async {
             try {
-              await launch(
+              await launchUrlString(
                 "https://sites.google.com/view/filegram",
               );
             } on PlatformException {

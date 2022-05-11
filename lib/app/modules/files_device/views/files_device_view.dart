@@ -9,7 +9,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../controllers/files_device_controller.dart';
 
 class FilesDeviceView extends GetView<FilesDeviceController> {
@@ -252,7 +252,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                         color: Colors.white),
                                     onPressed: () async {
                                       try {
-                                        await launch(_sourceUrl);
+                                        await launchUrlString(_sourceUrl);
                                       } on PlatformException {
                                         Get.showSnackbar(GetSnackBar(
                                           messageText: Text(
