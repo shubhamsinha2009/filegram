@@ -78,7 +78,6 @@ class ViewPdfView extends GetView<ViewPdfController> {
                 fitEachPage: true,
                 fitPolicy: FitPolicy.WIDTH,
                 defaultPage: controller.intialPageNumber,
-
                 onRender: (_pages) {
                   controller.isReady.value = true;
                 },

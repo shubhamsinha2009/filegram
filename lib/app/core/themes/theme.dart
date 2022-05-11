@@ -45,8 +45,8 @@ class Themes {
     cardColor: Colors.black,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.white12,
-      foregroundColor: Colors.white60,
+      backgroundColor: Colors.black,
+      foregroundColor: Colors.white,
     ),
     popupMenuTheme: const PopupMenuThemeData(
       color: Colors.black,

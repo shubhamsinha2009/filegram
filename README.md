@@ -60,6 +60,7 @@ A App made for controlling pdfs files privacy
 - [] Report a bug
 - [] Firebase App Check
 - [] Set Rewarded Ads on Page Number
+- [] Dashboard
 
 ## BUGS
 
