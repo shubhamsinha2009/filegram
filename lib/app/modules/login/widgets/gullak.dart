@@ -19,7 +19,7 @@ class Gullak extends StatelessWidget {
           height: 10,
         ),
         const Text(
-          'Gullak - Earn from your pdfs',
+          'Gullak - Earn Sikka as a Reward',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
         Expanded(
@@ -29,7 +29,7 @@ class Gullak extends StatelessWidget {
           ),
         ),
         const Text(
-          'Three Simple Steps to start your earning \n\n1.Open/Upload/Encrypt your pdfs in filegram \n\n2. Share your pdfs through filegram \n\n3.Earn from every view of pdf in filegram',
+          'Three Simple Steps to start your earning \n\n1.Open/Upload/Encrypt your pdfs in filegram \n\n2. Share your pdfs through filegram \n\n3.Earn Sikka from every view of pdf in filegram',
           softWrap: true,
           style: TextStyle(
             fontWeight: FontWeight.w600,

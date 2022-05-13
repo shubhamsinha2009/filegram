@@ -116,7 +116,7 @@ class SettingsView extends GetView<SettingsController> {
             Icons.share_outlined,
           ),
           onTap: () => Share.share(
-              "Send your pdf files through filegram and earn money -- Check Out Filegram here for many more exciting features for you ----  https://play.google.com/store/apps/details?id=com.sks.filegram"),
+              "Send your pdf files through filegram  -- Check Out Filegram here for many more exciting features for you ----  https://play.google.com/store/apps/details?id=com.sks.filegram"),
         ),
         ListTile(
           onTap: () {
