@@ -252,7 +252,9 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                         color: Colors.white),
                                     onPressed: () async {
                                       try {
-                                        await launchUrlString(_sourceUrl);
+                                        await launchUrlString(_sourceUrl,
+                                            mode:
+                                                LaunchMode.externalApplication);
                                       } on PlatformException {
                                         Get.showSnackbar(GetSnackBar(
                                           messageText: Text(

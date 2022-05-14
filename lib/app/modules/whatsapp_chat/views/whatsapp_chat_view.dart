@@ -67,7 +67,8 @@ class WhatsappChatView extends GetView<WhatsappChatController> {
                           _formKey.currentState!.validate()) {
                         try {
                           await launchUrlString(
-                              'whatsapp://send?phone=${controller.phoneNumber}');
+                              'whatsapp://send?phone=${controller.phoneNumber}',
+                              mode: LaunchMode.externalNonBrowserApplication);
                         } catch (e) {
                           Get.showSnackbar(GetSnackBar(
                             duration: const Duration(seconds: 5),

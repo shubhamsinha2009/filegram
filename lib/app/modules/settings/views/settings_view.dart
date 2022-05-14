@@ -94,8 +94,8 @@ class SettingsView extends GetView<SettingsController> {
             onTap: () async {
               try {
                 await launchUrlString(
-                  "https://play.google.com/store/apps/details?id=com.sks.filegram",
-                );
+                    "https://play.google.com/store/apps/details?id=com.sks.filegram",
+                    mode: LaunchMode.externalNonBrowserApplication);
               } on PlatformException {
                 Get.showSnackbar(const GetSnackBar(
                   messageText: Text('Unable to open App'),
@@ -157,6 +157,7 @@ class SettingsView extends GetView<SettingsController> {
             try {
               await launchUrlString(
                 "https://docs.google.com/forms/d/e/1FAIpQLSfjp_SNlap2NRH6lwZOb0iHrSrxsdsI2gH9IITMwxFPZUh1fw/viewform?usp=sf_link",
+                mode: LaunchMode.externalApplication,
               );
             } on PlatformException {
               Get.showSnackbar(const GetSnackBar(

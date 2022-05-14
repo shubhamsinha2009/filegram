@@ -150,7 +150,8 @@ class GullakView extends GetView<GullakController> {
                             backgroundColor: Colors.black,
                           ))
                         : await launchUrlString(
-                            controller.gullak.value.withdrawalLink);
+                            controller.gullak.value.withdrawalLink,
+                            mode: LaunchMode.externalApplication);
                     //           });
                     //         },
                     //         child: const Text('Withdraw'))
