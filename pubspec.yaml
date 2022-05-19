@@ -1,5 +1,5 @@
 name: filegram
-version: 2.1.0+65
+version: 2.1.1+66
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -12,6 +12,7 @@ dependencies:
   collection: ^1.15.0
   cupertino_icons: ^1.0.2
   firebase_analytics: ^9.0.5
+  firebase_app_check: ^0.0.6+12
   firebase_auth: ^3.3.5
   firebase_core: ^1.11.0
   firebase_crashlytics: ^2.6.2

@@ -186,15 +186,6 @@ class FilesDeviceController extends GetxController {
     createInterstitialAd();
     await onInitialisation();
     _createInlineBannerAd();
-    // await receiveSharing();
-    //  await analytics.setCurrentScreen(screenName: 'main_screen');
-    // _updateInfo?.updateAvailability == UpdateAvailability.updateAvailable
-    //     ? () async {
-    //         // await analytics.logEvent(name: 'immediate_app_update');
-    //         InAppUpdate.performImmediateUpdate()
-    //             .catchError((e) => Get.snackbar('Error', e.toString()));
-    //       }
-    //     : null;
 
     super.onInit();
   }
