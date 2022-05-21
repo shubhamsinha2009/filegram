@@ -15,7 +15,7 @@ class BtmSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      color: Get.isDarkMode ? Colors.black : Colors.white,
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       child: Wrap(

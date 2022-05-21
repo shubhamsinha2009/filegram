@@ -53,12 +53,12 @@ class LoginView extends GetView<LoginController> {
                     height: 100,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Colors.black87,
-                            Colors.black54,
+                            Get.isDarkMode ? Colors.black87 : Colors.white70,
+                            Get.isDarkMode ? Colors.black54 : Colors.white54,
                           ],
                         ),
                         //color: Colors.black87,

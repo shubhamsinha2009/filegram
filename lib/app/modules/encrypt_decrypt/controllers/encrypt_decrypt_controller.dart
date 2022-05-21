@@ -68,7 +68,7 @@ class EncryptDecryptController extends GetxController {
           WillPopScope(
             onWillPop: () async => false,
             child: Container(
-              color: Colors.black,
+              color: Get.isDarkMode ? Colors.black : Colors.white,
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(16),
               child: Wrap(

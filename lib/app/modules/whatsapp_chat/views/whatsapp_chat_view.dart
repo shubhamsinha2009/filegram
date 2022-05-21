@@ -71,6 +71,8 @@ class WhatsappChatView extends GetView<WhatsappChatController> {
                               mode: LaunchMode.externalNonBrowserApplication);
                         } catch (e) {
                           Get.showSnackbar(GetSnackBar(
+                            backgroundColor:
+                                Get.isDarkMode ? Colors.black : Colors.white,
                             duration: const Duration(seconds: 5),
                             title: 'Cannot Open',
                             message: e.toString(),

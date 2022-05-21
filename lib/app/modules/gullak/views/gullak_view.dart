@@ -49,25 +49,29 @@ class GullakView extends GetView<GullakController> {
           ),
           margin: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.black54,
-                  Colors.black87,
+                  Get.isDarkMode ? Colors.black54 : Colors.white70,
+                  Get.isDarkMode ? Colors.black87 : Colors.white,
                 ],
               ),
               //color: Colors.black87,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.shade900,
+                  color: Get.isDarkMode
+                      ? Colors.grey.shade900
+                      : Colors.grey.shade500,
                   offset: const Offset(5, 5),
                   blurRadius: 5,
                   spreadRadius: 1,
                 ),
                 BoxShadow(
-                  color: Colors.grey.shade800,
+                  color: Get.isDarkMode
+                      ? Colors.grey.shade800
+                      : Colors.grey.shade400,
                   offset: const Offset(-4, -4),
                   blurRadius: 5,
                   spreadRadius: 1,

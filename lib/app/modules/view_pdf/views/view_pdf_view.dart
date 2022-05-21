@@ -31,7 +31,11 @@ class ViewPdfView extends GetView<ViewPdfController> {
                   ),
               icon: const Icon(Icons.share)),
           IconButton(
-              onPressed: () => controller.nightmode.toggle(),
+              onPressed: () {
+                Get.changeThemeMode(
+                    Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                controller.nightmode.toggle();
+              },
               icon: const Icon(Icons.settings_display_rounded)),
           IconButton(
               onPressed: () {
@@ -73,6 +77,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                 swipeHorizontal: controller.swipehorizontal.value,
                 autoSpacing: false,
                 pageFling: true,
+
                 pageSnap: true,
                 nightMode: controller.nightmode.value,
                 fitEachPage: true,
@@ -85,7 +90,8 @@ class ViewPdfView extends GetView<ViewPdfController> {
                   Get.dialog(
                     AlertDialog(
                       alignment: Alignment.center,
-                      backgroundColor: Colors.black,
+                      backgroundColor:
+                          Get.isDarkMode ? Colors.black : Colors.white,
                       title: const Icon(Icons.error_outline),
                       content: Text(
                         error,
@@ -111,6 +117,8 @@ class ViewPdfView extends GetView<ViewPdfController> {
                 },
                 onPageError: (page, error) {
                   Get.showSnackbar(GetSnackBar(
+                    backgroundColor:
+                        Get.isDarkMode ? Colors.black : Colors.white,
                     messageText: Text(
                         'The Page $page has an error : ${error.toString()}'),
                     icon: const Icon(Icons.error_outline),

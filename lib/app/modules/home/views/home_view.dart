@@ -28,12 +28,17 @@ class HomeView extends GetView<HomeController> {
                   "assets/app_bar.png",
                 ),
                 actions: [
-                  // IconButton(
-                  //   onPressed: () => Get.toNamed(Routes.gullak),
-                  //   icon: const Icon(Icons.savings_rounded,
-                  //       color: Color.fromARGB(255, 194, 103, 70)),
-                  // ),
-
+                  IconButton(
+                      onPressed: () {
+                        Get.changeThemeMode(
+                            Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                        controller.changeTheme.toggle();
+                      },
+                      icon: Icon(
+                        controller.changeTheme.isTrue
+                            ? Icons.light_mode
+                            : Icons.dark_mode,
+                      )),
                   ActionChip(
                     onPressed: () {
                       Get.toNamed(Routes.gullak);

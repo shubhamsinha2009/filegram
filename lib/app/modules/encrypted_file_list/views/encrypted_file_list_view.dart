@@ -57,413 +57,438 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                         final DocumentModel? _document =
                             state?[controller.getListViewItemIndex(index)];
 
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          padding: const EdgeInsets.only(
-                            top: 15,
-                            bottom: 0,
-                            left: 15,
-                            right: 15,
-                          ),
-                          margin: const EdgeInsets.all(15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            // textBaseline: TextBaseline.alphabetic,
-                            // verticalDirection: VerticalDirection.down,
-                            children: [
-                              Text(
-                                '${_document?.documentName}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  letterSpacing: 1,
-                                ),
+                        return Obx(() => AnimatedContainer(
+                              duration: const Duration(milliseconds: 100),
+                              padding: const EdgeInsets.only(
+                                top: 15,
+                                bottom: 0,
+                                left: 15,
+                                right: 15,
                               ),
-                              const SizedBox(
-                                height: 2,
-                              ),
-                              Text(
-                                DateFormat.yMMMEd().add_jms().format(
-                                    _document?.createdOn ?? DateTime.now()),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 2,
-                              ),
-                              Text(
-                                '${_document?.documentSize}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                              margin: const EdgeInsets.all(15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                // textBaseline: TextBaseline.alphabetic,
+                                // verticalDirection: VerticalDirection.down,
                                 children: [
-                                  OutlinedButton(
-                                    // onPressed: () => controller
-                                    //     .adsController.rewardedAd
-                                    //     .show(onUserEarnedReward: (ad, reward) {
-                                    onPressed: () => Get.bottomSheet(
-                                      DocumentPermissionBottomSheet(
-                                        document: _document!,
-                                        controller: controller,
-                                      ),
-                                      backgroundColor: Colors.black,
-                                      isDismissible: true,
-                                      isScrollControlled: true,
+                                  Text(
+                                    '${_document?.documentName}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      letterSpacing: 1,
                                     ),
-                                    // }),
-                                    child: Text(
-                                        '${_document?.documentPermission.name.capitalize}'),
                                   ),
-                                  OutlinedButton(
-                                    onPressed: () async {
-                                      // Get.dialog(AlertDialog(
-                                      //   title: const Text('Rewarded Feature'),
-                                      //   content: const Text(
-                                      //       'Please watch full rewarded ad to see number of views and uploads '),
-                                      //   actions: [
-                                      //     OutlinedButton(
-                                      //         onPressed: () => Get.back(),
-                                      //         child: const Text('Back')),
-                                      //     OutlinedButton(
-                                      //         onPressed: () {
-                                      //           controller
-                                      //               .rewardedInterstitialAd
-                                      //               .show(onUserEarnedReward:
-                                      //                   (ad, reward) async {
-                                      final _views = await FirestoreData
-                                          .readViewsAndUploads(
-                                              _document?.documentId);
-                                      // controller.adsController.rewardedAd.show(
-                                      //   onUserEarnedReward: (ad, reward) {
-                                      Get.dialog(
-                                        AlertDialog(
-                                          alignment: Alignment.center,
-                                          backgroundColor: Colors.black,
-                                          // title: const Text(
-                                          //   ' Number of Views',
-                                          // ),
-                                          content: Text(
-                                            'Number of Views : ${_views.views} \n \n & \n \n  Number of Uploads : ${_views.numberOfUploads} ',
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () async {
-                                                if (Get.isOverlaysOpen) {
-                                                  Get.back();
-                                                }
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        ),
-                                        barrierDismissible: false,
-                                      );
-                                      // });
-                                      //         },
-                                      //         child: const Text('OK'))
-                                      //   ],
-                                      //   backgroundColor: Colors.black,
-                                      // ));
-                                    },
-                                    //  );
-                                    // },
-                                    child: const Text('Views'),
+                                  const SizedBox(
+                                    height: 2,
                                   ),
-                                  OutlinedButton(
-                                    // onPressed: () => controller
-                                    //     .adsController.rewardedAd
-                                    //     .show(onUserEarnedReward: (ad, reward) {
-                                    onPressed: () => Get.dialog(
-                                      AlertDialog(
-                                        titleTextStyle: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                        backgroundColor: Colors.black,
-                                        title: Text(
-                                          '"Are you sure you wish to delete this file ${_document?.documentName} forever from servers?',
-                                        ),
-                                        content: const Text(
-                                            'After you delete your file, Nobody will be able to decrypt this file ever'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              if (Get.isOverlaysOpen) {
-                                                Get.back();
-                                              }
-                                            },
-                                            child: const Text('Cancel'),
+                                  Text(
+                                    DateFormat.yMMMEd().add_jms().format(
+                                        _document?.createdOn ?? DateTime.now()),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Text(
+                                    '${_document?.documentSize}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w300,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      OutlinedButton(
+                                        // onPressed: () => controller
+                                        //     .adsController.rewardedAd
+                                        //     .show(onUserEarnedReward: (ad, reward) {
+                                        onPressed: () => Get.bottomSheet(
+                                          DocumentPermissionBottomSheet(
+                                            document: _document!,
+                                            controller: controller,
                                           ),
-                                          TextButton(
-                                            onPressed: () {
-                                              // Get.dialog(AlertDialog(
-                                              //   title: const Text(
-                                              //       'Rewarded Feature'),
-                                              //   content: const Text(
-                                              //       'Please watch full rewarded ad to delete '),
-                                              //   actions: [
-                                              //     OutlinedButton(
-                                              //         onPressed: () =>
-                                              //             Get.back(),
-                                              //         child:
-                                              //             const Text('Back')),
-                                              //     OutlinedButton(
-                                              //         onPressed: () {
-                                              //           controller
-                                              //               .rewardedInterstitialAd
-                                              //               .show(
-                                              //                   onUserEarnedReward:
-                                              //                       (ad,
-                                              //                           reward) {
-                                              if (Get.isOverlaysOpen) {
-                                                Get.back(closeOverlays: true);
-                                              }
-                                              // ! Sometimes due to async document gets deleted before views
-                                              FirestoreData
-                                                      .deleteViewsAndUploads(
-                                                          _document?.documentId)
-                                                  .then((value) =>
-                                                      FirestoreData.deleteDocument(
-                                                              documentId: _document
+                                          backgroundColor: Get.isDarkMode
+                                              ? Colors.black
+                                              : Colors.white,
+                                          isDismissible: true,
+                                          isScrollControlled: true,
+                                        ),
+                                        // }),
+                                        child: Text(
+                                            '${_document?.documentPermission.name.capitalize}'),
+                                      ),
+                                      OutlinedButton(
+                                        onPressed: () async {
+                                          // Get.dialog(AlertDialog(
+                                          //   title: const Text('Rewarded Feature'),
+                                          //   content: const Text(
+                                          //       'Please watch full rewarded ad to see number of views and uploads '),
+                                          //   actions: [
+                                          //     OutlinedButton(
+                                          //         onPressed: () => Get.back(),
+                                          //         child: const Text('Back')),
+                                          //     OutlinedButton(
+                                          //         onPressed: () {
+                                          //           controller
+                                          //               .rewardedInterstitialAd
+                                          //               .show(onUserEarnedReward:
+                                          //                   (ad, reward) async {
+                                          final _views = await FirestoreData
+                                              .readViewsAndUploads(
+                                                  _document?.documentId);
+                                          // controller.adsController.rewardedAd.show(
+                                          //   onUserEarnedReward: (ad, reward) {
+                                          Get.dialog(
+                                            AlertDialog(
+                                              alignment: Alignment.center,
+                                              backgroundColor: Get.isDarkMode
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                              // title: const Text(
+                                              //   ' Number of Views',
+                                              // ),
+                                              content: Text(
+                                                'Number of Views : ${_views.views} \n \n & \n \n  Number of Uploads : ${_views.numberOfUploads} ',
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    if (Get.isOverlaysOpen) {
+                                                      Get.back();
+                                                    }
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            ),
+                                            barrierDismissible: false,
+                                          );
+                                          // });
+                                          //         },
+                                          //         child: const Text('OK'))
+                                          //   ],
+                                          //   backgroundColor: Colors.black,
+                                          // ));
+                                        },
+                                        //  );
+                                        // },
+                                        child: const Text('Views'),
+                                      ),
+                                      OutlinedButton(
+                                        // onPressed: () => controller
+                                        //     .adsController.rewardedAd
+                                        //     .show(onUserEarnedReward: (ad, reward) {
+                                        onPressed: () => Get.dialog(
+                                          AlertDialog(
+                                            backgroundColor: Get.isDarkMode
+                                                ? Colors.black
+                                                : Colors.white,
+                                            title: Text(
+                                              '"Are you sure you wish to delete this file ${_document?.documentName} forever from servers?',
+                                            ),
+                                            content: const Text(
+                                                'After you delete your file, Nobody will be able to decrypt this file ever'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  if (Get.isOverlaysOpen) {
+                                                    Get.back();
+                                                  }
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  // Get.dialog(AlertDialog(
+                                                  //   title: const Text(
+                                                  //       'Rewarded Feature'),
+                                                  //   content: const Text(
+                                                  //       'Please watch full rewarded ad to delete '),
+                                                  //   actions: [
+                                                  //     OutlinedButton(
+                                                  //         onPressed: () =>
+                                                  //             Get.back(),
+                                                  //         child:
+                                                  //             const Text('Back')),
+                                                  //     OutlinedButton(
+                                                  //         onPressed: () {
+                                                  //           controller
+                                                  //               .rewardedInterstitialAd
+                                                  //               .show(
+                                                  //                   onUserEarnedReward:
+                                                  //                       (ad,
+                                                  //                           reward) {
+                                                  if (Get.isOverlaysOpen) {
+                                                    Get.back(
+                                                        closeOverlays: true);
+                                                  }
+                                                  // ! Sometimes due to async document gets deleted before views
+                                                  FirestoreData
+                                                          .deleteViewsAndUploads(
+                                                              _document
                                                                   ?.documentId)
-                                                          .then((value) {
-                                                        controller.documents
-                                                            .clear();
-                                                        controller
-                                                                .getFirstData =
-                                                            false;
-                                                        controller
-                                                            .findAllEncryptedFiles();
-
-                                                        Get.showSnackbar(
-                                                            GetSnackBar(
-                                                          messageText: Text(
-                                                              'The File ${_document?.documentName} is deleted from server'),
-                                                          icon: const Icon(Icons
-                                                              .delete_forever_rounded),
-                                                          snackPosition:
-                                                              SnackPosition.TOP,
-                                                          duration:
-                                                              const Duration(
-                                                                  seconds: 3),
-                                                        ));
-                                                      }));
-                                              //   });
-                                              //         },
-                                              //         child:
-                                              //             const Text('Delete'))
-                                              //   ],
-                                              //   backgroundColor: Colors.black,
-                                              // ));
-                                            },
-                                            child: const Text('Delete'),
-                                          ),
-                                        ],
-                                      ),
-                                      barrierDismissible: false,
-                                    ),
-
-                                    child: const Text('Delete'),
-                                  ),
-                                  OutlinedButton(
-                                      onPressed: () =>
-                                          Get.bottomSheet(Container(
-                                            color: Colors.black,
-                                            margin: const EdgeInsets.all(16),
-                                            padding: const EdgeInsets.all(16),
-                                            child: Wrap(
-                                              children: <Widget>[
-                                                const Text(
-                                                  'Shared Link // Source Url',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w800),
-                                                ),
-                                                const SizedBox(
-                                                  height: 50,
-                                                ),
-                                                TextFormField(
-                                                  autovalidateMode:
-                                                      AutovalidateMode
-                                                          .onUserInteraction,
-                                                  keyboardType:
-                                                      TextInputType.url,
-                                                  onChanged: (value) =>
-                                                      controller.sourceUrl =
-                                                          value,
-                                                  initialValue:
-                                                      _document?.sourceUrl,
-                                                  decoration: const InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      helperText:
-                                                          'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
-                                                      labelText:
-                                                          'Source URL / Share Link to redirect',
-                                                      hintText:
-                                                          'https://t.me/filegram_app',
-                                                      helperMaxLines: 3,
-                                                      isDense: true,
-                                                      prefixIcon: Icon(Icons
-                                                          .add_link_rounded),
-                                                      prefixIconColor:
-                                                          Colors.white54),
-                                                ),
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
-                                                ButtonBar(
-                                                  children: [
-                                                    OutlinedButton(
-                                                      onPressed: () {
-                                                        if (Get
-                                                            .isOverlaysOpen) {
-                                                          Get.back();
-                                                        }
-                                                        Get.showSnackbar(
-                                                          const GetSnackBar(
-                                                            message:
-                                                                'Cancelled',
-                                                            // backgroundColor: Colors.amber,
-                                                            duration: Duration(
-                                                                seconds: 3),
-                                                            snackPosition:
-                                                                SnackPosition
-                                                                    .TOP,
-                                                          ),
-                                                        );
-                                                      },
-                                                      child:
-                                                          const Text('Cancel'),
-                                                    ),
-                                                    OutlinedButton(
-                                                      onPressed: () {
-                                                        // Get.dialog(AlertDialog(
-                                                        //   title: const Text(
-                                                        //       'Rewarded Feature'),
-                                                        //   content: const Text(
-                                                        //       'Please watch full rewarded ad to add source link '),
-                                                        //   actions: [
-                                                        //     OutlinedButton(
-                                                        //         onPressed: () =>
-                                                        //             Get.back(),
-                                                        //         child:
-                                                        //             const Text(
-                                                        //                 'Back')),
-                                                        //     OutlinedButton(
-                                                        //         onPressed: () {
-                                                        //           controller
-                                                        //               .rewardedInterstitialAd
-                                                        //               .show(onUserEarnedReward:
-                                                        //                   (ad,
-                                                        //                       reward) {
-                                                        if (Get
-                                                            .isOverlaysOpen) {
-                                                          Get.back();
-                                                        }
-                                                        // await interstitialAdController
-                                                        //     .showInterstitialAd();
-
-                                                        try {
-                                                          FirestoreData.setSourceUrl(
+                                                      .then((value) =>
+                                                          FirestoreData.deleteDocument(
                                                                   documentId:
                                                                       _document
-                                                                          ?.documentId,
-                                                                  sourceUrl:
-                                                                      controller
-                                                                          .sourceUrl)
-                                                              .then((value) =>
-                                                                  Get.showSnackbar(
-                                                                    const GetSnackBar(
-                                                                      message:
-                                                                          'Link Changed',
-                                                                      // backgroundColor: Colors.amber,
-                                                                      duration: Duration(
-                                                                          seconds:
-                                                                              3),
-                                                                      snackPosition:
-                                                                          SnackPosition
-                                                                              .TOP,
-                                                                    ),
-                                                                  ));
-                                                        } on Exception catch (e) {
-                                                          Get.showSnackbar(
-                                                            GetSnackBar(
-                                                              message:
-                                                                  e.toString(),
-                                                              // backgroundColor: Colors.amber,
+                                                                          ?.documentId)
+                                                              .then((value) {
+                                                            controller.documents
+                                                                .clear();
+                                                            controller
+                                                                    .getFirstData =
+                                                                false;
+                                                            controller
+                                                                .findAllEncryptedFiles();
+
+                                                            Get.showSnackbar(
+                                                                GetSnackBar(
+                                                              messageText: Text(
+                                                                  'The File ${_document?.documentName} is deleted from server'),
+                                                              icon: const Icon(Icons
+                                                                  .delete_forever_rounded),
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .TOP,
                                                               duration:
                                                                   const Duration(
                                                                       seconds:
                                                                           3),
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .TOP,
-                                                            ),
-                                                          );
-                                                        }
-                                                        //           });
-                                                        //         },
-                                                        //         child:
-                                                        //             const Text(
-                                                        //                 'OK'))
-                                                        //   ],
-                                                        //   backgroundColor:
-                                                        //       Colors.black,
-                                                        // ));
-                                                      },
-                                                      child: const Text('Save'),
+                                                            ));
+                                                          }));
+                                                  //   });
+                                                  //         },
+                                                  //         child:
+                                                  //             const Text('Delete'))
+                                                  //   ],
+                                                  //   backgroundColor: Colors.black,
+                                                  // ));
+                                                },
+                                                child: const Text('Delete'),
+                                              ),
+                                            ],
+                                          ),
+                                          barrierDismissible: false,
+                                        ),
+
+                                        child: const Text('Delete'),
+                                      ),
+                                      OutlinedButton(
+                                          onPressed: () =>
+                                              Get.bottomSheet(Container(
+                                                color: Get.isDarkMode
+                                                    ? Colors.black
+                                                    : Colors.white,
+                                                margin:
+                                                    const EdgeInsets.all(16),
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                                child: Wrap(
+                                                  children: <Widget>[
+                                                    const Text(
+                                                      'Shared Link // Source Url',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.w800),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 50,
+                                                    ),
+                                                    TextFormField(
+                                                      autovalidateMode:
+                                                          AutovalidateMode
+                                                              .onUserInteraction,
+                                                      keyboardType:
+                                                          TextInputType.url,
+                                                      onChanged: (value) =>
+                                                          controller.sourceUrl =
+                                                              value,
+                                                      initialValue:
+                                                          _document?.sourceUrl,
+                                                      decoration: const InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          helperText:
+                                                              'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
+                                                          labelText:
+                                                              'Source URL / Share Link to redirect',
+                                                          hintText:
+                                                              'https://t.me/filegram_app',
+                                                          helperMaxLines: 3,
+                                                          isDense: true,
+                                                          prefixIcon: Icon(Icons
+                                                              .add_link_rounded),
+                                                          prefixIconColor:
+                                                              Colors.white54),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 30,
+                                                    ),
+                                                    ButtonBar(
+                                                      children: [
+                                                        OutlinedButton(
+                                                          onPressed: () {
+                                                            if (Get
+                                                                .isOverlaysOpen) {
+                                                              Get.back();
+                                                            }
+                                                            Get.showSnackbar(
+                                                              const GetSnackBar(
+                                                                message:
+                                                                    'Cancelled',
+                                                                // backgroundColor: Colors.amber,
+                                                                duration:
+                                                                    Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                snackPosition:
+                                                                    SnackPosition
+                                                                        .TOP,
+                                                              ),
+                                                            );
+                                                          },
+                                                          child: const Text(
+                                                              'Cancel'),
+                                                        ),
+                                                        OutlinedButton(
+                                                          onPressed: () {
+                                                            // Get.dialog(AlertDialog(
+                                                            //   title: const Text(
+                                                            //       'Rewarded Feature'),
+                                                            //   content: const Text(
+                                                            //       'Please watch full rewarded ad to add source link '),
+                                                            //   actions: [
+                                                            //     OutlinedButton(
+                                                            //         onPressed: () =>
+                                                            //             Get.back(),
+                                                            //         child:
+                                                            //             const Text(
+                                                            //                 'Back')),
+                                                            //     OutlinedButton(
+                                                            //         onPressed: () {
+                                                            //           controller
+                                                            //               .rewardedInterstitialAd
+                                                            //               .show(onUserEarnedReward:
+                                                            //                   (ad,
+                                                            //                       reward) {
+                                                            if (Get
+                                                                .isOverlaysOpen) {
+                                                              Get.back();
+                                                            }
+                                                            // await interstitialAdController
+                                                            //     .showInterstitialAd();
+
+                                                            try {
+                                                              FirestoreData.setSourceUrl(
+                                                                      documentId:
+                                                                          _document
+                                                                              ?.documentId,
+                                                                      sourceUrl:
+                                                                          controller
+                                                                              .sourceUrl)
+                                                                  .then((value) =>
+                                                                      Get.showSnackbar(
+                                                                        const GetSnackBar(
+                                                                          message:
+                                                                              'Link Changed',
+                                                                          // backgroundColor: Colors.amber,
+                                                                          duration:
+                                                                              Duration(seconds: 3),
+                                                                          snackPosition:
+                                                                              SnackPosition.TOP,
+                                                                        ),
+                                                                      ));
+                                                            } on Exception catch (e) {
+                                                              Get.showSnackbar(
+                                                                GetSnackBar(
+                                                                  message: e
+                                                                      .toString(),
+                                                                  // backgroundColor: Colors.amber,
+                                                                  duration:
+                                                                      const Duration(
+                                                                          seconds:
+                                                                              3),
+                                                                  snackPosition:
+                                                                      SnackPosition
+                                                                          .TOP,
+                                                                ),
+                                                              );
+                                                            }
+                                                            //           });
+                                                            //         },
+                                                            //         child:
+                                                            //             const Text(
+                                                            //                 'OK'))
+                                                            //   ],
+                                                            //   backgroundColor:
+                                                            //       Colors.black,
+                                                            // ));
+                                                          },
+                                                          child: const Text(
+                                                              'Save'),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
-                                          )),
-                                      child: const Text('Link')),
-                                ],
-                              )
-                            ],
-                          ),
-                          decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Colors.black54,
-                                  Colors.black87,
+                                              )),
+                                          child: const Text('Link')),
+                                    ],
+                                  )
                                 ],
                               ),
-                              //color: Colors.black87,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade900,
-                                  offset: const Offset(5, 5),
-                                  blurRadius: 5,
-                                  spreadRadius: 1,
-                                ),
-                                BoxShadow(
-                                  color: Colors.grey.shade800,
-                                  offset: const Offset(-4, -4),
-                                  blurRadius: 5,
-                                  spreadRadius: 1,
-                                )
-                              ]),
-                        );
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      controller
+                                              .homeController.changeTheme.isTrue
+                                          ? Colors.black54
+                                          : Colors.white70,
+                                      controller
+                                              .homeController.changeTheme.isTrue
+                                          ? Colors.black87
+                                          : Colors.white,
+                                    ],
+                                  ),
+                                  //color: Colors.black87,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: controller
+                                              .homeController.changeTheme.isTrue
+                                          ? Colors.grey.shade900
+                                          : Colors.grey.shade400,
+                                      offset: const Offset(5, 5),
+                                      blurRadius: 5,
+                                      spreadRadius: 1,
+                                    ),
+                                    BoxShadow(
+                                      color: controller
+                                              .homeController.changeTheme.isTrue
+                                          ? Colors.grey.shade800
+                                          : Colors.grey.shade300,
+                                      offset: const Offset(-4, -4),
+                                      blurRadius: 5,
+                                      spreadRadius: 1,
+                                    )
+                                  ]),
+                            ));
                       }
                     }),
               ),

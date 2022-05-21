@@ -16,7 +16,9 @@ class Filegram extends StatelessWidget {
       title: 'Filegram',
       initialRoute: AppPages.intial,
       getPages: AppPages.routes,
-      theme: Themes.appDarkTheme,
+      themeMode: ThemeMode.system,
+      darkTheme: Themes.appDarkTheme,
+      theme: Themes.appLightTheme,
       enableLog: true,
       navigatorObservers: [
         AnalyticsService.observer,

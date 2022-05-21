@@ -74,7 +74,9 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      backgroundColor: Colors.black,
+                                      backgroundColor: Get.isDarkMode
+                                          ? Colors.black
+                                          : Colors.white,
                                       title: const Text("Confirm"),
                                       content: const Text(
                                           "Are you sure you wish to delete this file from device"),

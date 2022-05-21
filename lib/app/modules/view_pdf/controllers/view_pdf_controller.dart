@@ -17,7 +17,7 @@ import '../../home/controllers/home_controller.dart';
 
 class ViewPdfController extends GetxController {
   final swipehorizontal = false.obs;
-  final nightmode = false.obs;
+  final nightmode = Get.isDarkMode.obs;
   final pages = 1.obs;
   final isReady = false.obs;
   final isDecryptionDone = false.obs;
@@ -151,7 +151,7 @@ class ViewPdfController extends GetxController {
       Get.dialog(
         AlertDialog(
           alignment: Alignment.center,
-          backgroundColor: Colors.black,
+          backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
           title: const Icon(Icons.error_outline),
           content: Text(
             e.toString(),

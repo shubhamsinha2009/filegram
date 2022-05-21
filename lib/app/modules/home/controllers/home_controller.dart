@@ -31,6 +31,7 @@ class HomeController extends GetxController {
   final selectedIndex = 0.obs;
   final QuickActions quickActions = const QuickActions();
   final gullak = GullakModel().obs;
+  final changeTheme = Get.isDarkMode.obs;
 
   void onBottomBarSelected(value) {
     selectedIndex.value = value;

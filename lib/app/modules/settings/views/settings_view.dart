@@ -97,7 +97,8 @@ class SettingsView extends GetView<SettingsController> {
                     "https://play.google.com/store/apps/details?id=com.sks.filegram",
                     mode: LaunchMode.externalNonBrowserApplication);
               } on PlatformException {
-                Get.showSnackbar(const GetSnackBar(
+                Get.showSnackbar(GetSnackBar(
+                  backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
                   messageText: Text('Unable to open App'),
                   icon: Icon(Icons.error_outline),
                   snackPosition: SnackPosition.TOP,
@@ -134,6 +135,8 @@ class SettingsView extends GetView<SettingsController> {
                   );
                 } else {
                   Get.showSnackbar(GetSnackBar(
+                    backgroundColor:
+                        Get.isDarkMode ? Colors.black : Colors.white,
                     messageText:
                         Text("You have latest version ${status?.localVersion}"),
                     icon: const Icon(Icons.error_outline),
@@ -160,7 +163,8 @@ class SettingsView extends GetView<SettingsController> {
                 mode: LaunchMode.externalApplication,
               );
             } on PlatformException {
-              Get.showSnackbar(const GetSnackBar(
+              Get.showSnackbar(GetSnackBar(
+                backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
                 messageText: Text('Unable to open '),
                 icon: Icon(Icons.error_outline),
                 snackPosition: SnackPosition.TOP,
@@ -183,7 +187,8 @@ class SettingsView extends GetView<SettingsController> {
                 "https://sites.google.com/view/filegram/privacypolicy",
               );
             } on PlatformException {
-              Get.showSnackbar(const GetSnackBar(
+              Get.showSnackbar(GetSnackBar(
+                backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
                 messageText: Text('Unable to open '),
                 icon: Icon(Icons.error_outline),
                 snackPosition: SnackPosition.TOP,
@@ -206,7 +211,8 @@ class SettingsView extends GetView<SettingsController> {
                 "https://sites.google.com/view/filegram/terms_and_conditions",
               );
             } on PlatformException {
-              Get.showSnackbar(const GetSnackBar(
+              Get.showSnackbar(GetSnackBar(
+                backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
                 messageText: Text('Unable to open '),
                 icon: Icon(Icons.error_outline),
                 snackPosition: SnackPosition.TOP,
@@ -254,7 +260,8 @@ class SettingsView extends GetView<SettingsController> {
                 "https://sites.google.com/view/filegram",
               );
             } on PlatformException {
-              Get.showSnackbar(const GetSnackBar(
+              Get.showSnackbar(GetSnackBar(
+                backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
                 messageText: Text('Unable to open '),
                 icon: Icon(Icons.error_outline),
                 snackPosition: SnackPosition.TOP,
