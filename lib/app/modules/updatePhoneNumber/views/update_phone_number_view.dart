@@ -100,15 +100,15 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                                   }
                                                   Get.back(closeOverlays: true);
                                                   Get.showSnackbar(GetSnackBar(
-                                                    backgroundColor:
-                                                        Get.isDarkMode
-                                                            ? Colors.black
-                                                            : Colors.white,
-                                                    duration:
-                                                        Duration(seconds: 5),
+                                                    backgroundColor: Get
+                                                        .theme
+                                                        .snackBarTheme
+                                                        .backgroundColor!,
+                                                    duration: const Duration(
+                                                        seconds: 5),
                                                     title:
                                                         'Phone Number Updated',
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                         Icons.error_outline),
                                                     snackPosition:
                                                         SnackPosition.TOP,
@@ -117,9 +117,10 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                               });
                                             } catch (e) {
                                               Get.showSnackbar(GetSnackBar(
-                                                backgroundColor: Get.isDarkMode
-                                                    ? Colors.black
-                                                    : Colors.white,
+                                                backgroundColor: Get
+                                                    .theme
+                                                    .snackBarTheme
+                                                    .backgroundColor!,
                                                 duration:
                                                     const Duration(seconds: 5),
                                                 title: 'Error',
@@ -142,7 +143,7 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                         } catch (e) {
                           Get.showSnackbar(GetSnackBar(
                             backgroundColor:
-                                Get.isDarkMode ? Colors.black : Colors.white,
+                                Get.theme.snackBarTheme.backgroundColor!,
                             duration: const Duration(seconds: 5),
                             title: 'Cannot Open',
                             message: e.toString(),

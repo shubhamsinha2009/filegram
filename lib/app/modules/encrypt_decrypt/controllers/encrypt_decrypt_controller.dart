@@ -44,6 +44,7 @@ class EncryptDecryptController extends GetxController {
     } on PlatformException catch (e) {
       isLoading.toggle();
       Get.showSnackbar(GetSnackBar(
+        backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
         messageText: Text(e.message ?? e.details),
         icon: const Icon(Icons.error_outline),
         snackPosition: SnackPosition.TOP,
@@ -138,10 +139,13 @@ class EncryptDecryptController extends GetxController {
                             File(_result).deleteSync();
                           }
                           Get.showSnackbar(
-                            const GetSnackBar(
+                            GetSnackBar(
+                              backgroundColor:
+                                  Get.theme.snackBarTheme.backgroundColor!,
                               message: 'File encryption Canceled',
+
                               // backgroundColor: Colors.amber,
-                              duration: Duration(seconds: 3),
+                              duration: const Duration(seconds: 3),
                               snackPosition: SnackPosition.TOP,
                             ),
                           );
@@ -161,17 +165,21 @@ class EncryptDecryptController extends GetxController {
                                 .then((_fileOut) {
                               if (_fileOut != null) {
                                 Get.showSnackbar(
-                                  const GetSnackBar(
-                                    messageText: Text('File Saved '),
-                                    duration: Duration(seconds: 3),
+                                  GetSnackBar(
+                                    backgroundColor: Get
+                                        .theme.snackBarTheme.backgroundColor!,
+                                    messageText: const Text('File Saved '),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   ),
                                 );
                               } else {
                                 Get.showSnackbar(
-                                  const GetSnackBar(
-                                    messageText: Text('File Not Saved '),
-                                    duration: Duration(seconds: 3),
+                                  GetSnackBar(
+                                    backgroundColor: Get
+                                        .theme.snackBarTheme.backgroundColor!,
+                                    messageText: const Text('File Not Saved '),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   ),
                                 );
@@ -195,9 +203,10 @@ class EncryptDecryptController extends GetxController {
         encryptDecrypt(pickedFile).then((value) {
           if (value != null) {
             Get.showSnackbar(
-              const GetSnackBar(
-                messageText: Text('File Saved '),
-                duration: Duration(seconds: 3),
+              GetSnackBar(
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('File Saved '),
+                duration: const Duration(seconds: 3),
                 snackPosition: SnackPosition.TOP,
               ),
             );
@@ -214,9 +223,10 @@ class EncryptDecryptController extends GetxController {
 
           } else {
             Get.showSnackbar(
-              const GetSnackBar(
-                messageText: Text('File Not Saved '),
-                duration: Duration(seconds: 3),
+              GetSnackBar(
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('File Not Saved '),
+                duration: const Duration(seconds: 3),
                 snackPosition: SnackPosition.TOP,
               ),
             );
@@ -240,6 +250,7 @@ class EncryptDecryptController extends GetxController {
       } catch (e) {
         isLoading.value = false;
         Get.showSnackbar(GetSnackBar(
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
           messageText: Text(e.toString()),
           icon: const Icon(Icons.error_outline),
           duration: const Duration(seconds: 3),
@@ -322,6 +333,7 @@ class EncryptDecryptController extends GetxController {
       isLoading.value = false;
 
       Get.showSnackbar(GetSnackBar(
+        backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
         duration: const Duration(seconds: 5),
         messageText: Text(e.toString()),
         icon: const Icon(Icons.error_outline),
@@ -368,6 +380,7 @@ class EncryptDecryptController extends GetxController {
     } on PlatformException catch (e) {
       isLoading.value = false;
       Get.showSnackbar(GetSnackBar(
+        backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
         duration: const Duration(seconds: 5),
         messageText: Text(e.message ?? e.details),
         icon: const Icon(Icons.error_outline),
@@ -406,6 +419,7 @@ class EncryptDecryptController extends GetxController {
       }
     }, onError: (err) {
       Get.showSnackbar(GetSnackBar(
+        backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
         messageText: Text(err.message ?? err.details),
         icon: const Icon(Icons.error_outline),
         snackPosition: SnackPosition.TOP,
@@ -422,6 +436,7 @@ class EncryptDecryptController extends GetxController {
           confirmDialog(value.single.path);
         } on PlatformException catch (e) {
           Get.showSnackbar(GetSnackBar(
+            backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
             messageText: Text(e.message ?? e.details),
             icon: const Icon(Icons.error_outline),
             snackPosition: SnackPosition.TOP,
@@ -493,6 +508,7 @@ class EncryptDecryptController extends GetxController {
           confirmDialog(value.path);
         } on PlatformException catch (e) {
           Get.showSnackbar(GetSnackBar(
+            backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
             messageText: Text(e.message ?? e.details),
             icon: const Icon(Icons.error_outline),
             snackPosition: SnackPosition.TOP,

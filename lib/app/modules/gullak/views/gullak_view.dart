@@ -163,11 +163,12 @@ class GullakView extends GetView<GullakController> {
                     //   backgroundColor: Colors.black,
                     // ));
                   } on Exception {
-                    Get.showSnackbar(const GetSnackBar(
-                      messageText: Text('Could not  able to open it'),
-                      icon: Icon(Icons.error_outline),
+                    Get.showSnackbar(GetSnackBar(
+                      backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                      messageText: const Text('Could not  able to open it'),
+                      icon: const Icon(Icons.error_outline),
                       snackPosition: SnackPosition.TOP,
-                      duration: Duration(seconds: 3),
+                      duration: const Duration(seconds: 3),
                     ));
                   }
                 },

@@ -3,6 +3,7 @@ import 'package:flutter_pdfview_professor/flutter_pdfview_professor.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
+import '../../home/controllers/home_controller.dart';
 import '../controllers/view_pdf_controller.dart';
 
 class ViewPdfView extends GetView<ViewPdfController> {
@@ -34,7 +35,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
               onPressed: () {
                 Get.changeThemeMode(
                     Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                controller.nightmode.toggle();
+                Get.find<HomeController>().changeTheme.toggle();
               },
               icon: const Icon(Icons.settings_display_rounded)),
           IconButton(
@@ -79,7 +80,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                 pageFling: true,
 
                 pageSnap: true,
-                nightMode: controller.nightmode.value,
+                nightMode: Get.find<HomeController>().changeTheme.value,
                 fitEachPage: true,
                 fitPolicy: FitPolicy.WIDTH,
                 defaultPage: controller.intialPageNumber,
@@ -117,8 +118,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                 },
                 onPageError: (page, error) {
                   Get.showSnackbar(GetSnackBar(
-                    backgroundColor:
-                        Get.isDarkMode ? Colors.black : Colors.white,
+                    backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
                     messageText: Text(
                         'The Page $page has an error : ${error.toString()}'),
                     icon: const Icon(Icons.error_outline),

@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UpdatePhoneNumberController extends GetxController {
@@ -16,7 +15,7 @@ class UpdatePhoneNumberController extends GetxController {
           await auth.currentUser?.linkWithCredential(credential);
           Get.back(closeOverlays: true);
           Get.showSnackbar(GetSnackBar(
-            backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+            backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
             duration: const Duration(seconds: 10),
             title: '"Loggged In "',
             message:
@@ -27,15 +26,15 @@ class UpdatePhoneNumberController extends GetxController {
         verificationFailed: (FirebaseAuthException authException) {
           if (authException.code == 'invalid-phone-number') {
             Get.showSnackbar(GetSnackBar(
-              backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-              duration: Duration(seconds: 5),
+              backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+              duration: const Duration(seconds: 5),
               title: 'Phone Verfication Failed',
               message: 'The provided phone number is not valid.',
               snackPosition: SnackPosition.TOP,
             ));
           } else {
             Get.showSnackbar(GetSnackBar(
-              backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+              backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
               duration: const Duration(seconds: 5),
               title: 'Phone Verfication Failed',
               message:
@@ -46,8 +45,8 @@ class UpdatePhoneNumberController extends GetxController {
         },
         codeSent: (String verificationId, int? forceResendingToken) async {
           Get.showSnackbar(GetSnackBar(
-            backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-            duration: Duration(seconds: 5),
+            backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+            duration: const Duration(seconds: 5),
             title: "OTP ",
             message: 'Please check your phone for the verification code.',
             snackPosition: SnackPosition.TOP,
@@ -56,7 +55,7 @@ class UpdatePhoneNumberController extends GetxController {
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           Get.showSnackbar(GetSnackBar(
-            backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+            backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
             duration: const Duration(seconds: 5),
             title: "Verification code: ",
             message: verificationId,
@@ -67,7 +66,7 @@ class UpdatePhoneNumberController extends GetxController {
       );
     } catch (e) {
       Get.showSnackbar(GetSnackBar(
-        backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+        backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
         duration: const Duration(seconds: 5),
         title: 'Verfication Error',
         message: "Failed to Verify Phone Number: $e",
@@ -86,7 +85,7 @@ class UpdatePhoneNumberController extends GetxController {
       return true;
     } catch (e) {
       Get.showSnackbar(GetSnackBar(
-        backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+        backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
         duration: const Duration(seconds: 5),
         title: 'Failed to sign in:',
         message: e.toString(),

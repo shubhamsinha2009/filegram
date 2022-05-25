@@ -98,11 +98,11 @@ class SettingsView extends GetView<SettingsController> {
                     mode: LaunchMode.externalNonBrowserApplication);
               } on PlatformException {
                 Get.showSnackbar(GetSnackBar(
-                  backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-                  messageText: Text('Unable to open App'),
-                  icon: Icon(Icons.error_outline),
+                  backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                  messageText: const Text('Unable to open App'),
+                  icon: const Icon(Icons.error_outline),
                   snackPosition: SnackPosition.TOP,
-                  duration: Duration(seconds: 3),
+                  duration: const Duration(seconds: 3),
                 ));
               }
             }),
@@ -135,8 +135,7 @@ class SettingsView extends GetView<SettingsController> {
                   );
                 } else {
                   Get.showSnackbar(GetSnackBar(
-                    backgroundColor:
-                        Get.isDarkMode ? Colors.black : Colors.white,
+                    backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
                     messageText:
                         Text("You have latest version ${status?.localVersion}"),
                     icon: const Icon(Icons.error_outline),
@@ -164,11 +163,11 @@ class SettingsView extends GetView<SettingsController> {
               );
             } on PlatformException {
               Get.showSnackbar(GetSnackBar(
-                backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-                messageText: Text('Unable to open '),
-                icon: Icon(Icons.error_outline),
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('Unable to open '),
+                icon: const Icon(Icons.error_outline),
                 snackPosition: SnackPosition.TOP,
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
               ));
             }
           },
@@ -188,11 +187,11 @@ class SettingsView extends GetView<SettingsController> {
               );
             } on PlatformException {
               Get.showSnackbar(GetSnackBar(
-                backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-                messageText: Text('Unable to open '),
-                icon: Icon(Icons.error_outline),
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('Unable to open '),
+                icon: const Icon(Icons.error_outline),
                 snackPosition: SnackPosition.TOP,
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
               ));
             }
           },
@@ -212,11 +211,11 @@ class SettingsView extends GetView<SettingsController> {
               );
             } on PlatformException {
               Get.showSnackbar(GetSnackBar(
-                backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-                messageText: Text('Unable to open '),
-                icon: Icon(Icons.error_outline),
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('Unable to open '),
+                icon: const Icon(Icons.error_outline),
                 snackPosition: SnackPosition.TOP,
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
               ));
             }
           },
@@ -261,11 +260,11 @@ class SettingsView extends GetView<SettingsController> {
               );
             } on PlatformException {
               Get.showSnackbar(GetSnackBar(
-                backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
-                messageText: Text('Unable to open '),
-                icon: Icon(Icons.error_outline),
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('Unable to open '),
+                icon: const Icon(Icons.error_outline),
                 snackPosition: SnackPosition.TOP,
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
               ));
             }
           },

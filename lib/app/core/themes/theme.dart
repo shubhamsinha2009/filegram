@@ -63,6 +63,7 @@ class Themes {
         primary: Colors.white70,
       ),
     ),
+    snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.black),
     textTheme: const TextTheme(
       headline6: TextStyle(
         fontWeight: FontWeight.w700,
@@ -72,8 +73,10 @@ class Themes {
   );
 
   static final ThemeData appLightTheme = ThemeData(
-    brightness: Brightness.light,
-  );
+      brightness: Brightness.light,
+      snackBarTheme: const SnackBarThemeData(
+        backgroundColor: Colors.blue,
+      ));
 
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{

@@ -61,6 +61,7 @@ class GoogleLogin extends StatelessWidget {
                 } catch (e) {
                   controller.isSomethingLoading.toggle();
                   Get.showSnackbar(GetSnackBar(
+                    backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
                     title: 'Error',
                     message: e.toString(),
                     duration: const Duration(seconds: 5),

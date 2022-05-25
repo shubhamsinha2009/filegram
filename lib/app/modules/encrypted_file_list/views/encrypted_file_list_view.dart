@@ -256,6 +256,10 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
 
                                                             Get.showSnackbar(
                                                                 GetSnackBar(
+                                                              backgroundColor: Get
+                                                                  .theme
+                                                                  .snackBarTheme
+                                                                  .backgroundColor!,
                                                               messageText: Text(
                                                                   'The File ${_document?.documentName} is deleted from server'),
                                                               icon: const Icon(Icons
@@ -347,12 +351,16 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                               Get.back();
                                                             }
                                                             Get.showSnackbar(
-                                                              const GetSnackBar(
+                                                              GetSnackBar(
+                                                                backgroundColor: Get
+                                                                    .theme
+                                                                    .snackBarTheme
+                                                                    .backgroundColor!,
                                                                 message:
                                                                     'Cancelled',
                                                                 // backgroundColor: Colors.amber,
                                                                 duration:
-                                                                    Duration(
+                                                                    const Duration(
                                                                         seconds:
                                                                             3),
                                                                 snackPosition:
@@ -402,12 +410,16 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                                               .sourceUrl)
                                                                   .then((value) =>
                                                                       Get.showSnackbar(
-                                                                        const GetSnackBar(
+                                                                        GetSnackBar(
+                                                                          backgroundColor: Get
+                                                                              .theme
+                                                                              .snackBarTheme
+                                                                              .backgroundColor!,
                                                                           message:
                                                                               'Link Changed',
                                                                           // backgroundColor: Colors.amber,
                                                                           duration:
-                                                                              Duration(seconds: 3),
+                                                                              const Duration(seconds: 3),
                                                                           snackPosition:
                                                                               SnackPosition.TOP,
                                                                         ),
@@ -415,6 +427,10 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                             } on Exception catch (e) {
                                                               Get.showSnackbar(
                                                                 GetSnackBar(
+                                                                  backgroundColor: Get
+                                                                      .theme
+                                                                      .snackBarTheme
+                                                                      .backgroundColor!,
                                                                   message: e
                                                                       .toString(),
                                                                   // backgroundColor: Colors.amber,

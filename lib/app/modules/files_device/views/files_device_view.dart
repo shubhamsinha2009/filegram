@@ -105,6 +105,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                 //     parameters: {'deleted_file': _currentfile.path});
 
                                 Get.showSnackbar(GetSnackBar(
+                                  backgroundColor:
+                                      Get.theme.snackBarTheme.backgroundColor!,
                                   messageText: Text(
                                       'The file ${controller.nameOfFile(_currentfile.path)} is Deleted'),
                                   icon:
@@ -205,11 +207,15 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                 //     name: 'file_deleted',
                                 //     parameters: {'deleted_file': _currentfile.path});
 
-                                Get.showSnackbar(const GetSnackBar(
-                                  messageText: Text('Your File is Deleted'),
-                                  icon: Icon(Icons.delete_forever_rounded),
+                                Get.showSnackbar(GetSnackBar(
+                                  backgroundColor:
+                                      Get.theme.snackBarTheme.backgroundColor!,
+                                  messageText:
+                                      const Text('Your File is Deleted'),
+                                  icon:
+                                      const Icon(Icons.delete_forever_rounded),
                                   snackPosition: SnackPosition.TOP,
-                                  duration: Duration(seconds: 3),
+                                  duration: const Duration(seconds: 3),
                                 ));
                               },
                             ),
@@ -259,6 +265,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                                 LaunchMode.externalApplication);
                                       } on PlatformException {
                                         Get.showSnackbar(GetSnackBar(
+                                          backgroundColor: Get.theme
+                                              .snackBarTheme.backgroundColor!,
                                           messageText: Text(
                                               'Cannot Open this link : $_sourceUrl'),
                                           icon: const Icon(Icons.error_outline),
