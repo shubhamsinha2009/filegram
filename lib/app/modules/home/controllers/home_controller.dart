@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:new_version/new_version.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -162,29 +161,6 @@ class HomeController extends GetxController {
     Wakelock.toggle(enable: true);
 
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    // TODO : Implemnt firestore false allow dissmisal
-    try {
-      final newVersion = NewVersion(androidId: "com.sks.filegram");
-      if (Get.context != null) {
-        newVersion.getVersionStatus().then((status) {
-          if (status != null && (status.localVersion != status.storeVersion)) {
-            newVersion.showUpdateDialog(
-              context: Get.context!,
-              versionStatus: status,
-              dialogTitle: 'Update Available',
-              dialogText:
-                  "What's New!\n${status.releaseNotes}\n You can now update this app from ${status.localVersion} to ${status.storeVersion}",
-            );
-          }
-        }).catchError((e) {});
-      }
-    } catch (e) {}
-
-    super.onReady();
   }
 
   @override
