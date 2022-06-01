@@ -10,9 +10,9 @@ import '../../home/controllers/home_controller.dart';
 import 'package:get/get.dart';
 
 class EncryptedFileListController extends GetxController
-    with StateMixin<List<DocumentModel>>, ScrollMixin {
+    with StateMixin<List<DocumentModel>> {
   List<DocumentModel> documents = [];
-  final int documentPerPage = 5;
+
   bool getFirstData = false;
   int page = 1;
   bool lastPage = false;
@@ -119,11 +119,9 @@ class EncryptedFileListController extends GetxController
     return index;
   }
 
-  Future<void> findAllEncryptedFiles() async {
-    await FirestoreData.getDocumentsListFromCache(
+  void findAllEncryptedFiles() {
+    FirestoreData.getDocumentsListFromCache(
       homeController.auth.currentUser?.uid,
-      documentPerPage,
-      startAfter: documents.isEmpty ? null : documents.last.createdOn,
     ).then((result) {
       final bool emptyDocumentList = result.isEmpty;
       if (!getFirstData && emptyDocumentList) {
@@ -139,6 +137,20 @@ class EncryptedFileListController extends GetxController
     }, onError: (err) {
       change(null, status: RxStatus.error(err.toString()));
     });
+  }
+
+  void filterfileList(String fileName) {
+    List<DocumentModel> _documents = [];
+    _documents = documents
+        .where((element) => element.documentName!
+            .toLowerCase()
+            .contains(fileName.toLowerCase()))
+        .toList();
+    if (_documents.isEmpty) {
+      change(null, status: RxStatus.empty());
+    } else {
+      change(_documents, status: RxStatus.success());
+    }
   }
 
   // void createRewardedAd() {
@@ -172,8 +184,8 @@ class EncryptedFileListController extends GetxController
   // }
 
   @override
-  void onInit() async {
-    await findAllEncryptedFiles();
+  void onInit() {
+    findAllEncryptedFiles();
     _createInlineBannerAd();
     // _createBottomBannerAd();
     // _createViewsBannerAd();
@@ -193,16 +205,4 @@ class EncryptedFileListController extends GetxController
     //  rewardedInterstitialAd.dispose();
     super.onClose();
   }
-
-  @override
-  Future<void> onEndScroll() async {
-    if (!lastPage) {
-      page += 1;
-      await findAllEncryptedFiles();
-      Get.back();
-    }
-  }
-
-  @override
-  Future<void> onTopScroll() async {}
 }

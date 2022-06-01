@@ -25,7 +25,7 @@ class FilesDeviceController extends GetxController {
   final inlineAdIndex = 2;
   late BannerAd inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
-
+  Directory? _mydir;
 // final analytics = AnalyticsService.analytics;
   // AppUpdateInfo? _updateInfo;
   //FirebaseInAppMessaging fiam = FirebaseInAppMessaging.instance;
@@ -76,11 +76,13 @@ class FilesDeviceController extends GetxController {
   }
 
   Future<void> onInitialisation() async {
-    final _mydir = Directory(await filesDocDir());
-    filesList.assignAll(_mydir.listSync()
-      ..sort(
-        (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
-      ));
+    _mydir = Directory(await filesDocDir());
+    if (_mydir != null) {
+      filesList.assignAll(_mydir!.listSync()
+        ..sort(
+          (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
+        ));
+    }
   }
 
   Future<String> filesDocDir() async {
@@ -179,6 +181,20 @@ class FilesDeviceController extends GetxController {
       return index - 1;
     }
     return index;
+  }
+
+  void filterfileList(String fileName) {
+    if (_mydir != null) {
+      filesList.assignAll(_mydir!
+          .listSync()
+          .where((FileSystemEntity element) => nameOfFile(element.path)
+              .toLowerCase()
+              .contains(fileName.toLowerCase()))
+          .toList()
+        ..sort(
+          (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
+        ));
+    }
   }
 
   @override

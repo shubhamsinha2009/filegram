@@ -168,6 +168,7 @@ class SettingsView extends GetView<SettingsController> {
             ),
           ),
         ),
+
         ListTile(
           onTap: () async {
             try {

@@ -171,7 +171,7 @@ class DocumentPermissionBottomSheet extends StatelessWidget {
                             _document.documentId);
                         _controller.documents.clear();
 
-                        await _controller.findAllEncryptedFiles();
+                        _controller.findAllEncryptedFiles();
                         _controller.sharedEmailIds.clear();
 
                         Get.back(closeOverlays: true);

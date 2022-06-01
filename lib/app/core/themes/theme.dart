@@ -16,6 +16,7 @@ class Themes {
     dividerTheme: const DividerThemeData(color: Colors.white),
     inputDecorationTheme: const InputDecorationTheme(
       border: InputBorder.none,
+      prefixIconColor: Colors.white,
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.white),
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -73,10 +74,24 @@ class Themes {
   );
 
   static final ThemeData appLightTheme = ThemeData(
-      brightness: Brightness.light,
-      snackBarTheme: const SnackBarThemeData(
-        backgroundColor: Colors.blue,
-      ));
+    brightness: Brightness.light,
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: Colors.blue,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: InputBorder.none,
+      prefixIconColor: Colors.black,
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      labelStyle: TextStyle(color: Colors.black),
+    ),
+  );
 
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{

@@ -27,6 +27,9 @@ class HomeView extends GetView<HomeController> {
                 leading: Image.asset(
                   "assets/app_bar.png",
                 ),
+                // leadingWidth: 0,
+                titleSpacing: 0,
+
                 actions: [
                   IconButton(
                       onPressed: () {
@@ -52,7 +55,7 @@ class HomeView extends GetView<HomeController> {
                     avatar: const Icon(Icons.savings_rounded,
                         color: Color.fromARGB(255, 194, 103, 70)),
                     labelPadding: const EdgeInsets.only(
-                      left: 10,
+                      left: 5,
                     ),
                   ),
                 ],

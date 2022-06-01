@@ -62,28 +62,22 @@ class FirestoreData {
   }
 
   static Future<List<DocumentModel>> getDocumentsListFromCache(
-      String? ownerId, int limit,
-      {DateTime? startAfter}) async {
+    String? ownerId,
+  ) async {
     try {
       Query _query = _firestore
           .collection("files")
           .orderBy("createdOn", descending: true)
-          .where("ownerId", isEqualTo: ownerId)
-          .limit(limit);
+          .where("ownerId", isEqualTo: ownerId);
       QuerySnapshot _docList;
-      if (startAfter == null) {
-        _docList = await _query.get(const GetOptions(source: Source.cache));
-        if (_docList.docs.isEmpty) {
-          _docList = await _firestore
-              .collection("files")
-              .orderBy("createdOn", descending: true)
-              .where("ownerId", isEqualTo: ownerId)
-              .get();
-        }
-      } else {
-        final Timestamp _startAfter = Timestamp.fromDate(startAfter);
-        _docList = await _query.startAfter([_startAfter]).get(
-            const GetOptions(source: Source.cache));
+
+      _docList = await _query.get(const GetOptions(source: Source.cache));
+      if (_docList.docs.isEmpty) {
+        _docList = await _firestore
+            .collection("files")
+            .orderBy("createdOn", descending: true)
+            .where("ownerId", isEqualTo: ownerId)
+            .get();
       }
 
       return _docList.docs.map((DocumentSnapshot document) {

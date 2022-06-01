@@ -10,7 +10,6 @@ import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:wakelock/wakelock.dart';
-
 import '../../../core/helpers/ad_helper.dart';
 import '../../../data/model/user_model.dart';
 import '../../no_internet/controllers/no_internet_controller.dart';
