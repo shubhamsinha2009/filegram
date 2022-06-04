@@ -36,7 +36,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
               onChanged: (value) => controller.filterfileList(value),
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search),
-                hintText: 'File Name',
+                hintText: 'Search By File Name',
                 isDense: true,
               ),
             ),
@@ -44,7 +44,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
           Expanded(
               child: controller.obx(
                   (state) => ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      addAutomaticKeepAlives: true,
                       itemCount: (state?.length)! +
                           (controller.isInlineBannerAdLoaded.isTrue &&
                                   ((state?.length)! >= controller.inlineAdIndex)

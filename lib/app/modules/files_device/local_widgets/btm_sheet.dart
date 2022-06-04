@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:filegram/app/core/extensions.dart';
 import 'package:filegram/app/modules/files_device/controllers/files_device_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,11 +9,11 @@ class BtmSheet extends StatelessWidget {
   const BtmSheet({
     Key? key,
     required this.controller,
-    required this.filePath,
+    required this.file,
   }) : super(key: key);
 
   final FilesDeviceController controller;
-  final String filePath;
+  final FileSystemEntity file;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class BtmSheet extends StatelessWidget {
               }
               return null;
             },
-            initialValue: controller.nameOfFile(filePath),
+            initialValue: file.name,
             keyboardType: TextInputType.name,
             onChanged: (value) => controller.rename.value = value,
             maxLines: 1,
@@ -53,7 +56,7 @@ class BtmSheet extends StatelessWidget {
                   onPressed: () {
                     if (controller.validateRename()) {
                       controller
-                          .changeFileNameOnlySync(filePath)
+                          .changeFileNameOnlySync(file.path)
                           .then((value) => Get.back());
                     }
                   },

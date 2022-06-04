@@ -143,9 +143,13 @@ class ViewPdfController extends GetxController {
   @override
   void onInit() async {
     filePath = Get.arguments[0];
-    fileOut = '${(await getTemporaryDirectory()).path}/_';
+    fileOut = filePath.contains('.enc')
+        ? '${(await getTemporaryDirectory()).path}/_'
+        : filePath;
+
     try {
-      isDecryptionDone.value = await doDecryption(filePath);
+      isDecryptionDone.value =
+          filePath.contains('.enc') ? await doDecryption(filePath) : true;
     } catch (e) {
       Get.dialog(
         AlertDialog(
@@ -177,7 +181,7 @@ class ViewPdfController extends GetxController {
 
     final Map<String, dynamic>? _pdfDetails =
         GetStorageDbService.getRead(key: filePath);
-    intialPageNumber = _pdfDetails?['intialPageNumber'];
+    intialPageNumber = _pdfDetails?['intialPageNumber'] ?? 0;
 
     _timer1 = Timer.periodic(
       const Duration(seconds: 1),
@@ -219,7 +223,7 @@ class ViewPdfController extends GetxController {
     interstitialAd?.dispose();
     bottomBannerAd.dispose();
 
-    if (File(fileOut).existsSync()) {
+    if (File(fileOut).existsSync() && filePath.contains('.enc')) {
       await File(fileOut).delete();
     }
 

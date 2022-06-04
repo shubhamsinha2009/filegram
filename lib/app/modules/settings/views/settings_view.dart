@@ -19,17 +19,20 @@ class SettingsView extends GetView<SettingsController> {
         Obx(
           () => UserAccountsDrawerHeader(
             accountName: Text(
-              controller.homeController.user.value.name ?? 'User Name',
+              '${controller.homeController.user.value.name}',
             ),
             accountEmail: Text(
-              controller.homeController.user.value.emailId ?? 'User Email Id',
+              '${controller.homeController.user.value.emailId}\n${controller.homeController.user.value.phoneNumber}',
             ),
+            // otherAccountsPictures: const [Icon(Icons.edit)],
             currentAccountPicture: CachedNetworkImage(
               imageUrl: controller.homeController.user.value.photoUrl ??
                   'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249__480.png',
               errorWidget: (context, url, error) =>
                   const Icon(Icons.account_box_rounded),
             ),
+
+            // onDetailsPressed: () => Get.toNamed(Routes.profile),
           ),
         ),
         // ListTile(

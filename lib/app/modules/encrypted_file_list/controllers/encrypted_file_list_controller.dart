@@ -24,6 +24,7 @@ class EncryptedFileListController extends GetxController
   final inlineAdIndex = 1;
   late BannerAd inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
+
   // late BannerAd topBannerAd;
   // final istopBannerAdLoaded = false.obs;
   // final int maxFailedLoadAttempts = 3;
@@ -107,7 +108,9 @@ class EncryptedFileListController extends GetxController
         },
       ),
     );
-    inlineBannerAd.load();
+    if (isInlineBannerAdLoaded.isFalse) {
+      inlineBannerAd.load();
+    }
   }
 
   int getListViewItemIndex(int index) {
@@ -186,7 +189,10 @@ class EncryptedFileListController extends GetxController
   @override
   void onInit() {
     findAllEncryptedFiles();
-    _createInlineBannerAd();
+    if (isInlineBannerAdLoaded.isFalse) {
+      _createInlineBannerAd();
+    }
+
     // _createBottomBannerAd();
     // _createViewsBannerAd();
     // _createLinkBannerAd();

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filegram/app/data/model/views_model.dart';
 import '../enums/docpermission.dart';
 import 'package:flutter/services.dart';
+import '../model/book_model.dart';
+import '../model/dashboard_model.dart';
 import '../model/documents_model.dart';
 import '../model/gullak_model.dart';
 import '../model/user_model.dart';
@@ -159,12 +161,29 @@ class FirestoreData {
 
   static Future<void> createNewUser(UserModel user) async {
     try {
-      await _firestore.collection("users").doc(user.id).set(
-        {
-          "emailId": user.emailId,
-          "photoUrl": user.photoUrl,
-          "name": user.name,
-        },
+      await _firestore.collection("users").doc(user.id).set({
+        "emailId": user.emailId,
+        "photoUrl": user.photoUrl,
+        "name": user.name,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<DashboardModel> getDashboard({
+    required String collection,
+    required String uid,
+    required String listName,
+  }) async {
+    try {
+      DocumentSnapshot _doc =
+          await _firestore.collection(collection).doc(uid).get();
+
+      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+
+      return DashboardModel(
+        dashboardList: List<String>.from(_data[listName]),
       );
     } catch (e) {
       rethrow;
@@ -323,6 +342,24 @@ class FirestoreData {
     }
   }
 
+  static Future<Book> getBook(String uid) async {
+    try {
+      DocumentSnapshot _doc =
+          await _firestore.collection("books").doc(uid).get();
+
+      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+
+      return Book(
+        bookName: _data["bookName"] as String,
+        chapterNames: List<String>.from(_data["chapterNames"]),
+        ncertDirectLinks: List<String>.from(_data["ncertLinks"]),
+        classNumber: _data["classNumber"] as int,
+        //  gdriveLink:
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
   // Future<UserModel> getUser(String uid) async {
   //   try {
   //     DocumentSnapshot _doc = await _firestore

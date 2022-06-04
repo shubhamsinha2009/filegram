@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class Themes {
   static final ThemeData appDarkTheme = ThemeData(
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white,
+    ),
     chipTheme: const ChipThemeData(
         backgroundColor: Colors.black,
         disabledColor: Colors.transparent,
@@ -17,9 +20,14 @@ class Themes {
     inputDecorationTheme: const InputDecorationTheme(
       border: InputBorder.none,
       prefixIconColor: Colors.white,
+      hoverColor: Colors.white,
+      filled: true,
+      focusColor: Colors.white,
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.white),
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.white),
@@ -78,9 +86,13 @@ class Themes {
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: Colors.blue,
     ),
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.black,
+    ),
     inputDecorationTheme: const InputDecorationTheme(
       border: InputBorder.none,
       prefixIconColor: Colors.black,
+       
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.black),
         borderRadius: BorderRadius.all(Radius.circular(10.0)),

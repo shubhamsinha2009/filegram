@@ -21,7 +21,7 @@ A App made for controlling pdfs files privacy
 - [x] share url
 - [x] night mode pdf
 - [] Get ota update feature
-- [] Themes Flutter
+- [x] Themes Flutter
 - [x] Wake Lock
 - [] Feature Discovery/ShowCaseView
 - [x] Onboarding Screens
@@ -49,7 +49,7 @@ A App made for controlling pdfs files privacy
 - [] ADMOB Mediation
 - [] Profile Update Feature
 - [x] Phone Number Linked
-- [] Search Feature for Pdfs
+- [x] Search Feature for Pdfs
 - [] Cloud Upload Pdfs
 - [] Feature Request
 - [] Google drive Integration
@@ -60,6 +60,10 @@ A App made for controlling pdfs files privacy
 - [] Report a bug
 - [] Firebase App Check
 - [] Set Rewarded Ads on Page Number
+- [] Dashboard
+- [] Public Profiles
+- [] Search Users Public
+- [] Premium Features
 - [] Dashboard
 
 ## BUGS

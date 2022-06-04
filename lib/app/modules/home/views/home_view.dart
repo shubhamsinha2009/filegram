@@ -1,3 +1,4 @@
+import 'package:filegram/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:filegram/app/modules/files_device/views/files_device_view.dart';
 import '../../../routes/app_pages.dart';
 import '../../no_internet/views/no_internet_view.dart';
@@ -15,6 +16,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     List<Widget> bodyPages = [
+      const DashboardView(),
       const FilesDeviceView(),
       const EncryptedFileListView(),
       const SettingsView(),
@@ -80,6 +82,10 @@ class HomeView extends GetView<HomeController> {
                   FloatingActionButtonLocation.miniEndFloat,
               bottomNavigationBar: NavigationBar(
                 destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.dashboard),
+                    label: 'Dashboard',
+                  ),
                   NavigationDestination(
                     icon: Icon(Icons.library_books),
                     label: 'Library',

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:filegram/app/core/extensions.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,7 @@ class FilesDeviceController extends GetxController {
   late BannerAd inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
   Directory? _mydir;
+  final isLoading = true.obs;
 // final analytics = AnalyticsService.analytics;
   // AppUpdateInfo? _updateInfo;
   //FirebaseInAppMessaging fiam = FirebaseInAppMessaging.instance;
@@ -46,9 +48,6 @@ class FilesDeviceController extends GetxController {
     var i = (log(bytes) / log(1024)).floor();
     return '${DateFormat.yMMMMd('en_US').add_jm().format(time)} - ${((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i]}';
   }
-
-  String nameOfFile(String _currentfilePath) =>
-      _currentfilePath.split('/').last;
 
   bool validateRename() {
     final ext = rename.value.toLowerCase();
@@ -82,6 +81,7 @@ class FilesDeviceController extends GetxController {
         ..sort(
           (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
         ));
+      isLoading.value = false;
     }
   }
 
@@ -187,9 +187,8 @@ class FilesDeviceController extends GetxController {
     if (_mydir != null) {
       filesList.assignAll(_mydir!
           .listSync()
-          .where((FileSystemEntity element) => nameOfFile(element.path)
-              .toLowerCase()
-              .contains(fileName.toLowerCase()))
+          .where((FileSystemEntity element) =>
+              element.name.toLowerCase().contains(fileName.toLowerCase()))
           .toList()
         ..sort(
           (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
