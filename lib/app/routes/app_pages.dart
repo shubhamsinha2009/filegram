@@ -53,7 +53,7 @@ class AppPages {
     GetPage(
       name: _Paths.login,
       page: () => const LoginView(),
-      transition: Transition.leftToRightWithFade,
+      transition: Transition.rightToLeftWithFade,
       bindings: [
         LoginBinding(),
         NoInternetBinding(),
@@ -78,24 +78,28 @@ class AppPages {
       middlewares: [GullakMiddleware()],
     ),
     GetPage(
-        name: _Paths.updatePhoneNumber,
-        page: () => const UpdatePhoneNumberView(),
-        binding: UpdatePhoneNumberBinding(),
-        transition: Transition.leftToRightWithFade),
+      name: _Paths.updatePhoneNumber,
+      page: () => const UpdatePhoneNumberView(),
+      binding: UpdatePhoneNumberBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
     GetPage(
-        name: _Paths.content,
-        page: () => const ContentView(),
-        binding: ContentBinding(),
-        transition: Transition.leftToRightWithFade),
+      name: _Paths.content,
+      page: () => const ContentView(),
+      binding: ContentBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
     GetPage(
-        name: _Paths.subject,
-        page: () => const SubjectView(),
-        binding: SubjectBinding(),
-        transition: Transition.leftToRightWithFade),
+      name: _Paths.subject,
+      page: () => const SubjectView(),
+      binding: SubjectBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
     GetPage(
       name: _Paths.book,
       page: () => const BookView(),
       binding: BookBinding(),
+      transition: Transition.rightToLeftWithFade,
     ),
   ];
 }

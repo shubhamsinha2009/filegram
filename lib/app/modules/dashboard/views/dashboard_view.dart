@@ -28,7 +28,7 @@ class DashboardView extends GetView<DashboardController> {
               onChanged: (value) => controller.filterfileList(value),
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search),
-                hintText: 'Search By Course',
+                hintText: 'Search By Class',
                 isDense: true,
               ),
             ),
