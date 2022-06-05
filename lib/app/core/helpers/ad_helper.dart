@@ -40,16 +40,4 @@ class AdHelper {
   static String get viewPdfBanner {
     return dotenv.get('viewPdfBanner');
   }
-
-  static String get bookBanner {
-    return dotenv.get('bookBanner');
-  }
-
-  static String get viewBookPdf {
-    return dotenv.get('viewBookPdf');
-  }
-
-  static String get bookBottom {
-    return dotenv.get('bookBottom');
-  }
 }
