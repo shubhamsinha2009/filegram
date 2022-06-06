@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/dashboard_controller.dart';
+import 'widgets/promotional_carousel.dart';
 
 class DashboardView extends GetView<DashboardController> {
   const DashboardView({Key? key}) : super(key: key);
@@ -33,6 +34,14 @@ class DashboardView extends GetView<DashboardController> {
               ),
             ),
           ),
+          Obx(() => controller.thumbnailLinks.isNotEmpty
+              ? PromotionCarousel(
+                  controller: controller,
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                )),
           Expanded(
             child: Obx(
               () => controller.isLoading.isFalse

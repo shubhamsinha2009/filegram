@@ -12,9 +12,9 @@ class SubjectController extends GetxController {
 
   void filterfileList(String fileName) {
     if (fileName.isEmpty) {
-      dashboardList.assignAll(dashboard.value.dashboardList.reversed);
+      dashboardList.assignAll(dashboard.value.dashboardList);
     } else {
-      dashboardList.assignAll(dashboard.value.dashboardList.reversed
+      dashboardList.assignAll(dashboard.value.dashboardList
           .where((String element) =>
               element.toLowerCase().contains(fileName.toLowerCase()))
           .toList());
@@ -29,7 +29,7 @@ class SubjectController extends GetxController {
             uid: (Get.arguments as String).sort)
         .then((value) {
       dashboard(value);
-      dashboardList.assignAll(dashboard.value.dashboardList.reversed);
+      dashboardList.assignAll(dashboard.value.dashboardList);
     }).whenComplete(() {
       isLoading.value = false;
     }).catchError((e) {

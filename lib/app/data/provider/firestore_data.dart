@@ -6,6 +6,7 @@ import '../model/book_model.dart';
 import '../model/dashboard_model.dart';
 import '../model/documents_model.dart';
 import '../model/gullak_model.dart';
+import '../model/promotional.dart';
 import '../model/user_model.dart';
 
 class FirestoreData {
@@ -166,6 +167,22 @@ class FirestoreData {
         "photoUrl": user.photoUrl,
         "name": user.name,
       }, SetOptions(merge: true));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<Promotional> getPromotionalLinks() async {
+    try {
+      DocumentSnapshot _doc =
+          await _firestore.collection("dashboard").doc("promotionList").get();
+
+      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+
+      return Promotional(
+        thumbnailLinks: List<String>.from(_data["thumbnailLinks"]),
+        shareUrls: List<String>.from(_data["shareUrls"]),
+      );
     } catch (e) {
       rethrow;
     }
