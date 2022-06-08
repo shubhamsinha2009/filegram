@@ -12,9 +12,14 @@ import '../../home/controllers/home_controller.dart';
 
 class BookController extends GetxController {
   final homeController = Get.find<HomeController>();
+  String pathDir = '';
   final isLoding = true.obs;
   Book book = Book(
-      bookName: '', classNumber: 0, chapterNames: [], ncertDirectLinks: []);
+    bookName: '',
+    classNumber: 0,
+    chapterNames: [],
+    chapterLinks: [],
+  );
   final total = 1.obs;
   final received = 0.obs;
   late http.StreamedResponse response;
@@ -216,6 +221,12 @@ class BookController extends GetxController {
     _createBottomBannerAd();
 
     super.onInit();
+  }
+
+  @override
+  void onReady() async {
+    pathDir = await filesDocDir();
+    super.onReady();
   }
 
   @override

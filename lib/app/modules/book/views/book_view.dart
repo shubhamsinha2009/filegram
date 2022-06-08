@@ -67,22 +67,125 @@ class BookView extends GetView<BookController> {
                     child: controller.adWidget(ad: controller.inlineBannerAd),
                   );
                 } else {
+                  String _bookPath =
+                      '${controller.pathDir}/${(controller.book.chapterLinks[controller.getListViewItemIndex(index)]).split("/").last}';
                   return ListTile(
+                    onLongPress: (() => File(_bookPath).existsSync()
+                        ? Get.dialog(
+                            AlertDialog(
+                              backgroundColor:
+                                  Get.isDarkMode ? Colors.black : Colors.white,
+                              title: Text(
+                                'Are you sure you wish to delete ${controller.book.chapterNames[controller.getListViewItemIndex(index)]}?',
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    if (Get.isOverlaysOpen) {
+                                      Get.back();
+                                    }
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    if (Get.isOverlaysOpen) {
+                                      Get.back();
+                                    }
+                                    File(_bookPath).delete().then((value) =>
+                                        Get.showSnackbar(GetSnackBar(
+                                          backgroundColor: Get.theme
+                                              .snackBarTheme.backgroundColor!,
+                                          messageText: const Text('Deleted'),
+                                          icon: const Icon(
+                                              Icons.delete_forever_rounded),
+                                          snackPosition: SnackPosition.TOP,
+                                          duration: const Duration(seconds: 3),
+                                        )));
+                                  },
+                                  child: const Text('Delete'),
+                                ),
+                              ],
+                            ),
+                            barrierDismissible: false,
+                          )
+                        : Get.showSnackbar(GetSnackBar(
+                            backgroundColor:
+                                Get.theme.snackBarTheme.backgroundColor!,
+                            title: 'Already deleted',
+                            message: 'Tap to download',
+                            duration: const Duration(seconds: 5),
+                          ))),
+                    // trailing: File(_bookPath).existsSync()
+                    //     ? IconButton(
+                    //         icon: const Icon(Icons.delete_forever),
+                    //         onPressed: () => File(_bookPath).existsSync()
+                    //             ? Get.dialog(
+                    //                 AlertDialog(
+                    //                   backgroundColor: Get.isDarkMode
+                    //                       ? Colors.black
+                    //                       : Colors.white,
+                    //                   title: Text(
+                    //                     'Are you sure you wish to delete ${controller.book.chapterNames[controller.getListViewItemIndex(index)]}?',
+                    //                   ),
+                    //                   actions: <Widget>[
+                    //                     TextButton(
+                    //                       onPressed: () {
+                    //                         if (Get.isOverlaysOpen) {
+                    //                           Get.back();
+                    //                         }
+                    //                       },
+                    //                       child: const Text('Cancel'),
+                    //                     ),
+                    //                     TextButton(
+                    //                       onPressed: () {
+                    //                         if (Get.isOverlaysOpen) {
+                    //                           Get.back();
+                    //                         }
+                    //                         File(_bookPath).delete().then(
+                    //                             (value) => Get.showSnackbar(
+                    //                                     GetSnackBar(
+                    //                                   backgroundColor: Get
+                    //                                       .theme
+                    //                                       .snackBarTheme
+                    //                                       .backgroundColor!,
+                    //                                   messageText:
+                    //                                       const Text('Deleted'),
+                    //                                   icon: const Icon(Icons
+                    //                                       .delete_forever_rounded),
+                    //                                   snackPosition:
+                    //                                       SnackPosition.TOP,
+                    //                                   duration: const Duration(
+                    //                                       seconds: 3),
+                    //                                 )));
+                    //                       },
+                    //                       child: const Text('Delete'),
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //                 barrierDismissible: false,
+                    //               )
+                    //             : Get.showSnackbar(GetSnackBar(
+                    //                 backgroundColor: Get
+                    //                     .theme.snackBarTheme.backgroundColor!,
+                    //                 title: 'Already deleted',
+                    //                 message: 'Tap to download',
+                    //                 duration: const Duration(seconds: 5),
+                    //               )))
+                    //     : const Icon(Icons.download),
                     title: Text(controller.book
                         .chapterNames[controller.getListViewItemIndex(index)]),
 
                     // leading: Text('${index + 1}'),
-                    onTap: () async {
-                      String _bookPath =
-                          '${await controller.filesDocDir()}/${controller.book.ncertDirectLinks[controller.getListViewItemIndex(index)]}.pdf';
-                      if (await File(_bookPath).exists()) {
+                    onTap: () {
+                      if (File(_bookPath).existsSync()) {
                         controller.showInterstitialAd().catchError((e) {});
                         Get.toNamed(Routes.viewPdf,
                             arguments: [_bookPath, false]);
                       } else {
                         controller
-                            .getdetails(
-                                'https://ncert.nic.in/textbook/pdf/${controller.book.ncertDirectLinks[controller.getListViewItemIndex(index)]}.pdf')
+                            .getdetails(controller.book.chapterLinks[
+                                controller.getListViewItemIndex(index)])
                             .then((value) => Get.bottomSheet(
                                   DownloadBtmSheet(
                                     controller: controller,

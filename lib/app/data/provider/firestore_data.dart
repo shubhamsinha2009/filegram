@@ -369,8 +369,9 @@ class FirestoreData {
       return Book(
         bookName: _data["bookName"] as String,
         chapterNames: List<String>.from(_data["chapterNames"]),
-        ncertDirectLinks: List<String>.from(_data["ncertLinks"]),
+        chapterLinks: List<String>.from(_data["chapterLinks"]),
         classNumber: _data["classNumber"] as int,
+        // amazonBuyLink: _data["amazonBuyLink"] as String,
         //  gdriveLink:
       );
     } catch (e) {

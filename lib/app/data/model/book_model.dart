@@ -6,7 +6,7 @@ class Book {
   // final List<String> gdriveLink;
   // final int views;
   final List<String> chapterNames;
-  final List<String> ncertDirectLinks;
+  final List<String> chapterLinks;
   // final String amazonBuyLink;
 
   Book({
@@ -17,7 +17,7 @@ class Book {
     // required this.gdriveLink,
     // required this.views,
     required this.chapterNames,
-    required this.ncertDirectLinks,
+    required this.chapterLinks,
     // required this.amazonBuyLink,
   });
 }
