@@ -34,6 +34,43 @@ class HomeView extends GetView<HomeController> {
                 titleSpacing: 0,
 
                 actions: [
+                  controller.selectedIndex.value == 1
+                      ? IconButton(
+                          onPressed: () {
+                            Get.dialog(
+                              AlertDialog(
+                                alignment: Alignment.center,
+                                backgroundColor: Get.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
+                                title: const Icon(Icons.info),
+                                content: Text(
+                                  controller.info,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      if (Get.isOverlaysOpen) {
+                                        Get.back();
+                                      }
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.info,
+                          ))
+                      : const SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
                   IconButton(
                       onPressed: () {
                         Get.changeThemeMode(

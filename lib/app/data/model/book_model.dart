@@ -18,6 +18,6 @@ class Book {
     // required this.views,
     required this.chapterNames,
     required this.chapterLinks,
-    // required this.amazonBuyLink,
+    //required this.amazonBuyLink,
   });
 }

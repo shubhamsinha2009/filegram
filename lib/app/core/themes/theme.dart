@@ -89,10 +89,15 @@ class Themes {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
     ),
+    textTheme: const TextTheme(
+      headline6: TextStyle(
+        fontWeight: FontWeight.w700,
+        fontSize: 25,
+      ),
+    ),
     inputDecorationTheme: const InputDecorationTheme(
       border: InputBorder.none,
       prefixIconColor: Colors.black,
-       
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.black),
         borderRadius: BorderRadius.all(Radius.circular(10.0)),

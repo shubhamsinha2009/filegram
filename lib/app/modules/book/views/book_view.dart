@@ -33,8 +33,28 @@ class BookView extends GetView<BookController> {
                     ? Icons.light_mode
                     : Icons.dark_mode,
               )),
+          IconButton(
+              onPressed: () {
+                Get.showSnackbar(GetSnackBar(
+                  backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                  title: 'How to delete file chapter fom device ?',
+                  message: 'Just Long Press on Chapter to delete',
+                  duration: const Duration(seconds: 5),
+                ));
+              },
+              icon: const Icon(Icons.info)),
         ],
       ),
+      // floatingActionButton: FloatingActionButton(
+      //     child: const Icon(Icons.info),
+      //     onPressed: () {
+      //       Get.showSnackbar(GetSnackBar(
+      //         backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+      //         title: 'How to delete file chapter fom device ?',
+      //         message: 'Just Long Press on Chapter to delete',
+      //         duration: const Duration(seconds: 5),
+      //       ));
+      //     }),
       bottomNavigationBar: Obx(() => controller.isBottomBannerAdLoaded.isTrue
           ? SizedBox(
               height: controller.bottomBannerAd.size.height.toDouble(),
@@ -116,63 +136,7 @@ class BookView extends GetView<BookController> {
                             message: 'Tap to download',
                             duration: const Duration(seconds: 5),
                           ))),
-                    // trailing: File(_bookPath).existsSync()
-                    //     ? IconButton(
-                    //         icon: const Icon(Icons.delete_forever),
-                    //         onPressed: () => File(_bookPath).existsSync()
-                    //             ? Get.dialog(
-                    //                 AlertDialog(
-                    //                   backgroundColor: Get.isDarkMode
-                    //                       ? Colors.black
-                    //                       : Colors.white,
-                    //                   title: Text(
-                    //                     'Are you sure you wish to delete ${controller.book.chapterNames[controller.getListViewItemIndex(index)]}?',
-                    //                   ),
-                    //                   actions: <Widget>[
-                    //                     TextButton(
-                    //                       onPressed: () {
-                    //                         if (Get.isOverlaysOpen) {
-                    //                           Get.back();
-                    //                         }
-                    //                       },
-                    //                       child: const Text('Cancel'),
-                    //                     ),
-                    //                     TextButton(
-                    //                       onPressed: () {
-                    //                         if (Get.isOverlaysOpen) {
-                    //                           Get.back();
-                    //                         }
-                    //                         File(_bookPath).delete().then(
-                    //                             (value) => Get.showSnackbar(
-                    //                                     GetSnackBar(
-                    //                                   backgroundColor: Get
-                    //                                       .theme
-                    //                                       .snackBarTheme
-                    //                                       .backgroundColor!,
-                    //                                   messageText:
-                    //                                       const Text('Deleted'),
-                    //                                   icon: const Icon(Icons
-                    //                                       .delete_forever_rounded),
-                    //                                   snackPosition:
-                    //                                       SnackPosition.TOP,
-                    //                                   duration: const Duration(
-                    //                                       seconds: 3),
-                    //                                 )));
-                    //                       },
-                    //                       child: const Text('Delete'),
-                    //                     ),
-                    //                   ],
-                    //                 ),
-                    //                 barrierDismissible: false,
-                    //               )
-                    //             : Get.showSnackbar(GetSnackBar(
-                    //                 backgroundColor: Get
-                    //                     .theme.snackBarTheme.backgroundColor!,
-                    //                 title: 'Already deleted',
-                    //                 message: 'Tap to download',
-                    //                 duration: const Duration(seconds: 5),
-                    //               )))
-                    //     : const Icon(Icons.download),
+
                     title: Text(controller.book
                         .chapterNames[controller.getListViewItemIndex(index)]),
 

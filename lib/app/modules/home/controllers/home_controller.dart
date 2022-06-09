@@ -16,6 +16,7 @@ import '../../no_internet/controllers/no_internet_controller.dart';
 import '../../../data/provider/firestore_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:new_version/new_version.dart';
 
 class HomeController extends GetxController {
   final isFileDeviceOpen = true.obs;
@@ -60,6 +61,9 @@ class HomeController extends GetxController {
           });
     }
   }
+
+  String get info =>
+      '1. Swipe Left to Right to Rename\n2. Swipe Right to Left to Save & Share\n3. Dismiss in any direction to delete';
 
   Future<void> checkDevelopmentMode() async {
     bool developerMode;
@@ -160,6 +164,28 @@ class HomeController extends GetxController {
     Wakelock.toggle(enable: true);
 
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    try {
+      final newVersion = NewVersion(androidId: "com.sks.filegram");
+      if (Get.context != null) {
+        newVersion.getVersionStatus().then((status) {
+          if (status != null && (status.localVersion != status.storeVersion)) {
+            newVersion.showUpdateDialog(
+              context: Get.context!,
+              versionStatus: status,
+              dialogTitle: 'Update Available',
+              dialogText:
+                  "What's New!\n${status.releaseNotes}\n You can now update this app from ${status.localVersion} to ${status.storeVersion}",
+            );
+          }
+        }).catchError((e) {});
+      }
+    } catch (e) {}
+
+    super.onReady();
   }
 
   @override

@@ -202,7 +202,9 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              backgroundColor: Colors.black,
+                                              backgroundColor: Get.isDarkMode
+                                                  ? Colors.black
+                                                  : Colors.white,
                                               title: const Text("Confirm"),
                                               content: const Text(
                                                   "Are you sure you wish to delete this file from device"),
@@ -236,8 +238,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                         Get.showSnackbar(GetSnackBar(
                                           backgroundColor: Get.theme
                                               .snackBarTheme.backgroundColor!,
-                                          messageText: const Text(
-                                              'Your File is Deleted'),
+                                          messageText: Text(
+                                              'The file ${_currentfile.name} is Deleted'),
                                           icon: const Icon(
                                               Icons.delete_forever_rounded),
                                           snackPosition: SnackPosition.TOP,

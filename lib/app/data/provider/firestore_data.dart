@@ -371,7 +371,7 @@ class FirestoreData {
         chapterNames: List<String>.from(_data["chapterNames"]),
         chapterLinks: List<String>.from(_data["chapterLinks"]),
         classNumber: _data["classNumber"] as int,
-        // amazonBuyLink: _data["amazonBuyLink"] as String,
+        //amazonBuyLink: _data["amazonBuyLink"] as String,
         //  gdriveLink:
       );
     } catch (e) {

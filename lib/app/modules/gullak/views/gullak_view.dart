@@ -151,7 +151,8 @@ class GullakView extends GetView<GullakController> {
                                   onPressed: () => Get.back(),
                                   child: const Text('OK'))
                             ],
-                            backgroundColor: Colors.black,
+                            backgroundColor:
+                                Get.isDarkMode ? Colors.black : Colors.white,
                           ))
                         : await launchUrlString(
                             controller.gullak.value.withdrawalLink,

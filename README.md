@@ -57,14 +57,13 @@ A App made for controlling pdfs files privacy
 - [x] Timer Ads
 - [x] JailBreak
 - [] Local Auth
-- [] Report a bug
-- [] Firebase App Check
+- [x] Report a bug
+- [x] Firebase App Check
 - [] Set Rewarded Ads on Page Number
-- [] Dashboard
+- [x] Dashboard
 - [] Public Profiles
 - [] Search Users Public
 - [] Premium Features
-- [] Dashboard
 
 ## BUGS
 
