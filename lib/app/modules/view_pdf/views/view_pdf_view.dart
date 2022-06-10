@@ -77,9 +77,9 @@ class ViewPdfView extends GetView<ViewPdfController> {
                 enableSwipe: true,
                 swipeHorizontal: controller.swipehorizontal.value,
                 autoSpacing: false,
-                pageFling: true,
+                pageFling: false,
 
-                pageSnap: true,
+                pageSnap: false,
                 nightMode: Get.find<HomeController>().changeTheme.value,
                 fitEachPage: true,
                 fitPolicy: FitPolicy.WIDTH,

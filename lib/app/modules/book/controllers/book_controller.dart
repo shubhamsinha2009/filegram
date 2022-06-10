@@ -198,9 +198,11 @@ class BookController extends GetxController {
     }
   }
 
-  @override
-  void onInit() {
-    FirestoreData.getBook(uid)
+  void onInitialisation({required bool isCache}) {
+    FirestoreData.getBook(
+      uid: uid,
+      isCache: isCache,
+    )
         .then((value) {
           book = value;
         })
@@ -213,6 +215,11 @@ class BookController extends GetxController {
             duration: const Duration(seconds: 5),
           ));
         });
+  }
+
+  @override
+  void onInit() {
+    onInitialisation(isCache: true);
     if (isInlineBannerAdLoaded.isFalse) {
       _createInlineBannerAd();
     }

@@ -23,11 +23,12 @@ class ContentController extends GetxController {
     }
   }
 
-  void onInitialisation() {
+  void onInitialisation({required bool isCache}) {
     // dashboardList.assignAll(ContentData.contentList);
     FirestoreData.getDashboard(
       collection: 'subjects',
       listName: 'subjectList',
+      isCache: isCache,
       uid: uid,
     ).then((value) {
       dashboard(value);
@@ -46,7 +47,7 @@ class ContentController extends GetxController {
 
   @override
   void onInit() {
-    onInitialisation();
+    onInitialisation(isCache: true);
     super.onInit();
   }
 }

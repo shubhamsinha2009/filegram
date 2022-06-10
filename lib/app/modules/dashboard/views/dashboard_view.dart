@@ -18,7 +18,7 @@ class DashboardView extends GetView<DashboardController> {
       displacement: 150,
       edgeOffset: 0,
       onRefresh: () async {
-        controller.onInitialisation();
+        controller.onInitialisation(isCache: false);
       },
       child: Column(
         children: [

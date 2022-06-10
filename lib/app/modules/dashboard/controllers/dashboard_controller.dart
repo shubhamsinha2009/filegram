@@ -24,13 +24,14 @@ class DashboardController extends GetxController {
     }
   }
 
-  void onInitialisation() {
+  void onInitialisation({required bool isCache}) {
     // dashboardList.assignAll(DashboardData.dashboardList);
 
     FirestoreData.getDashboard(
       collection: 'dashboard',
       listName: 'dashboardList',
       uid: 'dashboard',
+      isCache: isCache,
     ).then((value) {
       dashboard(value);
       dashboardList.assignAll(dashboard.value.dashboardList);
@@ -61,7 +62,7 @@ class DashboardController extends GetxController {
 
   @override
   void onInit() {
-    onInitialisation();
+    onInitialisation(isCache: true);
     super.onInit();
   }
 }

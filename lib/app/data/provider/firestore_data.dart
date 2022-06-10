@@ -192,11 +192,20 @@ class FirestoreData {
     required String collection,
     required String uid,
     required String listName,
+    required bool isCache,
   }) async {
     try {
-      DocumentSnapshot _doc =
-          await _firestore.collection(collection).doc(uid).get();
-
+      DocumentSnapshot _doc = await _firestore
+          .collection(collection)
+          .doc(uid)
+          .get(GetOptions(
+              source: isCache ? Source.cache : Source.serverAndCache));
+      if (!_doc.exists) {
+        _doc = await _firestore
+            .collection(collection)
+            .doc(uid)
+            .get(const GetOptions(source: Source.serverAndCache));
+      }
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
       return DashboardModel(
@@ -359,10 +368,18 @@ class FirestoreData {
     }
   }
 
-  static Future<Book> getBook(String uid) async {
+  static Future<Book> getBook(
+      {required String uid, required bool isCache}) async {
     try {
-      DocumentSnapshot _doc =
-          await _firestore.collection("books").doc(uid).get();
+      DocumentSnapshot _doc = await _firestore.collection("books").doc(uid).get(
+          GetOptions(source: isCache ? Source.cache : Source.serverAndCache));
+
+      if (!_doc.exists) {
+        _doc = await _firestore
+            .collection("books")
+            .doc(uid)
+            .get(const GetOptions(source: Source.serverAndCache));
+      }
 
       Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
