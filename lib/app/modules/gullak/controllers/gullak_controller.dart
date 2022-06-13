@@ -3,10 +3,12 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../../../core/helpers/ad_helper.dart';
 import '../../home/controllers/home_controller.dart';
+import '../../no_internet/controllers/no_internet_controller.dart';
 
 class GullakController extends GetxController {
   final gullak = Get.find<HomeController>().gullak;
-
+  final isInternetConnected =
+      Get.find<NoInternetController>().isInternetConnected;
   final int maxFailedLoadAttempts = 3;
   int rewardLoadAttempts = 0;
   // late RewardedInterstitialAd rewardedInterstitialAd;

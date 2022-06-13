@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filegram/app/data/model/views_model.dart';
 import '../enums/docpermission.dart';
 import 'package:flutter/services.dart';
-import '../model/book_model.dart';
-import '../model/dashboard_model.dart';
+
 import '../model/documents_model.dart';
 import '../model/gullak_model.dart';
-import '../model/promotional.dart';
+
 import '../model/user_model.dart';
 
 class FirestoreData {
@@ -172,49 +171,49 @@ class FirestoreData {
     }
   }
 
-  static Future<Promotional> getPromotionalLinks() async {
-    try {
-      DocumentSnapshot _doc =
-          await _firestore.collection("dashboard").doc("promotionList").get();
+  // static Future<Promotional> getPromotionalLinks() async {
+  //   try {
+  //     DocumentSnapshot _doc =
+  //         await _firestore.collection("dashboard").doc("promotionList").get();
 
-      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+  //     Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
-      return Promotional(
-        thumbnailLinks: List<String>.from(_data["thumbnailLinks"]),
-        shareUrls: List<String>.from(_data["shareUrls"]),
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //     return Promotional(
+  //       thumbnailLinks: List<String>.from(_data["thumbnailLinks"]),
+  //       shareUrls: List<String>.from(_data["shareUrls"]),
+  //     );
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
-  static Future<DashboardModel> getDashboard({
-    required String collection,
-    required String uid,
-    required String listName,
-    required bool isCache,
-  }) async {
-    try {
-      DocumentSnapshot _doc = await _firestore
-          .collection(collection)
-          .doc(uid)
-          .get(GetOptions(
-              source: isCache ? Source.cache : Source.serverAndCache));
-      if (!_doc.exists) {
-        _doc = await _firestore
-            .collection(collection)
-            .doc(uid)
-            .get(const GetOptions(source: Source.serverAndCache));
-      }
-      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+  // static Future<DashboardModel> getDashboard({
+  //   required String collection,
+  //   required String uid,
+  //   required String listName,
+  //   required bool isCache,
+  // }) async {
+  //   try {
+  //     DocumentSnapshot _doc = await _firestore
+  //         .collection(collection)
+  //         .doc(uid)
+  //         .get(GetOptions(
+  //             source: isCache ? Source.cache : Source.serverAndCache));
+  //     if (!_doc.exists) {
+  //       _doc = await _firestore
+  //           .collection(collection)
+  //           .doc(uid)
+  //           .get(const GetOptions(source: Source.serverAndCache));
+  //     }
+  //     Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
-      return DashboardModel(
-        dashboardList: List<String>.from(_data[listName]),
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //     return DashboardModel(
+  //       dashboardList: List<String>.from(_data[listName]),
+  //     );
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   static Future<void> updatePhoneUser(
       {required String id, required String phoneNumber}) async {
@@ -368,33 +367,34 @@ class FirestoreData {
     }
   }
 
-  static Future<Book> getBook(
-      {required String uid, required bool isCache}) async {
-    try {
-      DocumentSnapshot _doc = await _firestore.collection("books").doc(uid).get(
-          GetOptions(source: isCache ? Source.cache : Source.serverAndCache));
+  // static Future<Book> getBook(
+  //     {required String uid, required bool isCache}) async {
+  //   try {
+  //     DocumentSnapshot _doc = await _firestore.collection("books").doc(uid).get(
+  //         GetOptions(source: isCache ? Source.cache : Source.serverAndCache));
 
-      if (!_doc.exists) {
-        _doc = await _firestore
-            .collection("books")
-            .doc(uid)
-            .get(const GetOptions(source: Source.serverAndCache));
-      }
+  //     if (!_doc.exists) {
+  //       _doc = await _firestore
+  //           .collection("books")
+  //           .doc(uid)
+  //           .get(const GetOptions(source: Source.serverAndCache));
+  //     }
 
-      Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
+  //     Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
 
-      return Book(
-        bookName: _data["bookName"] as String,
-        chapterNames: List<String>.from(_data["chapterNames"]),
-        chapterLinks: List<String>.from(_data["chapterLinks"]),
-        classNumber: _data["classNumber"] as int,
-        //amazonBuyLink: _data["amazonBuyLink"] as String,
-        //  gdriveLink:
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //     return Book(
+  //       bookName: _data["bookName"] as String,
+  //       chapterNames: List<String>.from(_data["chapterNames"]),
+  //       chapterUids: List<String>.from(_data["chapterLinks"]),
+  //       classNumber: _data["classNumber"] as int,
+  //       //amazonBuyLink: _data["amazonBuyLink"] as String,
+  //       //  gdriveLink:
+  //     );
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+
   // Future<UserModel> getUser(String uid) async {
   //   try {
   //     DocumentSnapshot _doc = await _firestore

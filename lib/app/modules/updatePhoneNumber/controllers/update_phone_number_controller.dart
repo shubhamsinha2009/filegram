@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import '../../no_internet/controllers/no_internet_controller.dart';
+
 class UpdatePhoneNumberController extends GetxController {
   late String phoneNumber;
   late String smsCode;
   final auth = FirebaseAuth.instance;
   late String verificationID;
+  final isInternetConnected =
+      Get.find<NoInternetController>().isInternetConnected;
 
   Future<void> signInWithOtp(String phoneNumber) async {
     try {

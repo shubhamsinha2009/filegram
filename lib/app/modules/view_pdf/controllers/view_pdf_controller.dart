@@ -14,8 +14,11 @@ import '../../../core/helpers/ad_helper.dart';
 import '../../../data/provider/firestore_data.dart';
 import '../../encrypt_decrypt/services/file_encrypter.dart';
 import '../../home/controllers/home_controller.dart';
+import '../../no_internet/controllers/no_internet_controller.dart';
 
 class ViewPdfController extends GetxController {
+  final isInternetConnected =
+      Get.find<NoInternetController>().isInternetConnected;
   final swipehorizontal = false.obs;
   final pages = 1.obs;
   final isReady = false.obs;
