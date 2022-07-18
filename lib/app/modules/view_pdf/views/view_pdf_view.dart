@@ -57,18 +57,18 @@ class ViewPdfView extends GetView<ViewPdfController> {
                     icon: const Icon(Icons.rotate_90_degrees_ccw_outlined)),
               ],
             ),
-            persistentFooterButtons: [
-              controller.isBottomBannerAdLoaded.isTrue
-                  ? SizedBox(
-                      height: controller.bottomBannerAd.size.height.toDouble(),
-                      width: controller.bottomBannerAd.size.width.toDouble(),
-                      child: controller.adWidget(ad: controller.bottomBannerAd),
-                    )
-                  : const SizedBox(
-                      height: 0,
-                      width: 0,
-                    ),
-            ],
+            // persistentFooterButtons: [
+            //   controller.isBottomBannerAdLoaded.isTrue
+            //       ? SizedBox(
+            //           height: controller.bottomBannerAd.size.height.toDouble(),
+            //           width: controller.bottomBannerAd.size.width.toDouble(),
+            //           child: controller.adWidget(ad: controller.bottomBannerAd),
+            //         )
+            //       : const SizedBox(
+            //           height: 0,
+            //           width: 0,
+            //         ),
+            // ],
             bottomNavigationBar: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,

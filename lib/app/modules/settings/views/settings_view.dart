@@ -2,10 +2,11 @@ import 'package:app_settings/app_settings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:new_version/new_version.dart';
 import 'package:get/get.dart';
+import 'package:new_version/new_version.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 import '../../../routes/app_pages.dart';
 import '../controllers/settings_controller.dart';
 
