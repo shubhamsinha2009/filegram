@@ -70,18 +70,18 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                     ad: controller.inlineBannerAd),
                               );
                             } else {
-                              final _currentfile = controller.filesList[
+                              final currentfile = controller.filesList[
                                   controller.getListViewItemIndex(index)];
-                              final Map<String, dynamic>? _pdfDetails =
+                              final Map<String, dynamic>? pdfDetails =
                                   GetStorageDbService.getRead(
-                                      key: _currentfile.path);
-                              final _photoUrl = _pdfDetails?['photoUrl'] ??
+                                      key: currentfile.path);
+                              final photoUrl = pdfDetails?['photoUrl'] ??
                                   'https://source.unsplash.com/random';
-                              final _ownerName =
-                                  _pdfDetails?['ownerName'] ?? 'Unknown';
-                              final _sourceUrl = _pdfDetails?['sourceUrl'];
-                              final _ownerId = _pdfDetails?['ownerId'];
-                              if (_currentfile is File) {
+                              final ownerName =
+                                  pdfDetails?['ownerName'] ?? 'Unknown';
+                              final sourceUrl = pdfDetails?['sourceUrl'];
+                              final ownerId = pdfDetails?['ownerId'];
+                              if (currentfile is File) {
                                 return Slidable(
                                   key: UniqueKey(),
                                   startActionPane: ActionPane(
@@ -119,9 +119,9 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                         );
                                       },
                                       onDismissed: () async {
-                                        await _currentfile.delete();
+                                        await currentfile.delete();
                                         GetStorageDbService.getRemove(
-                                            key: _currentfile.path);
+                                            key: currentfile.path);
                                         controller.onInitialisation();
                                         // await controller.analytics.logEvent(
                                         //     name: 'file_deleted',
@@ -131,7 +131,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                           backgroundColor: Get.theme
                                               .snackBarTheme.backgroundColor!,
                                           messageText: Text(
-                                              'The file ${_currentfile.name} is Deleted'),
+                                              'The file ${currentfile.name} is Deleted'),
                                           icon: const Icon(
                                               Icons.delete_forever_rounded),
                                           snackPosition: SnackPosition.TOP,
@@ -145,7 +145,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                         onPressed: (context) => Get.bottomSheet(
                                             BtmSheet(
                                               controller: controller,
-                                              file: _currentfile,
+                                              file: currentfile,
                                             ),
                                             isScrollControlled: true),
                                         backgroundColor: Colors.teal,
@@ -227,9 +227,9 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                         );
                                       },
                                       onDismissed: () async {
-                                        await _currentfile.delete();
+                                        await currentfile.delete();
                                         GetStorageDbService.getRemove(
-                                            key: _currentfile.path);
+                                            key: currentfile.path);
                                         controller.onInitialisation();
                                         // await controller.analytics.logEvent(
                                         //     name: 'file_deleted',
@@ -239,7 +239,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                           backgroundColor: Get.theme
                                               .snackBarTheme.backgroundColor!,
                                           messageText: Text(
-                                              'The file ${_currentfile.name} is Deleted'),
+                                              'The file ${currentfile.name} is Deleted'),
                                           icon: const Icon(
                                               Icons.delete_forever_rounded),
                                           snackPosition: SnackPosition.TOP,
@@ -251,7 +251,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                     children: [
                                       SlidableAction(
                                         onPressed: (context) =>
-                                            controller.save(_currentfile.path),
+                                            controller.save(currentfile.path),
                                         backgroundColor: Colors.teal,
                                         foregroundColor: Colors.black,
                                         icon: Icons.download_rounded,
@@ -267,9 +267,9 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                           // });
                                           // TODO: Add text and subject app link and more
                                           await Share.shareFiles(
-                                            [_currentfile.path],
+                                            [currentfile.path],
                                             text:
-                                                'Download Filegram to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
+                                                'Download Pdf Wallah to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
                                           );
                                         },
                                         backgroundColor: Colors.orange,
@@ -282,14 +282,13 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                     ],
                                   ),
                                   child: ListTile(
-                                    trailing: _sourceUrl != null
+                                    trailing: sourceUrl != null
                                         ? IconButton(
                                             icon: const Icon(Icons.link_rounded,
                                                 color: Colors.white),
                                             onPressed: () async {
                                               try {
-                                                await launchUrlString(
-                                                    _sourceUrl,
+                                                await launchUrlString(sourceUrl,
                                                     mode: LaunchMode
                                                         .externalApplication);
                                               } on PlatformException {
@@ -299,7 +298,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                                       .snackBarTheme
                                                       .backgroundColor!,
                                                   messageText: Text(
-                                                      'Cannot Open this link : $_sourceUrl'),
+                                                      'Cannot Open this link : $sourceUrl'),
                                                   icon: const Icon(
                                                       Icons.error_outline),
                                                   snackPosition:
@@ -316,7 +315,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                     visualDensity:
                                         VisualDensity.adaptivePlatformDensity,
                                     title: Text(
-                                      _currentfile.name,
+                                      currentfile.name,
                                       overflow: TextOverflow.visible,
                                       softWrap: true,
                                     ),
@@ -325,7 +324,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                     leading: CircleAvatar(
                                       backgroundImage:
                                           CachedNetworkImageProvider(
-                                        _photoUrl,
+                                        photoUrl,
                                       ),
                                     ),
                                     onTap: () {
@@ -336,12 +335,10 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                       //   FirestoreData.updateSikka(_ownerId);
 
                                       controller
-                                          .showInterstitialAd(uid: _ownerId)
+                                          .showInterstitialAd(uid: ownerId)
                                           .catchError((e) {});
-                                      Get.toNamed(Routes.viewPdf, arguments: [
-                                        _currentfile.path,
-                                        false
-                                      ]);
+                                      Get.toNamed(Routes.viewPdf,
+                                          arguments: [currentfile.path, false]);
                                       // });
                                       // } catch (e) {
                                       //   controller.interstitialAdController
@@ -354,12 +351,12 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                       // }
                                     },
                                     subtitle: Text(
-                                      _ownerName +
+                                      ownerName +
                                           '\n' +
                                           controller.getSubtitle(
-                                            bytes: _currentfile.lengthSync(),
+                                            bytes: currentfile.lengthSync(),
                                             time:
-                                                _currentfile.lastModifiedSync(),
+                                                currentfile.lastModifiedSync(),
                                           ),
                                       maxLines: 2,
                                       softWrap: true,

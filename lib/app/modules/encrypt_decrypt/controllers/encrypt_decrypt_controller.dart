@@ -33,14 +33,14 @@ class EncryptDecryptController extends GetxController {
   Future<void> pickFile() async {
     try {
       isLoading.toggle();
-      final String? _result = await FlutterFileDialog.pickFile(
+      final String? result = await FlutterFileDialog.pickFile(
           params: const OpenFileDialogParams(
         copyFileToCacheDir: true,
         mimeTypesFilter: ['application/pdf', 'application/octet-stream'],
       ));
 
       isLoading.toggle();
-      confirmDialog(_result);
+      confirmDialog(result);
     } on PlatformException catch (e) {
       isLoading.toggle();
       Get.showSnackbar(GetSnackBar(
@@ -59,12 +59,12 @@ class EncryptDecryptController extends GetxController {
   }
 
   void confirmDialog(String? pickedFile) {
-    String? _sourceUrl;
-    final _result = pickedFile;
-    if (_result != null) {
-      String _fileName = _result.split('/').last;
+    String? sourceUrl;
+    final result = pickedFile;
+    if (result != null) {
+      String fileName = result.split('/').last;
 
-      if (!_result.contains('.enc')) {
+      if (!result.contains('.enc')) {
         Get.bottomSheet(
           WillPopScope(
             onWillPop: () async => false,
@@ -93,10 +93,10 @@ class EncryptDecryptController extends GetxController {
                       }
                       return null;
                     },
-                    initialValue: _fileName,
+                    initialValue: fileName,
                     keyboardType: TextInputType.name,
                     onChanged: (value) {
-                      _fileName = value;
+                      fileName = value;
                     },
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -113,13 +113,13 @@ class EncryptDecryptController extends GetxController {
                   TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     keyboardType: TextInputType.url,
-                    onChanged: (value) => _sourceUrl = value,
+                    onChanged: (value) => sourceUrl = value,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         helperText:
                             'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
                         labelText: 'Source URL / Share Link to redirect',
-                        hintText: 'https://t.me/filegram_app',
+                        hintText: 'https://t.me/pdf_wallah',
                         helperMaxLines: 3,
                         isDense: true,
                         prefixIcon: Icon(Icons.add_link_rounded),
@@ -135,8 +135,8 @@ class EncryptDecryptController extends GetxController {
                           if (Get.isOverlaysOpen) {
                             Get.back();
                           }
-                          if (File(_result).existsSync()) {
-                            File(_result).deleteSync();
+                          if (File(result).existsSync()) {
+                            File(result).deleteSync();
                           }
                           Get.showSnackbar(
                             GetSnackBar(
@@ -154,16 +154,16 @@ class EncryptDecryptController extends GetxController {
                       ),
                       OutlinedButton(
                         onPressed: () {
-                          if (validateRename(_fileName)) {
+                          if (validateRename(fileName)) {
                             if (Get.isOverlaysOpen) {
                               Get.back();
                             }
                             isLoading.toggle();
                             showInterstitialAd().catchError((e) {});
                             encryptDecrypt(pickedFile,
-                                    fileName: _fileName, sourceUrl: _sourceUrl)
-                                .then((_fileOut) {
-                              if (_fileOut != null) {
+                                    fileName: fileName, sourceUrl: sourceUrl)
+                                .then((fileOut) {
+                              if (fileOut != null) {
                                 Get.showSnackbar(
                                   GetSnackBar(
                                     backgroundColor: Get
@@ -185,7 +185,7 @@ class EncryptDecryptController extends GetxController {
                                 );
                               }
                               Get.toNamed(Routes.viewPdf,
-                                  arguments: [_fileOut, true]);
+                                  arguments: [fileOut, true]);
                             });
                           }
                         },
@@ -210,14 +210,13 @@ class EncryptDecryptController extends GetxController {
                 snackPosition: SnackPosition.TOP,
               ),
             );
-            final _ownerId =
-                GetStorageDbService.getRead(key: value)?['ownerId'];
+            final ownerId = GetStorageDbService.getRead(key: value)?['ownerId'];
 
             // rewardedAdController.rewardedInterstitialAd.show(
             //     onUserEarnedReward: (ad, reward) {
             //   FirestoreData.updateSikka(_ownerId);
 
-            showInterstitialAd(uid: _ownerId).catchError((e) {});
+            showInterstitialAd(uid: ownerId).catchError((e) {});
             Get.toNamed(Routes.viewPdf, arguments: [value, true]);
             // });
 
@@ -238,14 +237,14 @@ class EncryptDecryptController extends GetxController {
 
   Future<String?> encryptDecrypt(String? pickedFile,
       {String? sourceUrl, String? fileName}) async {
-    final _result = pickedFile;
-    String? _fileOut;
-    if (_result != null) {
+    final result = pickedFile;
+    String? fileOut;
+    if (result != null) {
       try {
-        if (_result.contains('.enc')) {
-          _fileOut = await doFileCopy(_result);
+        if (result.contains('.enc')) {
+          fileOut = await doFileCopy(result);
         } else {
-          _fileOut = await doEncryption(_result, sourceUrl, fileName);
+          fileOut = await doEncryption(result, sourceUrl, fileName);
         }
       } catch (e) {
         isLoading.value = false;
@@ -257,78 +256,78 @@ class EncryptDecryptController extends GetxController {
           snackPosition: SnackPosition.TOP,
         ));
       }
-      if (File(_result).existsSync()) {
-        File(_result).deleteSync();
+      if (File(result).existsSync()) {
+        File(result).deleteSync();
       }
     }
     isLoading.value = false;
 
-    return _fileOut;
+    return fileOut;
   }
 
   Future<String> filesDocDir() async {
     //Get this App Document Directory
     //App Document Directory + folder name
 
-    final Directory? _appDocDir = await getExternalStorageDirectory();
+    final Directory? appDocDir = await getExternalStorageDirectory();
     //App Document Directory + folder name
-    final Directory _appDocDirFolder = Directory('${_appDocDir?.path}/Files');
+    final Directory appDocDirFolder = Directory('${appDocDir?.path}/Files');
 
-    if (await _appDocDirFolder.exists()) {
+    if (await appDocDirFolder.exists()) {
       //if folder already exists return path
-      return _appDocDirFolder.path;
+      return appDocDirFolder.path;
     } else {
       //if folder not exists create folder and then return its path
-      final Directory _appDocDirNewFolder =
-          await _appDocDirFolder.create(recursive: true);
-      return _appDocDirNewFolder.path;
+      final Directory appDocDirNewFolder =
+          await appDocDirFolder.create(recursive: true);
+      return appDocDirNewFolder.path;
     }
   }
 
   Future<String?> doEncryption(
-      String _result, String? _sourceUrl, String? fileName) async {
+      String result, String? sourceUrl, String? fileName) async {
     try {
-      String _fileOut = '${await filesDocDir()}/$fileName.enc';
+      String fileOut = '${await filesDocDir()}/$fileName.enc';
       final secretKey = await FileEncrypter.generatekey();
       final iv = await FileEncrypter.generateiv();
       if (secretKey != null && iv != null) {
         await FileEncrypter.encrypt(
           key: secretKey,
           iv: iv,
-          inFilename: _result,
-          outFileName: _fileOut,
+          inFilename: result,
+          outFileName: fileOut,
         );
       }
-      final _userId = homeController.user.value.id;
-      final _fizeSize = getFileSize(bytes: File(_fileOut).lengthSync());
-      final _ownerName = homeController.user.value.name;
-      final _ownerPhotoUrl = homeController.user.value.photoUrl;
-      final _ownerEmailId = homeController.user.value.emailId;
-      final _documentReference =
+      final userId = homeController.user.value.id;
+      final fizeSize = getFileSize(bytes: File(fileOut).lengthSync());
+      final ownerName = homeController.user.value.name;
+      final ownerPhotoUrl = homeController.user.value.photoUrl;
+      final ownerEmailId = homeController.user.value.emailId;
+      final documentReference =
           await FirestoreData.createDocument(_documentModel(DocumentModel(
-        documentName: _fileOut.split('/').last,
+        documentName: fileOut.split('/').last,
         secretKey: secretKey,
         iv: iv,
-        ownerId: _userId,
-        documentSize: _fizeSize,
-        ownerName: _ownerName,
-        ownerPhotoUrl: _ownerPhotoUrl,
-        ownerEmailId: _ownerEmailId,
-        sourceUrl: _sourceUrl,
+        ownerId: userId,
+        documentSize: fizeSize,
+        ownerName: ownerName,
+        ownerPhotoUrl: ownerPhotoUrl,
+        ownerEmailId: ownerEmailId,
+        sourceUrl: sourceUrl,
       )));
       // await FirestoreData.getDocumentsListFromServer(_userId);
-      _documentModel(await FirestoreData.getDocument(_documentReference));
+      _documentModel(await FirestoreData.getDocument(documentReference));
       await FirestoreData.createViewsAndUploads(
           _documentModel.value.documentId);
-      final Map<String, dynamic> _pdfDetails = {
-        'photoUrl': _ownerPhotoUrl,
-        'ownerName': _ownerName,
-        'sourceUrl': _sourceUrl,
-        'ownerId': _userId,
+      final Map<String, dynamic> pdfDetails = {
+        'photoUrl': ownerPhotoUrl,
+        'ownerName': ownerName,
+        'sourceUrl': sourceUrl,
+        'ownerId': userId,
         'intialPageNumber': 0,
       };
-      GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
-      return _fileOut;
+      GetStorageDbService.getWrite(key: fileOut, value: pdfDetails);
+      return fileOut;
     } on PlatformException {
       isLoading.value = false;
 
@@ -344,33 +343,33 @@ class EncryptDecryptController extends GetxController {
   }
 
   Future<String?> doFileCopy(
-    String _result,
+    String result,
   ) async {
     try {
       // _fileOut = '${await filesDocDir()}/$_filename';
-      final _checkKey = await FileEncrypter.getFileIv(inFilename: _result);
-      if (_checkKey != null) {
-        final _document = await FirestoreData.getSecretKey(
-          _checkKey,
+      final checkKey = await FileEncrypter.getFileIv(inFilename: result);
+      if (checkKey != null) {
+        final document = await FirestoreData.getSecretKey(
+          checkKey,
           homeController.user.value.emailId,
           homeController.user.value.id,
         );
-        final _secretKey = _document?.secretKey;
-        if (_secretKey != null) {
-          String _fileOut = '${await filesDocDir()}/${_document?.documentName}';
-          if (!File(_fileOut).existsSync()) {
-            await File(_result).copy(_fileOut);
-            await FirestoreData.updateUploads(_document?.documentId);
-            final Map<String, dynamic> _pdfDetails = {
-              'photoUrl': _document?.ownerPhotoUrl,
-              'ownerName': _document?.ownerName,
-              'sourceUrl': _document?.sourceUrl,
-              'ownerId': _document?.ownerId,
+        final secretKey = document?.secretKey;
+        if (secretKey != null) {
+          String fileOut = '${await filesDocDir()}/${document?.documentName}';
+          if (!File(fileOut).existsSync()) {
+            await File(result).copy(fileOut);
+            await FirestoreData.updateUploads(document?.documentId);
+            final Map<String, dynamic> pdfDetails = {
+              'photoUrl': document?.ownerPhotoUrl,
+              'ownerName': document?.ownerName,
+              'sourceUrl': document?.sourceUrl,
+              'ownerId': document?.ownerId,
               'intialPageNumber': 0,
             };
-            GetStorageDbService.getWrite(key: _fileOut, value: _pdfDetails);
+            GetStorageDbService.getWrite(key: fileOut, value: pdfDetails);
           }
-          return _fileOut;
+          return fileOut;
         }
         return null;
         // ! Use of Cloud Function
@@ -396,7 +395,7 @@ class EncryptDecryptController extends GetxController {
     if (bytes <= 0) return "0 B";
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     var i = (log(bytes) / log(1024)).floor();
-    return ((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i];
+    return '${(bytes / pow(1024, i)).toStringAsFixed(1)} ${suffixes[i]}';
   }
 
   void receiveSharing() {
@@ -466,7 +465,7 @@ class EncryptDecryptController extends GetxController {
           },
         ),
       );
-    } on Exception catch (e) {
+    } on Exception {
       // TODO
     }
   }

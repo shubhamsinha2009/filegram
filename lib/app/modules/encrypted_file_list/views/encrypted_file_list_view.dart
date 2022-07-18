@@ -78,6 +78,43 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                   right: 15,
                                 ),
                                 margin: const EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        controller.homeController.changeTheme
+                                                .isTrue
+                                            ? Colors.black54
+                                            : Colors.white70,
+                                        controller.homeController.changeTheme
+                                                .isTrue
+                                            ? Colors.black87
+                                            : Colors.white,
+                                      ],
+                                    ),
+                                    //color: Colors.black87,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: controller.homeController
+                                                .changeTheme.isTrue
+                                            ? Colors.grey.shade900
+                                            : Colors.grey.shade400,
+                                        offset: const Offset(5, 5),
+                                        blurRadius: 5,
+                                        spreadRadius: 1,
+                                      ),
+                                      BoxShadow(
+                                        color: controller.homeController
+                                                .changeTheme.isTrue
+                                            ? Colors.grey.shade800
+                                            : Colors.grey.shade300,
+                                        offset: const Offset(-4, -4),
+                                        blurRadius: 5,
+                                        spreadRadius: 1,
+                                      )
+                                    ]),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -352,7 +389,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                                 labelText:
                                                                     'Source URL / Share Link to redirect',
                                                                 hintText:
-                                                                    'https://t.me/filegram_app',
+                                                                    'https://t.me/pdf_wallah_app',
                                                                 helperMaxLines:
                                                                     3,
                                                                 isDense: true,
@@ -480,43 +517,6 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     )
                                   ],
                                 ),
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        controller.homeController.changeTheme
-                                                .isTrue
-                                            ? Colors.black54
-                                            : Colors.white70,
-                                        controller.homeController.changeTheme
-                                                .isTrue
-                                            ? Colors.black87
-                                            : Colors.white,
-                                      ],
-                                    ),
-                                    //color: Colors.black87,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: controller.homeController
-                                                .changeTheme.isTrue
-                                            ? Colors.grey.shade900
-                                            : Colors.grey.shade400,
-                                        offset: const Offset(5, 5),
-                                        blurRadius: 5,
-                                        spreadRadius: 1,
-                                      ),
-                                      BoxShadow(
-                                        color: controller.homeController
-                                                .changeTheme.isTrue
-                                            ? Colors.grey.shade800
-                                            : Colors.grey.shade300,
-                                        offset: const Offset(-4, -4),
-                                        blurRadius: 5,
-                                        spreadRadius: 1,
-                                      )
-                                    ]),
                               ));
                         }
                       }),

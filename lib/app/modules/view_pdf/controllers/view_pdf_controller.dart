@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
 import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:flutter/material.dart';
 
@@ -20,12 +20,11 @@ class ViewPdfController extends GetxController {
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
   final swipehorizontal = false.obs;
-  final pages = 1.obs;
-  final isReady = false.obs;
+  final totalPages = 0.obs;
   final isDecryptionDone = false.obs;
   final isVisible = true.obs;
   late final String filePath;
-  final currentPageNumber = 0.obs;
+  final currentPage = 0.obs;
   int intialPageNumber = 0;
   String? photoUrl;
   String? ownerName;
@@ -37,37 +36,44 @@ class ViewPdfController extends GetxController {
   final int maxFailedLoadAttempts = 3;
   int interstitialLoadAttempts = 0;
   final adDismissed = false.obs;
+  final isInterstitialAdLoaded = false.obs;
   Timer? _timer1;
   final isBottomBannerAdLoaded = false.obs;
   late BannerAd bottomBannerAd;
   final countdownTimer = 200.obs;
   bool _shouldAdPlay = Get.arguments[1];
+  AlhPdfViewController? pdfViewController;
+  static const double _zoomFactor = 0.1;
+  List<int> pagesChanged = [];
+  int? gotopage;
+  int pageTimer = 0;
+  final homeController = Get.find<HomeController>();
 
-  Future<bool> doDecryption(String _fileIn) async {
+  Future<bool> doDecryption(String fileIn) async {
     try {
-      bool? _isEncDone;
-      final _checkKey = await FileEncrypter.getFileIv(inFilename: _fileIn);
-      if (_checkKey != null) {
-        final _document = await FirestoreData.getSecretKey(
-          _checkKey,
+      bool? isEncDone;
+      final checkKey = await FileEncrypter.getFileIv(inFilename: fileIn);
+      if (checkKey != null) {
+        final document = await FirestoreData.getSecretKey(
+          checkKey,
           Get.find<HomeController>().user.value.emailId,
           Get.find<HomeController>().user.value.id,
         );
-        final _secretKey = _document?.secretKey;
-        if (_secretKey != null) {
-          _isEncDone = await FileEncrypter.decrypt(
-            inFilename: _fileIn,
-            key: _secretKey,
+        final secretKey = document?.secretKey;
+        if (secretKey != null) {
+          isEncDone = await FileEncrypter.decrypt(
+            inFilename: fileIn,
+            key: secretKey,
             outFileName: fileOut,
           );
         }
-        await FirestoreData.updateViews(_document?.documentId);
-        sourceUrl = _document?.sourceUrl;
-        ownerId = _document?.ownerId;
-        ownerName = _document?.ownerName;
-        photoUrl = _document?.ownerPhotoUrl;
+        await FirestoreData.updateViews(document?.documentId);
+        sourceUrl = document?.sourceUrl;
+        ownerId = document?.ownerId;
+        ownerName = document?.ownerName;
+        photoUrl = document?.ownerPhotoUrl;
       }
-      return _isEncDone ?? false;
+      return isEncDone ?? false;
     } catch (e) {
       rethrow;
     }
@@ -82,10 +88,12 @@ class ViewPdfController extends GetxController {
           onAdLoaded: (InterstitialAd ad) {
             interstitialAd = ad;
             interstitialLoadAttempts = 0;
+            isInterstitialAdLoaded.value = true;
           },
           onAdFailedToLoad: (LoadAdError error) {
             interstitialLoadAttempts += 1;
             interstitialAd = null;
+            isInterstitialAdLoaded.value = false;
             if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
               createInterstitialAd();
             }
@@ -143,6 +151,60 @@ class ViewPdfController extends GetxController {
     return AdWidget(ad: ad);
   }
 
+  void undoPage() {
+    if (pdfViewController != null &&
+        pagesChanged.first != currentPage.value &&
+        pagesChanged.contains(currentPage.value)) {
+      pdfViewController!.setPage(
+          page: pagesChanged
+              .elementAt(pagesChanged.indexOf(currentPage.value) - 1));
+    }
+  }
+
+  void handleTapPreviousPage() {
+    if (pdfViewController != null && currentPage.value != 0) {
+      pdfViewController!.setPageWithAnimation(page: currentPage.value - 1);
+    }
+  }
+
+  void handleTapNextPage() {
+    if (pdfViewController != null && currentPage.value != totalPages.value) {
+      pdfViewController!.setPageWithAnimation(page: currentPage.value + 1);
+    }
+  }
+
+  void redoPage() {
+    if (pdfViewController != null &&
+        pagesChanged.last != currentPage.value &&
+        pagesChanged.contains(currentPage.value)) {
+      pdfViewController!.setPage(
+          page: pagesChanged
+              .elementAt(pagesChanged.indexOf(currentPage.value) + 1));
+    }
+  }
+
+  Future<void> handleTapZoomOut() async {
+    if (pdfViewController != null) {
+      final currentZoom = await pdfViewController!.getZoom();
+      await pdfViewController!.setZoom(zoom: currentZoom - _zoomFactor);
+    }
+  }
+
+  Future<void> handleTappZoomIn() async {
+    if (pdfViewController != null) {
+      final currentZoom = await pdfViewController!.getZoom();
+      await pdfViewController!.setZoom(zoom: currentZoom + _zoomFactor);
+    }
+  }
+
+  Future<void> goToPage(int page) async {
+    if (pdfViewController != null) {
+      await pdfViewController!.setPage(
+        page: page,
+      );
+    }
+  }
+
   @override
   void onInit() async {
     filePath = Get.arguments[0];
@@ -182,9 +244,9 @@ class ViewPdfController extends GetxController {
       );
     }
 
-    final Map<String, dynamic>? _pdfDetails =
+    final Map<String, dynamic>? pdfDetails =
         GetStorageDbService.getRead(key: filePath);
-    intialPageNumber = _pdfDetails?['intialPageNumber'] ?? 0;
+    intialPageNumber = pdfDetails?['intialPageNumber'] ?? 0;
 
     _timer1 = Timer.periodic(
       const Duration(seconds: 1),
@@ -200,6 +262,15 @@ class ViewPdfController extends GetxController {
           _shouldAdPlay = false;
           showInterstitialAd(uid: ownerId).catchError((e) {});
         }
+        if (pageTimer >= 5) {
+          if (pagesChanged.contains(currentPage.value)) {
+            pagesChanged.remove(currentPage.value);
+          }
+          pagesChanged.add(currentPage.value);
+          debugPrint(pagesChanged.toString());
+          pageTimer = 0;
+        }
+        pageTimer++;
       },
     );
 
@@ -231,13 +302,13 @@ class ViewPdfController extends GetxController {
     }
 
     await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
-    final Map<String, dynamic> _pdfDetails = {
+    final Map<String, dynamic> pdfDetails = {
       'photoUrl': photoUrl,
       'ownerName': ownerName,
       'intialPageNumber': intialPageNumber,
       'ownerId': ownerId,
       'sourceUrl': sourceUrl,
     };
-    GetStorageDbService.getWrite(key: filePath, value: _pdfDetails);
+    GetStorageDbService.getWrite(key: filePath, value: pdfDetails);
   }
 }

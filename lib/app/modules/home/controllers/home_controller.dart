@@ -1,12 +1,6 @@
-import 'dart:async';
-import 'package:app_settings/app_settings.dart';
 import 'package:filegram/app/data/model/gullak_model.dart';
 import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';
 import 'package:filegram/app/routes/app_pages.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:wakelock/wakelock.dart';
@@ -36,64 +30,64 @@ class HomeController extends GetxController {
     selectedIndex.value = value;
   }
 
-  Future<void> checkJailBreak() async {
-    bool jailbroken;
+  // Future<void> checkJailBreak() async {
+  //   bool jailbroken;
 
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      jailbroken = await FlutterJailbreakDetection.jailbroken;
-    } on PlatformException {
-      jailbroken = true;
-    }
+  // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     jailbroken = await FlutterJailbreakDetection.jailbroken;
+  //   } on PlatformException {
+  //     jailbroken = true;
+  //   }
 
-    if (jailbroken) {
-      Get.defaultDialog(
-          title: 'ALERT -- JAIL BROKEN !!!',
-          titleStyle: const TextStyle(color: Colors.red),
-          buttonColor: Colors.red,
-          backgroundColor: Colors.grey[900],
-          middleText: ' Your Phone is Not Jail Broken.',
-          onWillPop: () async => false,
-          barrierDismissible: false,
-          textConfirm: 'OK ',
-          onConfirm: () {
-            SystemNavigator.pop();
-          });
-    }
-  }
+  //   if (jailbroken) {
+  //     Get.defaultDialog(
+  //         title: 'ALERT -- JAIL BROKEN !!!',
+  //         titleStyle: const TextStyle(color: Colors.red),
+  //         buttonColor: Colors.red,
+  //         backgroundColor: Colors.grey[900],
+  //         middleText: ' Your Phone is Not Jail Broken.',
+  //         onWillPop: () async => false,
+  //         barrierDismissible: false,
+  //         textConfirm: 'OK ',
+  //         onConfirm: () {
+  //           SystemNavigator.pop();
+  //         });
+  //   }
+  // }
 
   String get info =>
       '1. Swipe Left to Right to Rename\n2. Swipe Right to Left to Save & Share\n3. Dismiss in any direction to delete';
 
-  Future<void> checkDevelopmentMode() async {
-    bool developerMode;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      developerMode = await FlutterJailbreakDetection.developerMode;
-    } on PlatformException {
-      developerMode = true;
-    }
+  // Future<void> checkDevelopmentMode() async {
+  //   bool developerMode;
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     developerMode = await FlutterJailbreakDetection.developerMode;
+  //   } on PlatformException {
+  //     developerMode = true;
+  //   }
 
-    if (developerMode) {
-      Get.defaultDialog(
-          title: 'ALERT --- DEVELOPER MODE ON !!!',
-          titleStyle: const TextStyle(color: Colors.red, fontSize: 20),
-          // buttonColor: Colors.redAccent,
-          backgroundColor: Colors.grey[900],
-          // cancelTextColor: Colors.redAccent,
-          middleText: 'Please Make Sure Developer Mode is Off.',
-          onWillPop: () async => false,
-          barrierDismissible: false,
-          textConfirm: 'Close',
-          onConfirm: () async {
-            if (await FlutterJailbreakDetection.developerMode) {
-              AppSettings.openDevelopmentSettings(asAnotherTask: true);
-            } else {
-              Get.back();
-            }
-          });
-    }
-  }
+  //   if (developerMode) {
+  //     Get.defaultDialog(
+  //         title: 'ALERT --- DEVELOPER MODE ON !!!',
+  //         titleStyle: const TextStyle(color: Colors.red, fontSize: 20),
+  //         // buttonColor: Colors.redAccent,
+  //         backgroundColor: Colors.grey[900],
+  //         // cancelTextColor: Colors.redAccent,
+  //         middleText: 'Please Make Sure Developer Mode is Off.',
+  //         onWillPop: () async => false,
+  //         barrierDismissible: false,
+  //         textConfirm: 'Close',
+  //         onConfirm: () async {
+  //           if (await FlutterJailbreakDetection.developerMode) {
+  //             AppSettings.openDevelopmentSettings(asAnotherTask: true);
+  //           } else {
+  //             Get.back();
+  //           }
+  //         });
+  //   }
+  // }
 
   void _createBottomBannerAd() {
     bottomBannerAd = BannerAd(
@@ -157,10 +151,10 @@ class HomeController extends GetxController {
       //TODO: do nothing
     }
 
-    if (kReleaseMode) {
-      await checkDevelopmentMode();
-    }
-    await checkJailBreak();
+    // if (kReleaseMode) {
+    //   await checkDevelopmentMode();
+    // }
+    // await checkJailBreak();
     Wakelock.toggle(enable: true);
 
     super.onInit();

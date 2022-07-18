@@ -14,6 +14,6 @@ Future<void> main() async {
   await initServices();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(
-            const Filegram(),
+            const PdfWallah(),
           ));
 }

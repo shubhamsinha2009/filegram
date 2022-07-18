@@ -26,7 +26,7 @@ SafeArea noInternetConnection() {
             height: 50,
           ),
           const Text(
-            "Filegram Needs Internet To Provide Its Services",
+            "Pdf Wallah Needs Internet To Provide Its Services",
             style: TextStyle(
                 fontSize: 25,
                 color: Colors.brown,

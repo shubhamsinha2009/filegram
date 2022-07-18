@@ -1,3 +1,0 @@
-//Arrange 
-//Act 
-//Assert

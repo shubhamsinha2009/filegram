@@ -12,14 +12,14 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> _formKey = GlobalKey();
+    GlobalKey<FormState> formKey = GlobalKey();
     return Obx(() => controller.isInternetConnected.isTrue
         ? Scaffold(
             appBar: AppBar(
               title: const Text('Update Phone Number'),
             ),
             body: Form(
-              key: _formKey,
+              key: formKey,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -57,8 +57,8 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
-                            if (_formKey.currentState?.validate() != null &&
-                                _formKey.currentState!.validate()) {
+                            if (formKey.currentState?.validate() != null &&
+                                formKey.currentState!.validate()) {
                               try {
                                 controller
                                     .signInWithOtp(controller.phoneNumber)

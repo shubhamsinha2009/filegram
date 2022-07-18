@@ -29,7 +29,7 @@ class Gullak extends StatelessWidget {
           ),
         ),
         const Text(
-          'Three Simple Steps to start your earning \n\n1.Open/Upload/Encrypt your pdfs in filegram \n\n2. Share your pdfs through filegram \n\n3.Earn Sikka from every view of pdf in filegram',
+          'Three Simple Steps to start your earning \n\n1.Open/Upload/Encrypt your pdfs in pdf_wallah \n\n2. Share your pdfs through pdf_wallah \n\n3.Earn Sikka from every view of pdf in pdf_wallah',
           softWrap: true,
           style: TextStyle(
             fontWeight: FontWeight.w600,

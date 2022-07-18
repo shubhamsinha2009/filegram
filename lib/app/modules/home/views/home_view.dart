@@ -24,7 +24,7 @@ class HomeView extends GetView<HomeController> {
       () => controller.isInternetConnected.isTrue
           ? Scaffold(
               appBar: AppBar(
-                title: const Text('Filegram'),
+                title: const Text('Pdf Wallah'),
                 leading: Image.asset(
                   "assets/app_bar.png",
                 ),

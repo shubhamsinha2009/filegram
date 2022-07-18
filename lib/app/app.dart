@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'core/services/firebase_analytics.dart';
 import 'routes/app_pages.dart';
 
-class Filegram extends StatelessWidget {
-  const Filegram({
+class PdfWallah extends StatelessWidget {
+  const PdfWallah({
     Key? key,
   }) : super(key: key);
 
@@ -13,7 +13,7 @@ class Filegram extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Filegram',
+      title: 'PdfWallah',
       initialRoute: AppPages.intial,
       getPages: AppPages.routes,
       themeMode: ThemeMode.system,

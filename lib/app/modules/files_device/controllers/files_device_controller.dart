@@ -46,7 +46,7 @@ class FilesDeviceController extends GetxController {
     if (bytes <= 0) return "0 B";
     const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     var i = (log(bytes) / log(1024)).floor();
-    return '${DateFormat.yMMMMd('en_US').add_jm().format(time)} - ${((bytes / pow(1024, i)).toStringAsFixed(1)) + ' ' + suffixes[i]}';
+    return '${DateFormat.yMMMMd('en_US').add_jm().format(time)} - ${'${(bytes / pow(1024, i)).toStringAsFixed(1)} ${suffixes[i]}'}';
   }
 
   bool validateRename() {
@@ -89,18 +89,18 @@ class FilesDeviceController extends GetxController {
     //Get this App Document Directory
     //App Document Directory + folder name
 
-    final Directory? _appDocDir = await getExternalStorageDirectory();
+    final Directory? appDocDir = await getExternalStorageDirectory();
     //App Document Directory + folder name
-    final Directory _appDocDirFolder = Directory('${_appDocDir?.path}/Files');
+    final Directory appDocDirFolder = Directory('${appDocDir?.path}/Files');
 
-    if (await _appDocDirFolder.exists()) {
+    if (await appDocDirFolder.exists()) {
       //if folder already exists return path
-      return _appDocDirFolder.path;
+      return appDocDirFolder.path;
     } else {
       //if folder not exists create folder and then return its path
-      final Directory _appDocDirNewFolder =
-          await _appDocDirFolder.create(recursive: true);
-      return _appDocDirNewFolder.path;
+      final Directory appDocDirNewFolder =
+          await appDocDirFolder.create(recursive: true);
+      return appDocDirNewFolder.path;
     }
   }
 

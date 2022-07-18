@@ -15,7 +15,7 @@ class LoginView extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _items = [
+    List<Widget> items = [
       PocketPdf(controller: controller),
       Gullak(controller: controller),
       NoCloud(controller: controller),
@@ -23,7 +23,7 @@ class LoginView extends GetView<LoginController> {
       ClicktoChat(controller: controller),
       GoogleLogin(controller: controller),
     ];
-    final _lastpage = _items.length - 1;
+    final lastpage = items.length - 1;
     return Obx(() => controller.isInternetConnected.isTrue
         ? Scaffold(
             body: SafeArea(
@@ -43,10 +43,10 @@ class LoginView extends GetView<LoginController> {
                     floatingIndicator: false,
                     onPageChanged: (page, reason) =>
                         controller.page.value = page),
-                items: _items,
+                items: items,
               ),
             ),
-            bottomSheet: controller.page.value == _lastpage
+            bottomSheet: controller.page.value == lastpage
                 ? null
                 : Container(
                     margin: const EdgeInsets.all(20),
@@ -86,7 +86,7 @@ class LoginView extends GetView<LoginController> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            itemCount: _items.length,
+                            itemCount: items.length,
                             itemBuilder: (context, index) => Container(
                               height: 10,
                               width: 10,
@@ -107,7 +107,7 @@ class LoginView extends GetView<LoginController> {
                             TextButton(
                               onPressed: () {
                                 controller.buttonCarouselController
-                                    .jumpToPage(_lastpage);
+                                    .jumpToPage(lastpage);
                               },
                               child: const Text('SKIP'),
                             ),

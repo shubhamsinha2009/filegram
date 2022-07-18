@@ -9,7 +9,7 @@ class WhatsappChatView extends GetView<WhatsappChatController> {
   const WhatsappChatView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> _formKey = GlobalKey();
+    GlobalKey<FormState> formKey = GlobalKey();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -17,7 +17,7 @@ class WhatsappChatView extends GetView<WhatsappChatController> {
         ),
       ),
       body: Form(
-        key: _formKey,
+        key: formKey,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -63,8 +63,8 @@ class WhatsappChatView extends GetView<WhatsappChatController> {
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () async {
-                      if (_formKey.currentState?.validate() != null &&
-                          _formKey.currentState!.validate()) {
+                      if (formKey.currentState?.validate() != null &&
+                          formKey.currentState!.validate()) {
                         try {
                           await launchUrlString(
                               'whatsapp://send?phone=${controller.phoneNumber}',

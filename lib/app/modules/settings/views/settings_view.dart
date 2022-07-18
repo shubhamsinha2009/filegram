@@ -111,7 +111,7 @@ class SettingsView extends GetView<SettingsController> {
             }),
         ListTile(
           title: const Text(
-            'Share Filegram',
+            'Share Pdf Wallah',
             style: TextStyle(
               fontWeight: FontWeight.w500,
             ),
@@ -120,7 +120,7 @@ class SettingsView extends GetView<SettingsController> {
             Icons.share_outlined,
           ),
           onTap: () => Share.share(
-              "Send your pdf files through filegram  -- Check Out Filegram here for many more exciting features for you ----  https://play.google.com/store/apps/details?id=com.sks.filegram"),
+              "Send your pdf files through Pdf Wallah  -- Check Out Pdf Wallah here for many more exciting features for you ----  https://play.google.com/store/apps/details?id=com.sks.filegram"),
         ),
 
         ListTile(
