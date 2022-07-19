@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 import '../controllers/whatsapp_chat_controller.dart';
 
 class WhatsappChatView extends GetView<WhatsappChatController> {

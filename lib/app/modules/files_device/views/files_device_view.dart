@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 import '../controllers/files_device_controller.dart';
 
 class FilesDeviceView extends GetView<FilesDeviceController> {
