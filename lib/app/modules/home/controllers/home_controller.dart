@@ -5,6 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:wakelock/wakelock.dart';
 import '../../../core/helpers/ad_helper.dart';
+import '../../../core/services/getstorage.dart';
 import '../../../data/model/user_model.dart';
 import '../../no_internet/controllers/no_internet_controller.dart';
 import '../../../data/provider/firestore_data.dart';
@@ -155,6 +156,10 @@ class HomeController extends GetxController {
     //   await checkDevelopmentMode();
     // }
     // await checkJailBreak();
+    ever(
+        changeTheme,
+        (_) => GetStorageDbService.getWrite(
+            key: 'darkmode', value: changeTheme.value));
     Wakelock.toggle(enable: true);
 
     super.onInit();
