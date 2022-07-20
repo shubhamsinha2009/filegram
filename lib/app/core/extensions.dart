@@ -4,7 +4,7 @@ import 'dart:io';
 extension StringExtensions on String {
   String get sort => toLowerCase().removeAllWhitespace;
 
-  // String get nameOfFile => split('/').last;
+  String get removeExtension => replaceAll('.pdf.enc', '');
 }
 
 extension FileExtention on FileSystemEntity {

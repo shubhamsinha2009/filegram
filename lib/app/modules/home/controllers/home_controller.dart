@@ -1,8 +1,7 @@
 import 'package:filegram/app/data/model/gullak_model.dart';
-import 'package:filegram/app/modules/encrypt_decrypt/controllers/controllers.dart';
-import 'package:filegram/app/routes/app_pages.dart';
+
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:quick_actions/quick_actions.dart';
+
 import 'package:wakelock/wakelock.dart';
 import '../../../core/helpers/ad_helper.dart';
 import '../../../core/services/getstorage.dart';
@@ -23,7 +22,7 @@ class HomeController extends GetxController {
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
   final selectedIndex = 0.obs;
-  final QuickActions quickActions = const QuickActions();
+
   final gullak = GullakModel().obs;
   final changeTheme = Get.isDarkMode.obs;
 
@@ -129,25 +128,25 @@ class HomeController extends GetxController {
 
       _createBottomBannerAd();
 
-      quickActions.setShortcutItems(<ShortcutItem>[
-        const ShortcutItem(
-            type: 'click_to_chat',
-            localizedTitle: 'Whatsapp Click to Chat',
-            icon: 'icon_whatsapp'),
-        const ShortcutItem(
-            type: 'action_upload_file',
-            localizedTitle: 'Upload File(Pdf)',
-            icon: 'icon_upload')
-      ]);
+      // quickActions.setShortcutItems(<ShortcutItem>[
+      //   const ShortcutItem(
+      //       type: 'click_to_chat',
+      //       localizedTitle: 'Whatsapp Click to Chat',
+      //       icon: 'icon_whatsapp'),
+      //   const ShortcutItem(
+      //       type: 'action_upload_file',
+      //       localizedTitle: 'Upload File(Pdf)',
+      //       icon: 'icon_upload')
+      // ]);
 
-      quickActions.initialize((shortcutType) {
-        if (shortcutType == 'click_to_chat') {
-          Get.toNamed(Routes.whatsappChat);
-        } else if (shortcutType == 'action_upload_file') {
-          Get.find<EncryptDecryptController>().pickFile();
-        }
-        // TODO: More handling code...
-      });
+      // quickActions.initialize((shortcutType) {
+      //   if (shortcutType == 'click_to_chat') {
+      //     Get.toNamed(Routes.whatsappChat);
+      //   } else if (shortcutType == 'action_upload_file') {
+      //     Get.find<EncryptDecryptController>().pickFile();
+      //   }
+      //   // TODO: More handling code...
+      // });
     } catch (e) {
       //TODO: do nothing
     }

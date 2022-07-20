@@ -2,7 +2,7 @@ import '../../../data/provider/firestore_data.dart';
 import '../encrypted_file_list.dart';
 import '../localwidgets/document_bottom_sheet.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:filegram/app/core/extensions.dart';
 import '../../../data/model/documents_model.dart';
 import 'package:flutter/material.dart';
 
@@ -123,7 +123,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                   // verticalDirection: VerticalDirection.down,
                                   children: [
                                     Text(
-                                      '${_document?.documentName}',
+                                      '${_document?.documentName?.removeExtension}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w300,
                                         letterSpacing: 1,
@@ -247,7 +247,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                   ? Colors.black
                                                   : Colors.white,
                                               title: Text(
-                                                '"Are you sure you wish to delete this file ${_document?.documentName} forever from servers?',
+                                                '"Are you sure you wish to delete this file ${_document?.documentName?.removeExtension} forever from servers?',
                                               ),
                                               content: const Text(
                                                   'After you delete your file, Nobody will be able to decrypt this file ever'),

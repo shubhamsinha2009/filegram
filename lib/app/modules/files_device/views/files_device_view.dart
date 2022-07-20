@@ -316,7 +316,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                     visualDensity:
                                         VisualDensity.adaptivePlatformDensity,
                                     title: Text(
-                                      currentfile.name,
+                                      currentfile.name.removeExtension,
                                       overflow: TextOverflow.visible,
                                       softWrap: true,
                                     ),
