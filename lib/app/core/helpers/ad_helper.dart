@@ -52,4 +52,20 @@ class AdHelper {
   static String get bookBottom {
     return dotenv.get('bookBottom');
   }
+
+  static String get downloadReward {
+    return dotenv.get('downloadReward');
+  }
+
+  static String get downloadBodyBanner {
+    return dotenv.get('downloadBodyBanner');
+  }
+
+  static String get downoadInlineBanner {
+    return dotenv.get('downoadInlineBanner');
+  }
+
+  static String get downoadBottomBanner {
+    return dotenv.get('downoadBottomBanner');
+  }
 }

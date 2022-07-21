@@ -477,11 +477,12 @@ class FirestoreData {
     }
   }
 
-  static Future<void> updateSikka(String uid) async {
+  static Future<void> updateSikka(
+      {required String uid, required num increment}) async {
     try {
       await _firestore.collection("gullak").doc(uid).update(
         {
-          "sikka": FieldValue.increment(1),
+          "sikka": FieldValue.increment(increment),
         },
       );
     } catch (e) {

@@ -1,3 +1,4 @@
+import 'package:filegram/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     List<Widget> bodyPages = [
+      const DashboardView(),
       const FilesDeviceView(),
       const EncryptedFileListView(),
       const SettingsView(),
@@ -34,6 +36,15 @@ class HomeView extends GetView<HomeController> {
 
                 actions: [
                   controller.selectedIndex.value == 0
+                      ? IconButton(
+                          onPressed: () => Get.toNamed(Routes.downloaded),
+                          icon: const Icon(Icons.download_rounded),
+                        )
+                      : const SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
+                  controller.selectedIndex.value == 1
                       ? IconButton(
                           onPressed: () {
                             Get.dialog(
@@ -119,6 +130,10 @@ class HomeView extends GetView<HomeController> {
                   FloatingActionButtonLocation.miniEndFloat,
               bottomNavigationBar: NavigationBar(
                 destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.dashboard),
+                    label: 'Dashboard',
+                  ),
                   NavigationDestination(
                     icon: Icon(Icons.library_books),
                     label: 'Library',

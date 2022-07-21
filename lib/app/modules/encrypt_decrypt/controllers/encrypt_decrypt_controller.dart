@@ -487,7 +487,7 @@ class EncryptDecryptController extends GetxController {
           createInterstitialAd();
         }, onAdShowedFullScreenContent: (InterstitialAd ad) {
           if ((uid != null) && (homeController.user.value.id != uid)) {
-            FirestoreData.updateSikka(uid);
+            FirestoreData.updateSikka(uid: uid, increment: 1);
           }
         });
         interstitialAd!.show();

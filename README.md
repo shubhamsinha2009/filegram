@@ -64,6 +64,10 @@ A App made for controlling pdfs files privacy
 - [] Public Profiles
 - [] Search Users Public
 - [] Premium Features
+- [x] Start coins use before ads
+- [x] Implement all ads
+- [x] Update security rules
+- [] Use dynamic links
 
 ## BUGS
 

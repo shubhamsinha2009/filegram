@@ -1,4 +1,5 @@
 import 'package:filegram/app/data/model/gullak_model.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -21,7 +22,7 @@ class HomeController extends GetxController {
   late BannerAd bottomBannerAd;
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
-  final selectedIndex = 0.obs;
+  final selectedIndex = 1.obs;
 
   final gullak = GullakModel().obs;
   final changeTheme = Get.isDarkMode.obs;
@@ -125,8 +126,9 @@ class HomeController extends GetxController {
           phoneNumber: auth.currentUser?.phoneNumber,
         ));
       }
-
-      _createBottomBannerAd();
+      if (kReleaseMode) {
+        _createBottomBannerAd();
+      }
 
       // quickActions.setShortcutItems(<ShortcutItem>[
       //   const ShortcutItem(
