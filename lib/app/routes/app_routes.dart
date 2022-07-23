@@ -14,6 +14,7 @@ abstract class Routes {
   static const bookPage = _Paths.bookPage;
   static const download = _Paths.download;
   static const downloaded = _Paths.downloaded;
+  static const profile = _Paths.profile;
 }
 
 abstract class _Paths {
@@ -30,4 +31,5 @@ abstract class _Paths {
   static const bookPage = '/book-page';
   static const download = '/download';
   static const downloaded = '/downloaded';
+  static const profile = '/profile';
 }

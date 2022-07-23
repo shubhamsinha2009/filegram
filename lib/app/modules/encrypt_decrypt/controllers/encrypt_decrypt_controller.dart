@@ -119,7 +119,7 @@ class EncryptDecryptController extends GetxController {
                         helperText:
                             'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
                         labelText: 'Source URL / Share Link to redirect',
-                        hintText: 'https://t.me/pdf_wallah',
+                        hintText: 'https://t.me/filegram_app',
                         helperMaxLines: 3,
                         isDense: true,
                         prefixIcon: Icon(Icons.add_link_rounded),
@@ -202,14 +202,14 @@ class EncryptDecryptController extends GetxController {
       } else {
         encryptDecrypt(pickedFile).then((value) {
           if (value != null) {
-            Get.showSnackbar(
-              GetSnackBar(
-                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
-                messageText: const Text('File Saved '),
-                duration: const Duration(seconds: 3),
-                snackPosition: SnackPosition.TOP,
-              ),
-            );
+            // Get.showSnackbar(
+            //   GetSnackBar(
+            //     backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+            //     messageText: const Text('File Saved '),
+            //     duration: const Duration(seconds: 3),
+            //     snackPosition: SnackPosition.TOP,
+            //   ),
+            // );
             final ownerId = GetStorageDbService.getRead(key: value)?['ownerId'];
 
             // rewardedAdController.rewardedInterstitialAd.show(
@@ -368,6 +368,14 @@ class EncryptDecryptController extends GetxController {
               'intialPageNumber': 0,
             };
             GetStorageDbService.getWrite(key: fileOut, value: pdfDetails);
+            Get.showSnackbar(
+              GetSnackBar(
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('File Saved '),
+                duration: const Duration(seconds: 2),
+                snackPosition: SnackPosition.TOP,
+              ),
+            );
           }
           return fileOut;
         }

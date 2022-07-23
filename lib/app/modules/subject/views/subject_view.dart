@@ -28,19 +28,19 @@ class SubjectView extends GetView<SubjectController> {
               ))),
         ],
       ),
-      // bottomNavigationBar: Obx(
-      //   () => controller.isBottomBannerAdLoaded.isTrue &&
-      //           controller.bottomBannerAd != null
-      //       ? SizedBox(
-      //           height: controller.bottomBannerAd?.size.height.toDouble(),
-      //           width: controller.bottomBannerAd?.size.width.toDouble(),
-      //           child: controller.adWidget(ad: controller.bottomBannerAd!),
-      //         )
-      //       : const SizedBox(
-      //           width: 0,
-      //           height: 0,
-      //         ),
-      // ),
+      bottomNavigationBar: Obx(
+        () => controller.isBottomBannerAdLoaded.isTrue &&
+                controller.bottomBannerAd != null
+            ? SizedBox(
+                height: controller.bottomBannerAd?.size.height.toDouble(),
+                width: controller.bottomBannerAd?.size.width.toDouble(),
+                child: controller.adWidget(ad: controller.bottomBannerAd!),
+              )
+            : const SizedBox(
+                width: 0,
+                height: 0,
+              ),
+      ),
       body: Column(
         children: [
           Padding(
@@ -55,19 +55,19 @@ class SubjectView extends GetView<SubjectController> {
               ),
             ),
           ),
-          // Obx(
-          //   () => controller.isBodyBannerAdLoaded.isTrue &&
-          //           controller.bodyBannerAd != null
-          //       ? SizedBox(
-          //           height: controller.bodyBannerAd?.size.height.toDouble(),
-          //           width: controller.bodyBannerAd?.size.width.toDouble(),
-          //           child: controller.adWidget(ad: controller.bodyBannerAd!),
-          //         )
-          //       : const SizedBox(
-          //           height: 0,
-          //           width: 0,
-          //         ),
-          // ),
+          Obx(
+            () => controller.isBodyBannerAdLoaded.isTrue &&
+                    controller.bodyBannerAd != null
+                ? SizedBox(
+                    height: controller.bodyBannerAd?.size.height.toDouble(),
+                    width: controller.bodyBannerAd?.size.width.toDouble(),
+                    child: controller.adWidget(ad: controller.bodyBannerAd!),
+                  )
+                : const SizedBox(
+                    height: 0,
+                    width: 0,
+                  ),
+          ),
           Expanded(
             child: Obx(() => GridView.builder(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(

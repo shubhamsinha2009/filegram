@@ -81,17 +81,17 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "Pdf Wallah" , admobId: admobProperties['admobId']]
+            manifestPlaceholders = [appName: "Filegram" , admobId: admobProperties['admobId']]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "Pdf Wallah[STG] ",admobId: admobProperties['admobId']]
+            manifestPlaceholders = [appName: "Filegram[STG] ",admobId: admobProperties['admobId']]
         }         
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "Pdf Wallah[DEV] ",admobId: admobProperties['admobId']]
+            manifestPlaceholders = [appName: "Filegram[DEV] ",admobId: admobProperties['admobId']]
         }
     }
 

@@ -68,4 +68,24 @@ class AdHelper {
   static String get downoadBottomBanner {
     return dotenv.get('downoadBottomBanner');
   }
+
+  static String get subjectbottomBanner {
+    return dotenv.get('subjectbottomBanner');
+  }
+
+  static String get subjectBodyBanner {
+    return dotenv.get('subjectBodyBanner');
+  }
+
+  static String get dashboardBanner {
+    return dotenv.get('dashboardBanner');
+  }
+
+  static String get booksBottomBanner {
+    return dotenv.get('booksBottomBanner');
+  }
+
+  static String get booksBodyBanner {
+    return dotenv.get('booksBodyBanner');
+  }
 }

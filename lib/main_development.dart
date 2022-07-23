@@ -24,7 +24,7 @@ void main() async {
     await initServices();
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-        .then((value) => runApp(const PdfWallah()));
+        .then((value) => runApp(const Filegram()));
   }, (error, stack) {
     debugPrint(error.toString());
     debugPrint(stack.toString());

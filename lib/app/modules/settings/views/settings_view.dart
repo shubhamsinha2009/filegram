@@ -18,23 +18,26 @@ class SettingsView extends GetView<SettingsController> {
     return ListView(
       padding: EdgeInsets.zero,
       children: [
-        Obx(
-          () => UserAccountsDrawerHeader(
-            accountName: Text(
-              '${controller.homeController.user.value.name}',
+        GestureDetector(
+          onTap: () => Get.toNamed(Routes.profile),
+          child: Obx(
+            () => UserAccountsDrawerHeader(
+              accountName: Text(
+                '${controller.homeController.user.value.name}',
+              ),
+              accountEmail: Text(
+                '${controller.homeController.user.value.emailId}\n${controller.homeController.user.value.phoneNumber}',
+              ),
+              // otherAccountsPictures: const [Icon(Icons.edit)],
+              currentAccountPicture: CachedNetworkImage(
+                imageUrl: controller.homeController.user.value.photoUrl ??
+                    'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249__480.png',
+                errorWidget: (context, url, error) =>
+                    const Icon(Icons.account_box_rounded),
+              ),
+              // otherAccountsPictures: const [Icon(Icons.edit)],
+              // onDetailsPressed: () => Get.toNamed(Routes.profile),
             ),
-            accountEmail: Text(
-              '${controller.homeController.user.value.emailId}\n${controller.homeController.user.value.phoneNumber}',
-            ),
-            // otherAccountsPictures: const [Icon(Icons.edit)],
-            currentAccountPicture: CachedNetworkImage(
-              imageUrl: controller.homeController.user.value.photoUrl ??
-                  'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249__480.png',
-              errorWidget: (context, url, error) =>
-                  const Icon(Icons.account_box_rounded),
-            ),
-
-            // onDetailsPressed: () => Get.toNamed(Routes.profile),
           ),
         ),
         // ListTile(
@@ -112,7 +115,7 @@ class SettingsView extends GetView<SettingsController> {
             }),
         ListTile(
           title: const Text(
-            'Share Pdf Wallah',
+            'Share Filegram',
             style: TextStyle(
               fontWeight: FontWeight.w500,
             ),
@@ -121,7 +124,7 @@ class SettingsView extends GetView<SettingsController> {
             Icons.share_outlined,
           ),
           onTap: () => Share.share(
-              "Send your pdf files through Pdf Wallah  -- Check Out Pdf Wallah here for many more exciting features for you ----  https://play.google.com/store/apps/details?id=com.sks.filegram"),
+              "Send your pdf files through Filegram -- Check Out Filegram here for many more exciting features for you ----  https://play.google.com/store/apps/details?id=com.sks.filegram"),
         ),
 
         ListTile(

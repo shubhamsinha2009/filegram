@@ -21,8 +21,9 @@ import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/no_internet/bindings/no_internet_binding.dart';
+import '../modules/profile/bindings/profile_binding.dart';
+import '../modules/profile/views/profile_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
-
 import '../modules/subject/bindings/subject_binding.dart';
 import '../modules/subject/views/subject_view.dart';
 import '../modules/updatePhoneNumber/bindings/update_phone_number_binding.dart';
@@ -125,6 +126,12 @@ class AppPages {
       name: _Paths.downloaded,
       page: () => const DownloadedView(),
       binding: DownloadedBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: _Paths.profile,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
       transition: Transition.rightToLeft,
     ),
   ];

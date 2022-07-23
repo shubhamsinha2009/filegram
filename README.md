@@ -61,13 +61,14 @@ A App made for controlling pdfs files privacy
 - [x] Firebase App Check
 - [] Set Rewarded Ads on Page Number
 - [x] Dashboard
-- [] Public Profiles
-- [] Search Users Public
 - [] Premium Features
 - [x] Start coins use before ads
 - [x] Implement all ads
 - [x] Update security rules
 - [] Use dynamic links
+- [] Public Profiles
+- [] Search Users Public
+- [] Description Telegram Channel Links
 
 ## BUGS
 
