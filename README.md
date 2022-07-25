@@ -69,6 +69,8 @@ A App made for controlling pdfs files privacy
 - [] Public Profiles
 - [] Search Users Public
 - [] Description Telegram Channel Links
+- [x] More files allowed
+- [ ] Permission Of Manage Files
 
 ## BUGS
 

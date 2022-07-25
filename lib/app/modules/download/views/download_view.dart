@@ -152,18 +152,64 @@ class DownloadView extends GetView<DownloadController> {
                               if (controller
                                       .homeController.gullak.value.sikka >=
                                   5) {
-                                if (controller.homeController.user.value.id !=
-                                    null) {
-                                  await controller
-                                      .downloadFile(controller.bookPath);
-                                  controller
-                                      .showInterstitialAd()
-                                      .catchError((e) {});
-                                  FirestoreData.updateSikka(
-                                      uid: controller
-                                          .homeController.user.value.id!,
-                                      increment: -4);
-                                }
+                                Get.dialog(AlertDialog(
+                                  alignment: Alignment.center,
+                                  backgroundColor: Get.isDarkMode
+                                      ? Colors.black
+                                      : Colors.white,
+                                  title: const Text("Don't have enough sikka "),
+                                  content: const Text(
+                                      'Please watch full rewarded ad to get 5 sikka'),
+                                  actions: [
+                                    OutlinedButton(
+                                        onPressed: () => Get.back(),
+                                        child: const Text('Back')),
+                                    OutlinedButton(
+                                        onPressed: () async {
+                                          if (controller.homeController.user
+                                                  .value.id !=
+                                              null) {
+                                            Get.back();
+                                            await controller.downloadFile(
+                                                controller.bookPath);
+                                            controller
+                                                .showInterstitialAd()
+                                                .catchError((e) {});
+                                            FirestoreData.updateSikka(
+                                                uid: controller.homeController
+                                                    .user.value.id!,
+                                                increment: -3);
+                                          }
+                                        },
+                                        child: const Text('Spend 3 Sikka')),
+                                    OutlinedButton(
+                                        onPressed: () {
+                                          if (controller
+                                                  .rewardedInterstitialAd !=
+                                              null) {
+                                            Get.back();
+                                            controller.rewardedInterstitialAd
+                                                ?.show(onUserEarnedReward:
+                                                    (ad, reward) async {
+                                              if (controller.homeController.user
+                                                      .value.id !=
+                                                  null) {
+                                                await controller.downloadFile(
+                                                    controller.bookPath);
+                                                FirestoreData.updateSikka(
+                                                    uid: controller
+                                                        .homeController
+                                                        .user
+                                                        .value
+                                                        .id!,
+                                                    increment: reward.amount);
+                                              }
+                                            });
+                                          }
+                                        },
+                                        child: const Text('Watch Rewarded Ad'))
+                                  ],
+                                ));
                               } else {
                                 Get.dialog(AlertDialog(
                                   alignment: Alignment.center,
@@ -182,12 +228,15 @@ class DownloadView extends GetView<DownloadController> {
                                           if (controller
                                                   .rewardedInterstitialAd !=
                                               null) {
+                                            Get.back();
                                             controller.rewardedInterstitialAd
                                                 ?.show(onUserEarnedReward:
                                                     (ad, reward) async {
                                               if (controller.homeController.user
                                                       .value.id !=
                                                   null) {
+                                                await controller.downloadFile(
+                                                    controller.bookPath);
                                                 FirestoreData.updateSikka(
                                                     uid: controller
                                                         .homeController

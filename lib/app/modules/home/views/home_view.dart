@@ -1,4 +1,5 @@
 import 'package:filegram/app/modules/dashboard/views/dashboard_view.dart';
+import 'package:filegram/app/modules/encrypted_file_list/controllers/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -77,6 +78,21 @@ class HomeView extends GetView<HomeController> {
                           icon: const Icon(
                             Icons.info,
                           ))
+                      : const SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
+                  controller.selectedIndex.value == 2
+                      ? ActionChip(
+                          label: Text(Get.find<EncryptedFileListController>()
+                                  .isPdf
+                                  .isTrue
+                              ? 'PDF'
+                              : 'Others'),
+                          onPressed: () =>
+                              Get.find<EncryptedFileListController>()
+                                  .changePdf(),
+                        )
                       : const SizedBox(
                           height: 0,
                           width: 0,

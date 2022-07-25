@@ -56,9 +56,10 @@ class ViewPdfController extends GetxController {
       final checkKey = await FileEncrypter.getFileIv(inFilename: fileIn);
       if (checkKey != null) {
         final document = await FirestoreData.getSecretKey(
-          checkKey,
-          Get.find<HomeController>().user.value.emailId,
-          Get.find<HomeController>().user.value.id,
+          collection: "files",
+          iv: checkKey,
+          userEmail: Get.find<HomeController>().user.value.emailId,
+          ownerId: Get.find<HomeController>().user.value.id,
         );
         final secretKey = document?.secretKey;
         if (secretKey != null) {
@@ -68,7 +69,8 @@ class ViewPdfController extends GetxController {
             outFileName: fileOut,
           );
         }
-        await FirestoreData.updateViews(document?.documentId);
+        await FirestoreData.updateViews(
+            collection: 'views', documentID: document?.documentId);
         sourceUrl = document?.sourceUrl;
         ownerId = document?.ownerId;
         ownerName = document?.ownerName;

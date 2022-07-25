@@ -11,14 +11,15 @@ import '../model/user_model.dart';
 class FirestoreData {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  static Future<DocumentModel?> getSecretKey(
-    String iv,
+  static Future<DocumentModel?> getSecretKey({
+    required String iv,
     String? userEmail,
     String? ownerId,
-  ) async {
+    required String collection,
+  }) async {
     try {
       QuerySnapshot doc = await _firestore
-          .collection("files")
+          .collection(collection)
           .where("iv", isEqualTo: iv)
           .where("documentPermission",
               isEqualTo: DocumentPermission.public.name)
@@ -63,12 +64,13 @@ class FirestoreData {
     }
   }
 
-  static Future<List<DocumentModel>> getDocumentsListFromCache(
+  static Future<List<DocumentModel>> getDocumentsListFromCache({
     String? ownerId,
-  ) async {
+    required String collection,
+  }) async {
     try {
       Query query = _firestore
-          .collection("files")
+          .collection(collection)
           .orderBy("createdOn", descending: true)
           .where("ownerId", isEqualTo: ownerId);
       QuerySnapshot docList;
@@ -132,10 +134,13 @@ class FirestoreData {
     }
   }
 
-  static Future<DocumentModel?> getDocumentAfterUpdate(String? uid) async {
+  static Future<DocumentModel?> getDocumentAfterUpdate({
+    String? uid,
+    required String collection,
+  }) async {
     try {
       DocumentSnapshot doc =
-          await _firestore.collection("files").doc(uid).get();
+          await _firestore.collection(collection).doc(uid).get();
 
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
@@ -227,9 +232,10 @@ class FirestoreData {
   }
 
   static Future<DocumentReference> createDocument(
-      DocumentModel documentModel) async {
+      {required DocumentModel documentModel,
+      required String collection}) async {
     try {
-      return await _firestore.collection("files").add(
+      return await _firestore.collection(collection).add(
         {
           "ownerId": documentModel.ownerId,
           "documentName": documentModel.documentName,
@@ -251,9 +257,10 @@ class FirestoreData {
 
   static Future<void> deleteDocument({
     String? documentId,
+    required String collection,
   }) async {
     try {
-      await _firestore.collection("files").doc(documentId).delete();
+      await _firestore.collection(collection).doc(documentId).delete();
     } catch (e) {
       rethrow;
     }
@@ -263,9 +270,10 @@ class FirestoreData {
     String? documentId,
     List<String>? emailIds,
     required DocumentPermission documentPermission,
+    required String collection,
   }) async {
     try {
-      await _firestore.collection("files").doc(documentId).update(
+      await _firestore.collection(collection).doc(documentId).update(
         {
           "documentPermission": documentPermission.name,
           "sharedEmailIds": emailIds,
@@ -279,9 +287,10 @@ class FirestoreData {
   static Future<void> setSourceUrl({
     required String? documentId,
     required String? sourceUrl,
+    required String collection,
   }) async {
     try {
-      await _firestore.collection("files").doc(documentId).set({
+      await _firestore.collection(collection).doc(documentId).set({
         "sourceUrl": sourceUrl,
       }, SetOptions(merge: true));
     } catch (e) {
@@ -289,9 +298,12 @@ class FirestoreData {
     }
   }
 
-  static Future<void> createViewsAndUploads(String? documentId) async {
+  static Future<void> createViewsAndUploads({
+    String? documentId,
+    required String collection,
+  }) async {
     try {
-      await _firestore.collection("views").doc(documentId).set(
+      await _firestore.collection(collection).doc(documentId).set(
         {
           "views": 0,
           "uploads": 1,
@@ -302,17 +314,23 @@ class FirestoreData {
     }
   }
 
-  static Future<void> deleteViewsAndUploads(String? documentId) async {
+  static Future<void> deleteViewsAndUploads({
+    String? documentId,
+    required String collection,
+  }) async {
     try {
-      await _firestore.collection("views").doc(documentId).delete();
+      await _firestore.collection(collection).doc(documentId).delete();
     } catch (e) {
       rethrow;
     }
   }
 
-  static Future<void> updateViews(String? documentID) async {
+  static Future<void> updateViews({
+    String? documentID,
+    required String collection,
+  }) async {
     try {
-      await _firestore.collection("views").doc(documentID).update(
+      await _firestore.collection(collection).doc(documentID).update(
         {
           "views": FieldValue.increment(1),
         },
@@ -322,9 +340,12 @@ class FirestoreData {
     }
   }
 
-  static Future<void> updateUploads(String? documentID) async {
+  static Future<void> updateUploads({
+    String? documentID,
+    required String collection,
+  }) async {
     try {
-      await _firestore.collection("views").doc(documentID).update(
+      await _firestore.collection(collection).doc(documentID).update(
         {
           "uploads": FieldValue.increment(1),
         },
@@ -334,10 +355,13 @@ class FirestoreData {
     }
   }
 
-  static Future<ViewsModel> readViewsAndUploads(String? documentID) async {
+  static Future<ViewsModel> readViewsAndUploads({
+    String? documentID,
+    required String collection,
+  }) async {
     try {
       DocumentSnapshot doc =
-          await _firestore.collection("views").doc(documentID).get();
+          await _firestore.collection(collection).doc(documentID).get();
 
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return ViewsModel(
