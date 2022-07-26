@@ -786,7 +786,7 @@ class EncryptDecryptController extends GetxController {
           ));
         }
       }
-    });
+    }).onError((error, stackTrace) => null);
   }
 
   Future<void> createInterstitialAd() async {
@@ -860,7 +860,7 @@ class EncryptDecryptController extends GetxController {
           ));
         }
       }
-    });
+    }).catchError((e) {});
 
     super.onInit();
   }
