@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -103,11 +104,11 @@ class DashboardView extends GetView<DashboardController> {
                                       spreadRadius: 1,
                                     )
                                   ]),
-                              child: Text(
+                              child: AutoSizeText(
                                 controller.filterclassList[index].name,
-                                textScaleFactor: 1.5,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
+                                  fontSize: 25,
                                   fontWeight: FontWeight.w800,
                                 ),
                               )),

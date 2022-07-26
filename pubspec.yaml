@@ -67,6 +67,7 @@ dependencies:
   firebase_storage: ^10.3.2
   http: ^0.13.4
   flutter_native_splash: ^2.2.5
+  auto_size_text: ^3.0.0
 
 
 dev_dependencies:

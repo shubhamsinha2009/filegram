@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../routes/app_pages.dart';
@@ -10,9 +11,8 @@ class SubjectView extends GetView<SubjectController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: AutoSizeText(
           controller.classes.name,
-          textScaleFactor: 0.8,
         ),
         actions: [
           Obx(() => IconButton(
@@ -121,11 +121,11 @@ class SubjectView extends GetView<SubjectController> {
                                   spreadRadius: 1,
                                 )
                               ]),
-                          child: Text(
+                          child: AutoSizeText(
                             controller.filteredsubjectList[index].name,
-                            textScaleFactor: 1.5,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
+                              fontSize: 20,
                               fontWeight: FontWeight.w800,
                             ),
                           )),

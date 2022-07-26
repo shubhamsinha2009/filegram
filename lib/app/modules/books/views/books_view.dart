@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -12,9 +13,8 @@ class BooksView extends GetView<BooksController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: AutoSizeText(
           controller.subjects.name,
-          textScaleFactor: 0.8,
         ),
         actions: [
           Obx(() => IconButton(
@@ -121,11 +121,11 @@ class BooksView extends GetView<BooksController> {
                                   spreadRadius: 1,
                                 )
                               ]),
-                          child: Text(
+                          child: AutoSizeText(
                             controller.filteredbookList[index].name,
-                            textScaleFactor: 1.5,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
+                              fontSize: 20,
                               fontWeight: FontWeight.w800,
                             ),
                           )),

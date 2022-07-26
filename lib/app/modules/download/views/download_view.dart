@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -16,7 +17,7 @@ class DownloadView extends GetView<DownloadController> {
     //TODO: Refresh Indicator in all pages
     return Scaffold(
         appBar: AppBar(
-          title: const FittedBox(child: Text('Download')),
+          title: const AutoSizeText('Download'),
           actions: [
             Obx(() => IconButton(
                 onPressed: () {

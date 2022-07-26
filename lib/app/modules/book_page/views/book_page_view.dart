@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filegram/app/core/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +17,8 @@ class BookPageView extends GetView<BookPageController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: AutoSizeText(
             controller.books.name,
-            textScaleFactor: 0.8,
           ),
           actions: [
             Obx(() => IconButton(
