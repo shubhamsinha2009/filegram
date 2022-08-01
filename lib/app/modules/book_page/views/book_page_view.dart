@@ -106,8 +106,8 @@ class BookPageView extends GetView<BookPageController> {
                                       controller.getListViewItemIndex(index)]
                                   .name
                                   .removeExtensionPdf),
-                              leading: Text('${index + 1}.',
-                                  softWrap: true, textScaleFactor: 1.5),
+                              // leading: Text('${index + 1}.',
+                              //     softWrap: true, textScaleFactor: 1.5),
                               onLongPress: (() => File(_bookPath).existsSync()
                                   ? Get.dialog(
                                       AlertDialog(

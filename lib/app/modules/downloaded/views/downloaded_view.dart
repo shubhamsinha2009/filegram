@@ -175,10 +175,10 @@ class DownloadedView extends GetView<DownloadedController> {
                                         barrierDismissible: false,
                                       )),
                                   // minLeadingWidth: 0,
-                                  leading: Text(
-                                      '${controller.getListViewItemIndex(index) + 1}.',
-                                      softWrap: true,
-                                      textScaleFactor: 2),
+                                  // leading: Text(
+                                  //     '${controller.getListViewItemIndex(index) + 1}.',
+                                  //     softWrap: true,
+                                  //     textScaleFactor: 2),
                                   onTap: () {
                                     controller
                                         .showInterstitialAd()

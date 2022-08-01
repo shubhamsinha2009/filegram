@@ -192,7 +192,7 @@ class SettingsView extends GetView<SettingsController> {
           onTap: () async {
             try {
               await launchUrlString(
-                "https://sites.google.com/view/filegram/privacypolicy",
+                "https://sites.google.com/view/filegram/about/privacypolicy",
               );
             } on PlatformException {
               Get.showSnackbar(GetSnackBar(
@@ -217,7 +217,7 @@ class SettingsView extends GetView<SettingsController> {
           onTap: () async {
             try {
               await launchUrlString(
-                "https://sites.google.com/view/filegram/terms_and_conditions",
+                "https://sites.google.com/view/filegram/about/terms_and_conditions",
               );
             } on PlatformException {
               Get.showSnackbar(GetSnackBar(
