@@ -28,7 +28,7 @@ class HomeView extends GetView<HomeController> {
       () => controller.isInternetConnected.isTrue
           ? Scaffold(
               appBar: AppBar(
-                title: const AutoSizeText('Filegram '),
+                title: const FittedBox(child: Text('Filegram ')),
 
                 leading: Image.asset(
                   "assets/app_bar.png",

@@ -15,7 +15,7 @@ class DownloadedView extends GetView<DownloadedController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Downloaded'),
+          title: const FittedBox(child: Text('Downloaded')),
           actions: [
             Obx(() => IconButton(
                 onPressed: () {

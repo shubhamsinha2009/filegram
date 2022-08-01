@@ -17,7 +17,7 @@ class DownloadView extends GetView<DownloadController> {
     //TODO: Refresh Indicator in all pages
     return Scaffold(
         appBar: AppBar(
-          title: const AutoSizeText('Download'),
+          title: const FittedBox(child: Text('Download')),
           actions: [
             Obx(() => IconButton(
                 onPressed: () {
@@ -206,6 +206,9 @@ class DownloadView extends GetView<DownloadController> {
                                                     increment: reward.amount);
                                               }
                                             });
+                                          } else {
+                                            controller.downloadFile(
+                                                controller.bookPath);
                                           }
                                         },
                                         child: const Text('Watch Rewarded Ad'))
@@ -247,6 +250,9 @@ class DownloadView extends GetView<DownloadController> {
                                                     increment: reward.amount);
                                               }
                                             });
+                                          } else {
+                                            controller.downloadFile(
+                                                controller.bookPath);
                                           }
                                         },
                                         child: const Text('Watch Rewarded Ad'))

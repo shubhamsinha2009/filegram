@@ -16,7 +16,7 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
     return Obx(() => controller.isInternetConnected.isTrue
         ? Scaffold(
             appBar: AppBar(
-              title: const Text('Update Phone Number'),
+              title: const FittedBox(child: Text('Update Phone Number')),
             ),
             body: Form(
               key: formKey,

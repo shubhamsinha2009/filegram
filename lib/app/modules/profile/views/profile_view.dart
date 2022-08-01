@@ -11,7 +11,7 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const FittedBox(child: Text('Profile')),
       ),
       body: ListView(
         children: [

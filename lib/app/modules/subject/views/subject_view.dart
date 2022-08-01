@@ -11,8 +11,10 @@ class SubjectView extends GetView<SubjectController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AutoSizeText(
-          controller.classes.name,
+        title: FittedBox(
+          child: Text(
+            controller.classes.name,
+          ),
         ),
         actions: [
           Obx(() => IconButton(

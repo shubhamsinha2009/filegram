@@ -358,6 +358,8 @@ class EncryptDecryptController extends GetxController {
                             saveFile(pickedFile);
                           }
                         });
+                      } else {
+                        saveFile(pickedFile);
                       }
                     },
                     child: const Text('Watch Rewarded Ad'))
@@ -390,6 +392,8 @@ class EncryptDecryptController extends GetxController {
                             saveFile(pickedFile);
                           }
                         });
+                      } else {
+                        saveFile(pickedFile);
                       }
                     },
                     child: const Text('Watch Rewarded Ad'))

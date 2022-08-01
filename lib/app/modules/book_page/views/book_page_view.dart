@@ -17,8 +17,10 @@ class BookPageView extends GetView<BookPageController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: AutoSizeText(
-            controller.books.name,
+          title: FittedBox(
+            child: Text(
+              controller.books.name,
+            ),
           ),
           actions: [
             Obx(() => IconButton(

@@ -13,8 +13,10 @@ class BooksView extends GetView<BooksController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AutoSizeText(
-          controller.subjects.name,
+        title: FittedBox(
+          child: Text(
+            controller.subjects.name,
+          ),
         ),
         actions: [
           Obx(() => IconButton(
