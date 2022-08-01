@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:filegram/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:filegram/app/modules/encrypted_file_list/controllers/controllers.dart';
 import 'package:flutter/material.dart';

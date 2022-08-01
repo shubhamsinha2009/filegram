@@ -16,8 +16,9 @@ class UpdatePhoneNumberController extends GetxController {
       await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
+          Get.back();
           await auth.currentUser?.linkWithCredential(credential);
-          Get.back(closeOverlays: true);
+
           Get.showSnackbar(GetSnackBar(
             backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
             duration: const Duration(seconds: 10),
@@ -28,6 +29,7 @@ class UpdatePhoneNumberController extends GetxController {
           ));
         },
         verificationFailed: (FirebaseAuthException authException) {
+          Get.back();
           if (authException.code == 'invalid-phone-number') {
             Get.showSnackbar(GetSnackBar(
               backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
@@ -58,17 +60,11 @@ class UpdatePhoneNumberController extends GetxController {
           verificationID = verificationId;
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          Get.showSnackbar(GetSnackBar(
-            backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
-            duration: const Duration(seconds: 5),
-            title: "Verification code: ",
-            message: verificationId,
-            snackPosition: SnackPosition.TOP,
-          ));
           verificationID = verificationId;
         },
       );
     } catch (e) {
+      Get.back();
       Get.showSnackbar(GetSnackBar(
         backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
         duration: const Duration(seconds: 5),
@@ -88,6 +84,7 @@ class UpdatePhoneNumberController extends GetxController {
 
       return true;
     } catch (e) {
+      Get.back();
       Get.showSnackbar(GetSnackBar(
         backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
         duration: const Duration(seconds: 5),

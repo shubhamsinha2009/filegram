@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -185,10 +184,10 @@ class DownloadView extends GetView<DownloadController> {
                                         child: const Text('Spend 3 Sikka')),
                                     OutlinedButton(
                                         onPressed: () {
+                                          Get.back();
                                           if (controller
                                                   .rewardedInterstitialAd !=
                                               null) {
-                                            Get.back();
                                             controller.rewardedInterstitialAd
                                                 ?.show(onUserEarnedReward:
                                                     (ad, reward) async {
@@ -229,10 +228,10 @@ class DownloadView extends GetView<DownloadController> {
                                         child: const Text('Back')),
                                     OutlinedButton(
                                         onPressed: () {
+                                          Get.back();
                                           if (controller
                                                   .rewardedInterstitialAd !=
                                               null) {
-                                            Get.back();
                                             controller.rewardedInterstitialAd
                                                 ?.show(onUserEarnedReward:
                                                     (ad, reward) async {
