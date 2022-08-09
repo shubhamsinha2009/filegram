@@ -22,7 +22,7 @@ class HomeController extends GetxController {
   late BannerAd bottomBannerAd;
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
-  final selectedIndex = 1.obs;
+  final selectedIndex = 0.obs;
 
   final gullak = GullakModel().obs;
   final changeTheme = Get.isDarkMode.obs;
