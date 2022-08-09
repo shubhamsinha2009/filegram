@@ -9,11 +9,6 @@ abstract class Routes {
   static const whatsappChat = _Paths.whatsappChat;
   static const gullak = _Paths.gullak;
   static const updatePhoneNumber = _Paths.updatePhoneNumber;
-  static const subject = _Paths.subject;
-  static const books = _Paths.books;
-  static const bookPage = _Paths.bookPage;
-  static const download = _Paths.download;
-  static const downloaded = _Paths.downloaded;
   static const profile = _Paths.profile;
 }
 
@@ -26,10 +21,5 @@ abstract class _Paths {
   static const whatsappChat = '/whatsappChat';
   static const gullak = '/gullak';
   static const updatePhoneNumber = '/update-phone-number';
-  static const subject = '/subject';
-  static const books = '/books';
-  static const bookPage = '/book-page';
-  static const download = '/download';
-  static const downloaded = '/downloaded';
   static const profile = '/profile';
 }
