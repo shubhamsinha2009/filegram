@@ -5,7 +5,6 @@ extension StringExtensions on String {
   String get sort => toLowerCase().removeAllWhitespace;
 
   String get removeExtension => replaceAll('.pdf.enc', '');
-  String get removeExtensionPdf => replaceAll('.pdf', '');
 }
 
 extension FileExtention on FileSystemEntity {

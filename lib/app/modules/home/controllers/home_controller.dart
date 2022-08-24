@@ -1,5 +1,4 @@
 import 'package:filegram/app/data/model/gullak_model.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -126,9 +125,8 @@ class HomeController extends GetxController {
           phoneNumber: auth.currentUser?.phoneNumber,
         ));
       }
-      if (kReleaseMode) {
-        _createBottomBannerAd();
-      }
+
+      _createBottomBannerAd();
 
       // quickActions.setShortcutItems(<ShortcutItem>[
       //   const ShortcutItem(
