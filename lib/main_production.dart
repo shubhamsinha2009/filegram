@@ -20,6 +20,6 @@ void main() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     await initServices();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-        .then((value) => runApp(const PdfWallah()));
+        .then((value) => runApp(const Filegram()));
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }

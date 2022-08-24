@@ -26,11 +26,12 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
         onRefresh: () async {
           controller.getFirstData = false;
           controller.documents.clear();
-          controller.findAllEncryptedFiles();
+          controller.findAllEncryptedFiles(
+              controller.isPdf.isTrue ? 'files' : 'otherfiles');
         },
         child: Column(children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(3.0),
             child: TextField(
               maxLines: 1,
               onChanged: (value) => controller.filterfileList(value),
@@ -193,7 +194,12 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                             //                   (ad, reward) async {
                                             final _views = await FirestoreData
                                                 .readViewsAndUploads(
-                                                    _document?.documentId);
+                                                    collection:
+                                                        controller.isPdf.isTrue
+                                                            ? 'views'
+                                                            : 'otherviews',
+                                                    documentID:
+                                                        _document?.documentId);
                                             // controller.adsController.rewardedAd.show(
                                             //   onUserEarnedReward: (ad, reward) {
                                             Get.dialog(
@@ -286,12 +292,21 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                           closeOverlays: true);
                                                     }
                                                     // ! Sometimes due to async document gets deleted before views
-                                                    FirestoreData
-                                                            .deleteViewsAndUploads(
-                                                                _document
-                                                                    ?.documentId)
+                                                    FirestoreData.deleteViewsAndUploads(
+                                                            collection: controller
+                                                                    .isPdf
+                                                                    .isTrue
+                                                                ? 'views'
+                                                                : 'otherviews',
+                                                            documentId: _document
+                                                                ?.documentId)
                                                         .then((value) =>
                                                             FirestoreData.deleteDocument(
+                                                                    collection: controller
+                                                                            .isPdf
+                                                                            .isTrue
+                                                                        ? 'files'
+                                                                        : 'otherfiles',
                                                                     documentId:
                                                                         _document
                                                                             ?.documentId)
@@ -302,8 +317,12 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                               controller
                                                                       .getFirstData =
                                                                   false;
-                                                              controller
-                                                                  .findAllEncryptedFiles();
+                                                              controller.findAllEncryptedFiles(
+                                                                  controller
+                                                                          .isPdf
+                                                                          .isTrue
+                                                                      ? 'files'
+                                                                      : 'otherfiles');
 
                                                               Get.showSnackbar(
                                                                   GetSnackBar(
@@ -389,7 +408,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                                 labelText:
                                                                     'Source URL / Share Link to redirect',
                                                                 hintText:
-                                                                    'https://t.me/pdf_wallah_app',
+                                                                    'https://t.me/filegram_app',
                                                                 helperMaxLines:
                                                                     3,
                                                                 isDense: true,
@@ -462,6 +481,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
 
                                                                   try {
                                                                     FirestoreData.setSourceUrl(
+                                                                            collection: controller.isPdf.isTrue
+                                                                                ? 'files'
+                                                                                : 'otherfiles',
                                                                             documentId: _document
                                                                                 ?.documentId,
                                                                             sourceUrl: controller
@@ -569,7 +591,8 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                       TextButton.icon(
                         onPressed: () {
                           controller.documents.clear();
-                          controller.findAllEncryptedFiles();
+                          controller.findAllEncryptedFiles(
+                              controller.isPdf.isTrue ? 'files' : 'otherfiles');
                         },
                         icon: const Icon(Icons.refresh),
                         label: const Text(
@@ -597,7 +620,10 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                             onPressed: () {
                               controller.documents.clear();
 
-                              controller.findAllEncryptedFiles();
+                              controller.findAllEncryptedFiles(
+                                  controller.isPdf.isTrue
+                                      ? 'files'
+                                      : 'otherfiles');
                             },
                             icon: const Icon(Icons.refresh),
                             label: const Text(

@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
 import '../controllers/files_device_controller.dart';
 
 class FilesDeviceView extends GetView<FilesDeviceController> {
@@ -270,7 +269,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                           await Share.shareFiles(
                                             [currentfile.path],
                                             text:
-                                                'Download Pdf Wallah to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
+                                                'Download Filegram to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
                                           );
                                         },
                                         backgroundColor: Colors.orange,
@@ -285,8 +284,9 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                   child: ListTile(
                                     trailing: sourceUrl != null
                                         ? IconButton(
-                                            icon: const Icon(Icons.link_rounded,
-                                                color: Colors.white),
+                                            icon: const Icon(
+                                              Icons.link_rounded,
+                                            ),
                                             onPressed: () async {
                                               try {
                                                 await launchUrlString(sourceUrl,

@@ -37,7 +37,7 @@ class NoInternetView extends GetView<NoInternetController> {
               height: 50,
             ),
             const Text(
-              "Pdf Wallah Needs Internet To Provide Its Services",
+              "Filegram Needs Internet To Provide Its Services",
               style: TextStyle(
                   fontSize: 25,
                   color: Colors.brown,
