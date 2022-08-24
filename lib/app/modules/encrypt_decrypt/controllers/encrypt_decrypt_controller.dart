@@ -347,8 +347,8 @@ class EncryptDecryptController extends GetxController {
                     child: const Text('Spend 3 Sikka')),
                 OutlinedButton(
                     onPressed: () {
+                      Get.back();
                       if (rewardedInterstitialAd != null) {
-                        Get.back();
                         rewardedInterstitialAd?.show(
                             onUserEarnedReward: (ad, reward) async {
                           if (homeController.user.value.id != null) {
@@ -381,8 +381,8 @@ class EncryptDecryptController extends GetxController {
                     child: const Text('Back')),
                 OutlinedButton(
                     onPressed: () {
+                      Get.back();
                       if (rewardedInterstitialAd != null) {
-                        Get.back();
                         rewardedInterstitialAd?.show(
                             onUserEarnedReward: (ad, reward) async {
                           if (homeController.user.value.id != null) {
