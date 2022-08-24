@@ -36,7 +36,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                     onPressed: () async => await Share.shareFiles(
                           [controller.filePath],
                           text:
-                              'Download Pdf Wallah to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
+                              'Download Filegram to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
                         ),
                     icon: const Icon(Icons.share)),
                 Obx(() => IconButton(
@@ -198,7 +198,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                       defaultPage: controller.intialPageNumber,
                       minZoom: 1,
                       maxZoom: 5,
-                      enableDefaultScrollHandle: true,
+                      enableDefaultScrollHandle: false,
                       onRender: (pages) {
                         controller.totalPages.value = pages;
                       },

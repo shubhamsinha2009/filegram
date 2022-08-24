@@ -13,8 +13,10 @@ class WhatsappChatView extends GetView<WhatsappChatController> {
     GlobalKey<FormState> formKey = GlobalKey();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Click to Chat',
+        title: const FittedBox(
+          child: Text(
+            'Click to Chat',
+          ),
         ),
       ),
       body: Form(

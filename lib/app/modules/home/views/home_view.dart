@@ -1,3 +1,4 @@
+import 'package:filegram/app/modules/encrypted_file_list/controllers/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,7 +25,7 @@ class HomeView extends GetView<HomeController> {
       () => controller.isInternetConnected.isTrue
           ? Scaffold(
               appBar: AppBar(
-                title: const FittedBox(child: Text('Pdf Wallah')),
+                title: const FittedBox(child: Text('Filegram ')),
 
                 leading: Image.asset(
                   "assets/app_bar.png",
@@ -66,6 +67,21 @@ class HomeView extends GetView<HomeController> {
                           icon: const Icon(
                             Icons.info,
                           ))
+                      : const SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
+                  controller.selectedIndex.value == 1
+                      ? ActionChip(
+                          label: Text(Get.find<EncryptedFileListController>()
+                                  .isPdf
+                                  .isTrue
+                              ? 'PDF'
+                              : 'Others'),
+                          onPressed: () =>
+                              Get.find<EncryptedFileListController>()
+                                  .changePdf(),
+                        )
                       : const SizedBox(
                           height: 0,
                           width: 0,

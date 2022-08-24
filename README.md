@@ -61,9 +61,16 @@ A App made for controlling pdfs files privacy
 - [x] Firebase App Check
 - [] Set Rewarded Ads on Page Number
 - [x] Dashboard
+- [] Premium Features
+- [x] Start coins use before ads
+- [x] Implement all ads
+- [x] Update security rules
+- [] Use dynamic links
 - [] Public Profiles
 - [] Search Users Public
-- [] Premium Features
+- [] Description Telegram Channel Links
+- [x] More files allowed
+- [ ] Permission Of Manage Files
 
 ## BUGS
 

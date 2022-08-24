@@ -52,4 +52,40 @@ class AdHelper {
   static String get bookBottom {
     return dotenv.get('bookBottom');
   }
+
+  static String get downloadReward {
+    return dotenv.get('downloadReward');
+  }
+
+  static String get downloadBodyBanner {
+    return dotenv.get('downloadBodyBanner');
+  }
+
+  static String get downoadInlineBanner {
+    return dotenv.get('downoadInlineBanner');
+  }
+
+  static String get downoadBottomBanner {
+    return dotenv.get('downoadBottomBanner');
+  }
+
+  static String get subjectbottomBanner {
+    return dotenv.get('subjectbottomBanner');
+  }
+
+  static String get subjectBodyBanner {
+    return dotenv.get('subjectBodyBanner');
+  }
+
+  static String get dashboardBanner {
+    return dotenv.get('dashboardBanner');
+  }
+
+  static String get booksBottomBanner {
+    return dotenv.get('booksBottomBanner');
+  }
+
+  static String get booksBodyBanner {
+    return dotenv.get('booksBodyBanner');
+  }
 }
