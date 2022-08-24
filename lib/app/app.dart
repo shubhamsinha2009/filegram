@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'core/services/firebase_analytics.dart';
 import 'routes/app_pages.dart';
 
-class PdfWallah extends StatelessWidget {
-  const PdfWallah({
+class Filegram extends StatelessWidget {
+  const Filegram({
     Key? key,
   }) : super(key: key);
 
@@ -15,7 +15,7 @@ class PdfWallah extends StatelessWidget {
     bool? isDark = GetStorageDbService.getRead(key: 'darkmode');
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'PdfWallah',
+      title: 'Filegram',
       initialRoute: AppPages.intial,
       getPages: AppPages.routes,
       theme: Themes.appLightTheme,

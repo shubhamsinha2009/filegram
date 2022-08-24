@@ -1,8 +1,8 @@
-# Filegram
+# filegram
 
-A App made for controlling pdfs files privacy
+A new Flutter project.
 
-## TODOS
+## Getting Started
 
 - [x] Pdf Viewer Update with Settings
 - [x] Rename Feature
@@ -65,8 +65,9 @@ A App made for controlling pdfs files privacy
 - [] Search Users Public
 - [] Premium Features
 
-## BUGS
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-- Sometimes document in the forestore gets deleted before views
-- Internet lookup problems
-- Performance
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

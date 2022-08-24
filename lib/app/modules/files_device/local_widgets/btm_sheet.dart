@@ -39,9 +39,9 @@ class BtmSheet extends StatelessWidget {
               }
               return null;
             },
-            initialValue: file.name.removeExtension,
+            initialValue: file.name,
             keyboardType: TextInputType.name,
-            onChanged: (value) => controller.rename.value = '$value.pdf.enc',
+            onChanged: (value) => controller.rename.value = value,
             maxLines: 1,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
@@ -57,10 +57,7 @@ class BtmSheet extends StatelessWidget {
                     if (controller.validateRename()) {
                       controller
                           .changeFileNameOnlySync(file.path)
-                          .then((value) {
-                        controller.isLoading.value = true;
-                        controller.onInitialisation();
-                      }).whenComplete(() => Get.back());
+                          .then((value) => Get.back());
                     }
                   },
                   child: const Text('Save')),

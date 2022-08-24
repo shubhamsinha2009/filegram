@@ -16,7 +16,7 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
     return Obx(() => controller.isInternetConnected.isTrue
         ? Scaffold(
             appBar: AppBar(
-              title: const Text('Update Phone Number'),
+              title: const FittedBox(child: Text('Update Phone Number')),
             ),
             body: Form(
               key: formKey,
@@ -91,6 +91,7 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                                             controller.smsCode)
                                                         .then((value) async {
                                                       if (value) {
+                                                        Get.back();
                                                         if ((controller
                                                                 .auth
                                                                 .currentUser
@@ -105,9 +106,7 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                                                   controller
                                                                       .phoneNumber);
                                                         }
-                                                        Get.back(
-                                                            closeOverlays:
-                                                                true);
+
                                                         Get.showSnackbar(
                                                             GetSnackBar(
                                                           backgroundColor: Get
@@ -153,6 +152,7 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                           ],
                                         )));
                               } catch (e) {
+                                Get.back();
                                 Get.showSnackbar(GetSnackBar(
                                   backgroundColor:
                                       Get.theme.snackBarTheme.backgroundColor!,

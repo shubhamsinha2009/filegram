@@ -165,14 +165,21 @@ class DocumentPermissionBottomSheet extends StatelessWidget {
                           !_isList.equals(_controller.sharedEmailIds,
                               _document.sharedEmailIds)) {
                         await FirestoreData.updateDocumentPermission(
+                            collection: _controller.isPdf.isTrue
+                                ? 'files'
+                                : 'otherfiles',
                             documentId: _document.documentId,
                             documentPermission: _controller.groupValue.value,
                             emailIds: _controller.sharedEmailIds);
                         await FirestoreData.getDocumentAfterUpdate(
-                            _document.documentId);
+                            collection: _controller.isPdf.isTrue
+                                ? 'files'
+                                : 'otherfiles',
+                            uid: _document.documentId);
                         _controller.documents.clear();
 
-                        _controller.findAllEncryptedFiles();
+                        _controller.findAllEncryptedFiles(
+                            _controller.isPdf.isTrue ? 'files' : 'otherfiles');
                         _controller.sharedEmailIds.clear();
 
                         Get.back(closeOverlays: true);
