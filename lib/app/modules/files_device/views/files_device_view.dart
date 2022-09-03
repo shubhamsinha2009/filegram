@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 import '../controllers/files_device_controller.dart';
 
 class FilesDeviceView extends GetView<FilesDeviceController> {
@@ -284,9 +285,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                   child: ListTile(
                                     trailing: sourceUrl != null
                                         ? IconButton(
-                                            icon: const Icon(
-                                              Icons.link_rounded,
-                                            ),
+                                            icon: const Icon(Icons.link_rounded,
+                                                color: Colors.white),
                                             onPressed: () async {
                                               try {
                                                 await launchUrlString(sourceUrl,
@@ -316,7 +316,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                     visualDensity:
                                         VisualDensity.adaptivePlatformDensity,
                                     title: Text(
-                                      currentfile.name,
+                                      currentfile.name.removeExtension,
                                       overflow: TextOverflow.visible,
                                       softWrap: true,
                                     ),

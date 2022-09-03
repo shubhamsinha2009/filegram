@@ -21,7 +21,7 @@ class GullakView extends GetView<GullakController> {
                   SizedBox(
                     width: 10,
                   ),
-                  FittedBox(child: Text('Gullak')),
+                  Text('Gullak'),
                 ],
               ),
               // leading: const Icon(Icons.savings_rounded,

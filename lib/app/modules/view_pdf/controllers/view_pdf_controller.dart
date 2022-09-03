@@ -39,8 +39,8 @@ class ViewPdfController extends GetxController {
   final adDismissed = false.obs;
   final isInterstitialAdLoaded = false.obs;
   Timer? _timer1;
-  final isBottomBannerAdLoaded = false.obs;
-  late BannerAd bottomBannerAd;
+  // final isBottomBannerAdLoaded = false.obs;
+  // late BannerAd bottomBannerAd;
   final countdownTimer = 200.obs;
   bool _shouldAdPlay = Get.arguments[1];
   AlhPdfViewController? pdfViewController;
@@ -56,10 +56,9 @@ class ViewPdfController extends GetxController {
       final checkKey = await FileEncrypter.getFileIv(inFilename: fileIn);
       if (checkKey != null) {
         final document = await FirestoreData.getSecretKey(
-          collection: "files",
-          iv: checkKey,
-          userEmail: Get.find<HomeController>().user.value.emailId,
-          ownerId: Get.find<HomeController>().user.value.id,
+          checkKey,
+          Get.find<HomeController>().user.value.emailId,
+          Get.find<HomeController>().user.value.id,
         );
         final secretKey = document?.secretKey;
         if (secretKey != null) {
@@ -69,8 +68,7 @@ class ViewPdfController extends GetxController {
             outFileName: fileOut,
           );
         }
-        await FirestoreData.updateViews(
-            collection: 'views', documentID: document?.documentId);
+        await FirestoreData.updateViews(document?.documentId);
         sourceUrl = document?.sourceUrl;
         ownerId = document?.ownerId;
         ownerName = document?.ownerName;
@@ -123,7 +121,7 @@ class ViewPdfController extends GetxController {
         }, onAdShowedFullScreenContent: (InterstitialAd ad) {
           if ((uid != null) &&
               (Get.find<HomeController>().user.value.id != uid)) {
-            FirestoreData.updateSikka(uid: uid, increment: 1);
+            FirestoreData.updateSikka(uid);
           }
         });
         interstitialAd!.show();
@@ -133,26 +131,26 @@ class ViewPdfController extends GetxController {
     }
   }
 
-  void _createBottomBannerAd() {
-    bottomBannerAd = BannerAd(
-      adUnitId: AdHelper.viewPdfBanner,
-      size: AdSize.banner,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          isBottomBannerAdLoaded.value = true;
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    );
-    bottomBannerAd.load();
-  }
+  // void _createBottomBannerAd() {
+  //   bottomBannerAd = BannerAd(
+  //     adUnitId: AdHelper.viewPdfBanner,
+  //     size: AdSize.banner,
+  //     request: const AdRequest(),
+  //     listener: BannerAdListener(
+  //       onAdLoaded: (_) {
+  //         isBottomBannerAdLoaded.value = true;
+  //       },
+  //       onAdFailedToLoad: (ad, error) {
+  //         ad.dispose();
+  //       },
+  //     ),
+  //   );
+  //   bottomBannerAd.load();
+  // }
 
-  AdWidget adWidget({required AdWithView ad}) {
-    return AdWidget(ad: ad);
-  }
+  // AdWidget adWidget({required AdWithView ad}) {
+  //   return AdWidget(ad: ad);
+  // }
 
   void undoPage() {
     if (pdfViewController != null &&
@@ -265,7 +263,7 @@ class ViewPdfController extends GetxController {
           _shouldAdPlay = false;
           showInterstitialAd(uid: ownerId).catchError((e) {});
         }
-        if (pageTimer >= 5) {
+        if (pageTimer >= 3) {
           if (pagesChanged.contains(currentPage.value)) {
             pagesChanged.remove(currentPage.value);
           }
@@ -279,7 +277,7 @@ class ViewPdfController extends GetxController {
 
     try {
       createInterstitialAd();
-      _createBottomBannerAd();
+      //  _createBottomBannerAd();
     } on Exception catch (e) {
       // TODO
     }
@@ -298,7 +296,7 @@ class ViewPdfController extends GetxController {
   void onClose() async {
     _timer1?.cancel();
     interstitialAd?.dispose();
-    bottomBannerAd.dispose();
+    // bottomBannerAd.dispose();
 
     if (File(fileOut).existsSync() && filePath.contains('.enc')) {
       await File(fileOut).delete();

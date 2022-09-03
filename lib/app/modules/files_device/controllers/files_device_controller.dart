@@ -51,7 +51,7 @@ class FilesDeviceController extends GetxController {
 
   bool validateRename() {
     final ext = rename.value.toLowerCase();
-    return ext.contains(".pdf.enc");
+    return ext.endsWith(".pdf.enc");
   }
 
   Future<File> changeFileNameOnlySync(String filePath) async {
@@ -147,7 +147,7 @@ class FilesDeviceController extends GetxController {
         }, onAdShowedFullScreenContent: (InterstitialAd ad) {
           if ((uid != null) &&
               (Get.find<HomeController>().user.value.id != uid)) {
-            FirestoreData.updateSikka(uid: uid, increment: 1);
+            FirestoreData.updateSikka(uid);
           }
         });
         interstitialAd!.show();

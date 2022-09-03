@@ -12,9 +12,8 @@ import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/no_internet/bindings/no_internet_binding.dart';
-import '../modules/profile/bindings/profile_binding.dart';
-import '../modules/profile/views/profile_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
+
 import '../modules/updatePhoneNumber/bindings/update_phone_number_binding.dart';
 import '../modules/updatePhoneNumber/views/update_phone_number_view.dart';
 import '../modules/view_pdf/bindings/view_pdf_binding.dart';
@@ -85,12 +84,6 @@ class AppPages {
         NoInternetBinding(),
       ],
       transition: Transition.rightToLeftWithFade,
-    ),
-    GetPage(
-      name: _Paths.profile,
-      page: () => const ProfileView(),
-      binding: ProfileBinding(),
-      transition: Transition.rightToLeft,
     ),
   ];
 }

@@ -198,7 +198,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                       defaultPage: controller.intialPageNumber,
                       minZoom: 1,
                       maxZoom: 5,
-                      enableDefaultScrollHandle: false,
+                      enableDefaultScrollHandle: true,
                       onRender: (pages) {
                         controller.totalPages.value = pages;
                       },

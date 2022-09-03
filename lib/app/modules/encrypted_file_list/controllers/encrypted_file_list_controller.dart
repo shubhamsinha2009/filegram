@@ -24,7 +24,6 @@ class EncryptedFileListController extends GetxController
   final inlineAdIndex = 1;
   late BannerAd inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
-  final isPdf = true.obs;
 
   // late BannerAd topBannerAd;
   // final istopBannerAdLoaded = false.obs;
@@ -41,12 +40,6 @@ class EncryptedFileListController extends GetxController
     return AdWidget(ad: ad);
   }
 
-  void changePdf() {
-    isPdf.toggle();
-    getFirstData = false;
-    documents.clear();
-    findAllEncryptedFiles(isPdf.isTrue ? 'files' : 'otherfiles');
-  }
   // void _createBottomBannerAd() {
   //   topBannerAd = BannerAd(
   //     adUnitId: AdHelper.docBanner,
@@ -129,10 +122,9 @@ class EncryptedFileListController extends GetxController
     return index;
   }
 
-  void findAllEncryptedFiles(String collection) {
+  void findAllEncryptedFiles() {
     FirestoreData.getDocumentsListFromCache(
-      collection: collection,
-      ownerId: homeController.auth.currentUser?.uid,
+      homeController.auth.currentUser?.uid,
     ).then((result) {
       final bool emptyDocumentList = result.isEmpty;
       if (!getFirstData && emptyDocumentList) {
@@ -194,11 +186,9 @@ class EncryptedFileListController extends GetxController
   //   );
   // }
 
-// void changeFiles
-
   @override
   void onInit() {
-    findAllEncryptedFiles(isPdf.isTrue ? 'files' : 'otherfiles');
+    findAllEncryptedFiles();
     if (isInlineBannerAdLoaded.isFalse) {
       _createInlineBannerAd();
     }
