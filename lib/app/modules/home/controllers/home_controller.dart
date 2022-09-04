@@ -1,3 +1,4 @@
+import 'package:filegram/app/core/services/new_version.dart';
 import 'package:filegram/app/data/model/gullak_model.dart';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -10,7 +11,6 @@ import '../../no_internet/controllers/no_internet_controller.dart';
 import '../../../data/provider/firestore_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:new_version/new_version.dart';
 
 class HomeController extends GetxController {
   final isFileDeviceOpen = true.obs;
@@ -167,7 +167,7 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     try {
-      final newVersion = NewVersion(androidId: "com.sks.filegram");
+      final newVersion = NewVersionPlus(androidId: "com.sks.filegram");
       if (Get.context != null) {
         newVersion.getVersionStatus().then((status) {
           if (status != null && (status.localVersion != status.storeVersion)) {

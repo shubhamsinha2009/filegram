@@ -36,13 +36,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.8.2"
-  auto_size_text:
-    dependency: "direct main"
-    description:
-      name: auto_size_text
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -416,7 +409,7 @@ packages:
     source: hosted
     version: "0.10.2"
   html:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: html
       url: "https://pub.dartlang.org"
@@ -513,13 +506,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  new_version:
-    dependency: "direct main"
-    description:
-      name: new_version
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1"
   octo_image:
     dependency: transitive
     description:
@@ -535,7 +521,7 @@ packages:
     source: hosted
     version: "0.0.3"
   package_info_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: package_info_plus
       url: "https://pub.dartlang.org"
@@ -667,34 +653,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
-  quick_actions:
-    dependency: "direct main"
-    description:
-      name: quick_actions
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.0+11"
-  quick_actions_android:
-    dependency: transitive
-    description:
-      name: quick_actions_android
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.2"
-  quick_actions_ios:
-    dependency: transitive
-    description:
-      name: quick_actions_ios
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.0+14"
-  quick_actions_platform_interface:
-    dependency: transitive
-    description:
-      name: quick_actions_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2"
   quiver:
     dependency: transitive
     description:

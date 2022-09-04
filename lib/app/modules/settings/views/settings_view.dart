@@ -1,9 +1,9 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:filegram/app/core/services/new_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:new_version/new_version.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -126,7 +126,7 @@ class SettingsView extends GetView<SettingsController> {
 
         ListTile(
           onTap: () {
-            final newVersion = NewVersion(androidId: "com.sks.filegram");
+            final newVersion = NewVersionPlus(androidId: "com.sks.filegram");
             if (Get.context != null) {
               newVersion.getVersionStatus().then((status) {
                 if (status != null &&
