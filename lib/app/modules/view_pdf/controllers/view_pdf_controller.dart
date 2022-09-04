@@ -20,7 +20,7 @@ import '../../no_internet/controllers/no_internet_controller.dart';
 class ViewPdfController extends GetxController {
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
-  final swipehorizontal = false.obs;
+  final swipehorizontal = true.obs;
   final totalPages = 0.obs;
   final isDecryptionDone = false.obs;
   final isVisible = true.obs;
