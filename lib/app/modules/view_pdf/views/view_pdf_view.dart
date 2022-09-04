@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../controllers/view_pdf_controller.dart';
 import 'package:alh_pdf_view/lib.dart';
 
@@ -57,18 +58,61 @@ class ViewPdfView extends GetView<ViewPdfController> {
                     icon: const Icon(Icons.rotate_90_degrees_ccw_outlined)),
               ],
             ),
-            // persistentFooterButtons: [
-            //   controller.isBottomBannerAdLoaded.isTrue
-            //       ? SizedBox(
-            //           height: controller.bottomBannerAd.size.height.toDouble(),
-            //           width: controller.bottomBannerAd.size.width.toDouble(),
-            //           child: controller.adWidget(ad: controller.bottomBannerAd),
-            //         )
-            //       : const SizedBox(
-            //           height: 0,
-            //           width: 0,
-            //         ),
-            // ],
+            persistentFooterButtons: [
+              Obx(
+                () => controller.isBottomBannerAdLoaded.isTrue
+                    ? SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child:
+                            controller.adWidget(ad: controller.bottomBannerAd),
+                      )
+                    : SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: GestureDetector(
+                          onTap: () async {
+                            try {
+                              await launchUrlString(
+                                  "https://play.google.com/store/apps/details?id=com.sks.songeet",
+                                  mode:
+                                      LaunchMode.externalNonBrowserApplication);
+                            } on PlatformException catch (e) {
+                              Get.showSnackbar(GetSnackBar(
+                                backgroundColor:
+                                    Get.theme.snackBarTheme.backgroundColor!,
+                                messageText: Text(e.message ?? e.details),
+                                icon: const Icon(Icons.error_outline),
+                                snackPosition: SnackPosition.TOP,
+                                duration: const Duration(seconds: 3),
+                              ));
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Image.asset(
+                                  "assets/songeet.png",
+                                ),
+                              ),
+                              const FittedBox(
+                                child: Text(
+                                  'Download Songeet App - Made In India\nListen song from youtube (Ad) ',
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+              ),
+            ],
             bottomNavigationBar: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -198,7 +242,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                       defaultPage: controller.intialPageNumber,
                       minZoom: 1,
                       maxZoom: 5,
-                      enableDefaultScrollHandle: true,
+                      enableDefaultScrollHandle: false,
                       onRender: (pages) {
                         controller.totalPages.value = pages;
                       },

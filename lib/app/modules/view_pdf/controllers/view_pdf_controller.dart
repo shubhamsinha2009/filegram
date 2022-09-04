@@ -39,9 +39,9 @@ class ViewPdfController extends GetxController {
   final adDismissed = false.obs;
   final isInterstitialAdLoaded = false.obs;
   Timer? _timer1;
-  // final isBottomBannerAdLoaded = false.obs;
-  // late BannerAd bottomBannerAd;
-  final countdownTimer = 200.obs;
+  final isBottomBannerAdLoaded = false.obs;
+  late BannerAd bottomBannerAd;
+  final countdownTimer = 300.obs;
   bool _shouldAdPlay = Get.arguments[1];
   AlhPdfViewController? pdfViewController;
   static const double _zoomFactor = 0.1;
@@ -131,26 +131,26 @@ class ViewPdfController extends GetxController {
     }
   }
 
-  // void _createBottomBannerAd() {
-  //   bottomBannerAd = BannerAd(
-  //     adUnitId: AdHelper.viewPdfBanner,
-  //     size: AdSize.banner,
-  //     request: const AdRequest(),
-  //     listener: BannerAdListener(
-  //       onAdLoaded: (_) {
-  //         isBottomBannerAdLoaded.value = true;
-  //       },
-  //       onAdFailedToLoad: (ad, error) {
-  //         ad.dispose();
-  //       },
-  //     ),
-  //   );
-  //   bottomBannerAd.load();
-  // }
+  void _createBottomBannerAd() {
+    bottomBannerAd = BannerAd(
+      adUnitId: AdHelper.viewPdfBanner,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          isBottomBannerAdLoaded.value = true;
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+    bottomBannerAd.load();
+  }
 
-  // AdWidget adWidget({required AdWithView ad}) {
-  //   return AdWidget(ad: ad);
-  // }
+  AdWidget adWidget({required AdWithView ad}) {
+    return AdWidget(ad: ad);
+  }
 
   void undoPage() {
     if (pdfViewController != null &&
@@ -254,7 +254,7 @@ class ViewPdfController extends GetxController {
       (timer) {
         if (countdownTimer.value == 0) {
           showInterstitialAd(uid: ownerId)
-              .then((value) => countdownTimer.value = 200)
+              .then((value) => countdownTimer.value = 300)
               .catchError((e) {});
         } else {
           countdownTimer.value--;
@@ -277,7 +277,7 @@ class ViewPdfController extends GetxController {
 
     try {
       createInterstitialAd();
-      //  _createBottomBannerAd();
+      _createBottomBannerAd();
     } on Exception catch (e) {
       // TODO
     }
@@ -296,7 +296,7 @@ class ViewPdfController extends GetxController {
   void onClose() async {
     _timer1?.cancel();
     interstitialAd?.dispose();
-    // bottomBannerAd.dispose();
+    bottomBannerAd.dispose();
 
     if (File(fileOut).existsSync() && filePath.contains('.enc')) {
       await File(fileOut).delete();
