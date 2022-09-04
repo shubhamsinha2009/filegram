@@ -1,4 +1,5 @@
 import 'package:filegram/app/modules/no_internet/views/no_internet_view.dart';
+import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
               // Text("${controller.currentPageNumber + 1}/${controller.pages}")),
               actions: [
                 //  Obx(() => Text('${controller.countdownTimer.value}')),
+
                 IconButton(
                     onPressed: () async => await Share.shareFiles(
                           [controller.filePath],
