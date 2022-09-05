@@ -24,6 +24,10 @@ class EncryptedFileListController extends GetxController
   final inlineAdIndex = 1;
   BannerAd? inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
+  InterstitialAd? interstitialAd;
+  final int maxFailedLoadAttempts = 3;
+  int interstitialLoadAttempts = 0;
+  final adDismissed = false.obs;
 
   // late BannerAd topBannerAd;
   // final istopBannerAdLoaded = false.obs;
@@ -40,6 +44,56 @@ class EncryptedFileListController extends GetxController
     return AdWidget(ad: ad);
   }
 
+  Future<void> createInterstitialAd() async {
+    try {
+      await InterstitialAd.load(
+        adUnitId: AdHelper.viewInterstitial,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            interstitialAd = ad;
+            interstitialLoadAttempts = 0;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            interstitialLoadAttempts += 1;
+            interstitialAd = null;
+            if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
+              createInterstitialAd();
+            }
+          },
+        ),
+      );
+    } on Exception {
+      // TODO
+    }
+  }
+
+// AdWidget adWidget({required AdWithView ad}) {
+//     return AdWidget(ad: ad);
+//   }
+  Future<void> showInterstitialAd({String? uid}) async {
+    try {
+      if (interstitialAd != null) {
+        interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (InterstitialAd ad) {
+          ad.dispose();
+          adDismissed.value = true;
+          createInterstitialAd();
+        }, onAdFailedToShowFullScreenContent:
+                (InterstitialAd ad, AdError error) {
+          ad.dispose();
+          createInterstitialAd();
+        }, onAdShowedFullScreenContent: (InterstitialAd ad) {
+          if ((uid != null) && (homeController.user.value.id != uid)) {
+            FirestoreData.updateSikka(uid);
+          }
+        });
+        interstitialAd!.show();
+      }
+    } on Exception {
+      // TODO
+    }
+  }
   // void _createBottomBannerAd() {
   //   topBannerAd = BannerAd(
   //     adUnitId: AdHelper.docBanner,
@@ -192,6 +246,7 @@ class EncryptedFileListController extends GetxController
     if (isInlineBannerAdLoaded.isFalse) {
       _createInlineBannerAd();
     }
+    createInterstitialAd().catchError((e) {});
 
     // _createBottomBannerAd();
     // _createViewsBannerAd();
@@ -204,6 +259,7 @@ class EncryptedFileListController extends GetxController
   void onClose() {
     textEditingController.dispose();
     inlineBannerAd?.dispose();
+    interstitialAd?.dispose();
     // topBannerAd.dispose();
     // viewsBannerAd.dispose();
     // linkBannerAd.dispose();

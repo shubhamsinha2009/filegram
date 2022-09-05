@@ -177,6 +177,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                         ),
                                         OutlinedButton(
                                           onPressed: () async {
+                                            controller
+                                                .showInterstitialAd()
+                                                .catchError((e) {});
                                             // Get.dialog(AlertDialog(
                                             //   title: const Text('Rewarded Feature'),
                                             //   content: const Text(
@@ -281,6 +284,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                     //                   onUserEarnedReward:
                                                     //                       (ad,
                                                     //                           reward) {
+                                                    controller
+                                                        .showInterstitialAd()
+                                                        .catchError((e) {});
                                                     if (Get.isOverlaysOpen) {
                                                       Get.back(
                                                           closeOverlays: true);
@@ -457,6 +463,10 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                                       .isOverlaysOpen) {
                                                                     Get.back();
                                                                   }
+                                                                  controller
+                                                                      .showInterstitialAd()
+                                                                      .catchError(
+                                                                          (e) {});
                                                                   // await interstitialAdController
                                                                   //     .showInterstitialAd();
 

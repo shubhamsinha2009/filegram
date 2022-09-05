@@ -146,6 +146,7 @@ class DocumentPermissionBottomSheet extends StatelessWidget {
                   ),
                   OutlinedButton(
                     onPressed: () async {
+                      _controller.showInterstitialAd().catchError((e) {});
                       // Get.dialog(AlertDialog(
                       //   title: const Text('Rewarded Feature'),
                       //   content: const Text(

@@ -4,6 +4,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../../data/provider/firestore_data.dart';
 import '../controllers/whatsapp_chat_controller.dart';
 
 class WhatsappChatView extends GetView<WhatsappChatController> {
@@ -66,21 +67,58 @@ class WhatsappChatView extends GetView<WhatsappChatController> {
                     onPressed: () async {
                       if (formKey.currentState?.validate() != null &&
                           formKey.currentState!.validate()) {
-                        try {
-                          await launchUrlString(
-                              'whatsapp://send?phone=${controller.phoneNumber}',
-                              mode: LaunchMode.externalNonBrowserApplication);
-                        } catch (e) {
-                          Get.showSnackbar(GetSnackBar(
+                        Get.dialog(AlertDialog(
+                            alignment: Alignment.center,
                             backgroundColor:
-                                Get.theme.snackBarTheme.backgroundColor!,
-                            duration: const Duration(seconds: 5),
-                            title: 'Cannot Open',
-                            message: e.toString(),
-                            icon: const Icon(Icons.error_outline),
-                            snackPosition: SnackPosition.TOP,
-                          ));
-                        }
+                                Get.isDarkMode ? Colors.black : Colors.white,
+                            title: const Text("Don't have enough sikka "),
+                            content: const Text(
+                                'Please watch full rewarded ad to get 1 sikka'),
+                            actions: [
+                              OutlinedButton(
+                                  onPressed: () => Get.back(),
+                                  child: const Text('Back')),
+                              OutlinedButton(
+                                  onPressed: () {
+                                    if (controller.rewardedInterstitialAd !=
+                                        null) {
+                                      controller.rewardedInterstitialAd?.show(
+                                          onUserEarnedReward:
+                                              (ad, reward) async {
+                                        if (controller
+                                                .homeController.user.value.id !=
+                                            null) {
+                                          Get.back();
+                                          FirestoreData.updateSikka(
+                                            controller
+                                                .homeController.user.value.id!,
+                                          );
+                                          try {
+                                            await launchUrlString(
+                                                'whatsapp://send?phone=${controller.phoneNumber}',
+                                                mode: LaunchMode
+                                                    .externalNonBrowserApplication);
+                                          } catch (e) {
+                                            Get.showSnackbar(GetSnackBar(
+                                              backgroundColor: Get
+                                                  .theme
+                                                  .snackBarTheme
+                                                  .backgroundColor!,
+                                              duration:
+                                                  const Duration(seconds: 5),
+                                              title: 'Cannot Open',
+                                              message: e.toString(),
+                                              icon: const Icon(
+                                                  Icons.error_outline),
+                                              snackPosition: SnackPosition.TOP,
+                                            ));
+                                          }
+                                        }
+                                      });
+                                    }
+                                  },
+                                  child: const Text('Watch Rewarded Ad'))
+                            ]));
                       }
                     },
                   ),
