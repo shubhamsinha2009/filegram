@@ -338,12 +338,14 @@ class FirestoreData {
     try {
       DocumentSnapshot doc =
           await _firestore.collection("views").doc(documentID).get();
-
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return ViewsModel(
-        views: data["views"] as int?,
-        numberOfUploads: data["uploads"] as int?,
-      );
+      if (doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return ViewsModel(
+          views: data["views"] as int?,
+          numberOfUploads: data["uploads"] as int?,
+        );
+      }
+      return ViewsModel(views: 0, numberOfUploads: 0);
     } catch (e) {
       rethrow;
     }
@@ -465,12 +467,17 @@ class FirestoreData {
               .snapshots()
               .map((event) => doc = event));
         }
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return GullakModel(
-          sikka: data["sikka"],
-          withdrawalLink:
-              data.containsKey("withdrawalLink") ? data["withdrawalLink"] : "",
-        );
+        if (doc.data() != null) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          return GullakModel(
+            sikka: data["sikka"],
+            withdrawalLink: data.containsKey("withdrawalLink")
+                ? data["withdrawalLink"]
+                : "",
+          );
+        }
+
+        return GullakModel();
       });
     } catch (e) {
       rethrow;

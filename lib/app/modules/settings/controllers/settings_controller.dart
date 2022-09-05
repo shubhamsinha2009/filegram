@@ -7,7 +7,7 @@ import '../../home/controllers/controllers.dart';
 class SettingsController extends GetxController {
   final homeController = Get.find<HomeController>();
   final isSettingsBannerAdLoaded = false.obs;
-  late BannerAd settingsBannerAd;
+  BannerAd? settingsBannerAd;
 
   void _createBottomBannerAd() {
     settingsBannerAd = BannerAd(
@@ -23,7 +23,7 @@ class SettingsController extends GetxController {
         },
       ),
     );
-    settingsBannerAd.load();
+    settingsBannerAd?.load();
   }
 
   AdWidget adWidget({required AdWithView ad}) {
@@ -43,7 +43,7 @@ class SettingsController extends GetxController {
 
   @override
   void onClose() {
-    settingsBannerAd.dispose();
+    settingsBannerAd?.dispose();
     super.onClose();
   }
 }

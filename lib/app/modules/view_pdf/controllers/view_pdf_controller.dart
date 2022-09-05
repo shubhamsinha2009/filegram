@@ -40,7 +40,7 @@ class ViewPdfController extends GetxController {
   final isInterstitialAdLoaded = false.obs;
   Timer? _timer1;
   final isBottomBannerAdLoaded = false.obs;
-  late BannerAd bottomBannerAd;
+  BannerAd? bottomBannerAd;
   final countdownTimer = 300.obs;
   bool _shouldAdPlay = Get.arguments[1];
   AlhPdfViewController? pdfViewController;
@@ -145,7 +145,9 @@ class ViewPdfController extends GetxController {
         },
       ),
     );
-    bottomBannerAd.load();
+    if (bottomBannerAd != null) {
+      bottomBannerAd?.load();
+    }
   }
 
   AdWidget adWidget({required AdWithView ad}) {
@@ -248,6 +250,7 @@ class ViewPdfController extends GetxController {
     final Map<String, dynamic>? pdfDetails =
         GetStorageDbService.getRead(key: filePath);
     intialPageNumber = pdfDetails?['intialPageNumber'] ?? 0;
+    pagesChanged.add(intialPageNumber);
 
     _timer1 = Timer.periodic(
       const Duration(seconds: 1),
@@ -296,7 +299,7 @@ class ViewPdfController extends GetxController {
   void onClose() async {
     _timer1?.cancel();
     interstitialAd?.dispose();
-    bottomBannerAd.dispose();
+    bottomBannerAd?.dispose();
 
     if (File(fileOut).existsSync() && filePath.contains('.enc')) {
       await File(fileOut).delete();

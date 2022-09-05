@@ -103,10 +103,10 @@ class HomeView extends GetView<HomeController> {
                 controller.isBottomBannerAdLoaded.isTrue
                     ? SizedBox(
                         height:
-                            controller.bottomBannerAd.size.height.toDouble(),
-                        width: controller.bottomBannerAd.size.width.toDouble(),
+                            controller.bottomBannerAd?.size.height.toDouble(),
+                        width: controller.bottomBannerAd?.size.width.toDouble(),
                         child:
-                            controller.adWidget(ad: controller.bottomBannerAd),
+                            controller.adWidget(ad: controller.bottomBannerAd!),
                       )
                     : const SizedBox(
                         height: 0,

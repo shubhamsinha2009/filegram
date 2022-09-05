@@ -76,9 +76,9 @@ class SettingsView extends GetView<SettingsController> {
         Obx(
           () => controller.isSettingsBannerAdLoaded.isTrue
               ? SizedBox(
-                  height: controller.settingsBannerAd.size.height.toDouble(),
-                  width: controller.settingsBannerAd.size.width.toDouble(),
-                  child: controller.adWidget(ad: controller.settingsBannerAd),
+                  height: controller.settingsBannerAd?.size.height.toDouble(),
+                  width: controller.settingsBannerAd?.size.width.toDouble(),
+                  child: controller.adWidget(ad: controller.settingsBannerAd!),
                 )
               : const SizedBox(
                   height: 0,

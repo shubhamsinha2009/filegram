@@ -118,7 +118,9 @@ class UpdatePhoneNumberView extends GetView<UpdatePhoneNumberController> {
                                                               const Duration(
                                                                   seconds: 5),
                                                           title:
-                                                              'Phone Number Updated',
+                                                              'Phone Number Status',
+                                                          message:
+                                                              'Phone Number Updated Successfully',
                                                           icon: const Icon(Icons
                                                               .error_outline),
                                                           snackPosition:

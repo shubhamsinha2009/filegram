@@ -31,9 +31,9 @@ class GullakView extends GetView<GullakController> {
               Obx(
                 () => controller.istopBannerAdLoaded.isTrue
                     ? SizedBox(
-                        height: controller.topBannerAd.size.height.toDouble(),
-                        width: controller.topBannerAd.size.width.toDouble(),
-                        child: controller.adWidget(ad: controller.topBannerAd),
+                        height: controller.topBannerAd?.size.height.toDouble(),
+                        width: controller.topBannerAd?.size.width.toDouble(),
+                        child: controller.adWidget(ad: controller.topBannerAd!),
                       )
                     : const SizedBox(
                         height: 0,

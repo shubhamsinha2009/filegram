@@ -63,12 +63,12 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                 padding: const EdgeInsets.only(
                                   bottom: 10,
                                 ),
-                                width: controller.inlineBannerAd.size.width
+                                width: controller.inlineBannerAd?.size.width
                                     .toDouble(),
-                                height: controller.inlineBannerAd.size.height
+                                height: controller.inlineBannerAd?.size.height
                                     .toDouble(),
                                 child: controller.adWidget(
-                                    ad: controller.inlineBannerAd),
+                                    ad: controller.inlineBannerAd!),
                               );
                             } else {
                               final currentfile = controller.filesList[

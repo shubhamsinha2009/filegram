@@ -58,12 +58,12 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                             padding: const EdgeInsets.only(
                               bottom: 10,
                             ),
-                            width:
-                                controller.inlineBannerAd.size.width.toDouble(),
-                            height: controller.inlineBannerAd.size.height
+                            width: controller.inlineBannerAd?.size.width
+                                .toDouble(),
+                            height: controller.inlineBannerAd?.size.height
                                 .toDouble(),
                             child: controller.adWidget(
-                                ad: controller.inlineBannerAd),
+                                ad: controller.inlineBannerAd!),
                           );
                         } else {
                           final DocumentModel? _document =

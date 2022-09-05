@@ -22,7 +22,7 @@ class EncryptedFileListController extends GetxController
   final TextEditingController textEditingController = TextEditingController();
   final groupValue = DocumentPermission.public.obs;
   final inlineAdIndex = 1;
-  late BannerAd inlineBannerAd;
+  BannerAd? inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
 
   // late BannerAd topBannerAd;
@@ -109,7 +109,7 @@ class EncryptedFileListController extends GetxController
       ),
     );
     if (isInlineBannerAdLoaded.isFalse) {
-      inlineBannerAd.load();
+      inlineBannerAd?.load();
     }
   }
 
@@ -203,7 +203,7 @@ class EncryptedFileListController extends GetxController
   @override
   void onClose() {
     textEditingController.dispose();
-    inlineBannerAd.dispose();
+    inlineBannerAd?.dispose();
     // topBannerAd.dispose();
     // viewsBannerAd.dispose();
     // linkBannerAd.dispose();

@@ -24,7 +24,7 @@ class FilesDeviceController extends GetxController {
   int interstitialLoadAttempts = 0;
   final adDismissed = false.obs;
   final inlineAdIndex = 2;
-  late BannerAd inlineBannerAd;
+  BannerAd? inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
   Directory? _mydir;
   final isLoading = true.obs;
@@ -171,7 +171,7 @@ class FilesDeviceController extends GetxController {
         },
       ),
     );
-    inlineBannerAd.load();
+    inlineBannerAd?.load();
   }
 
   int getListViewItemIndex(int index) {
@@ -208,7 +208,7 @@ class FilesDeviceController extends GetxController {
   @override
   void onClose() {
     interstitialAd?.dispose();
-    inlineBannerAd.dispose();
+    inlineBannerAd?.dispose();
     super.onClose();
   }
 }

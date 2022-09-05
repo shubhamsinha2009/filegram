@@ -1,5 +1,4 @@
 import 'package:filegram/app/modules/no_internet/views/no_internet_view.dart';
-import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -67,7 +66,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                         height: 50,
                         width: double.infinity,
                         child:
-                            controller.adWidget(ad: controller.bottomBannerAd),
+                            controller.adWidget(ad: controller.bottomBannerAd!),
                       )
                     : SizedBox(
                         height: 50,

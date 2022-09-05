@@ -24,7 +24,7 @@ class EncryptDecryptController extends GetxController {
   final _documentModel = DocumentModel().obs;
   final analytics = AnalyticsService.analytics;
   final homeController = Get.find<HomeController>();
-  late StreamSubscription _intentDataStreamSubscription;
+  StreamSubscription? _intentDataStreamSubscription;
   InterstitialAd? interstitialAd;
   final int maxFailedLoadAttempts = 3;
   int interstitialLoadAttempts = 0;
@@ -523,7 +523,7 @@ class EncryptDecryptController extends GetxController {
   @override
   void onClose() {
     interstitialAd?.dispose();
-    _intentDataStreamSubscription.cancel();
+    _intentDataStreamSubscription?.cancel();
     super.onClose();
   }
 }

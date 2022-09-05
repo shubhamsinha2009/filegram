@@ -18,7 +18,7 @@ class HomeController extends GetxController {
   final auth = FirebaseAuth.instance;
   final firestoreData = FirestoreData();
   final isBottomBannerAdLoaded = false.obs;
-  late BannerAd bottomBannerAd;
+  BannerAd? bottomBannerAd;
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
   final selectedIndex = 0.obs;
@@ -103,7 +103,7 @@ class HomeController extends GetxController {
         },
       ),
     );
-    bottomBannerAd.load();
+    bottomBannerAd?.load();
   }
 
   AdWidget adWidget({required AdWithView ad}) {
@@ -188,7 +188,7 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
-    bottomBannerAd.dispose();
+    bottomBannerAd?.dispose();
 
     super.onClose();
   }

@@ -13,7 +13,7 @@ class GullakController extends GetxController {
   int rewardLoadAttempts = 0;
   // late RewardedInterstitialAd rewardedInterstitialAd;
   // final isRewardedAdReady = false.obs;
-  late BannerAd topBannerAd;
+  BannerAd? topBannerAd;
   final istopBannerAdLoaded = false.obs;
 
   AdWidget adWidget({required AdWithView ad}) {
@@ -65,7 +65,7 @@ class GullakController extends GetxController {
       ),
     );
 
-    topBannerAd.load();
+    topBannerAd?.load();
   }
 
   @override
@@ -81,7 +81,7 @@ class GullakController extends GetxController {
   @override
   void onClose() {
     //rewardedInterstitialAd.dispose();
-    topBannerAd.dispose();
+    topBannerAd?.dispose();
     super.onClose();
   }
 }
