@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:open_as_default/open_as_default.dart';
+import 'package:open_as_default_adv/open_as_default_adv.dart';
+
 import 'package:path_provider/path_provider.dart';
 
 import '../../../core/helpers/ad_helper.dart';

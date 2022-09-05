@@ -513,13 +513,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  open_as_default:
+  open_as_default_adv:
     dependency: "direct main"
     description:
-      name: open_as_default
+      name: open_as_default_adv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.1"
   package_info_plus:
     dependency: "direct main"
     description:
