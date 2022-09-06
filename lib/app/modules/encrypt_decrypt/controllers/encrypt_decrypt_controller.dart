@@ -86,7 +86,7 @@ class EncryptDecryptController extends GetxController {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value != null) {
-                        if (!validateRename(value)) {
+                        if (!validateRename('$value.pdf')) {
                           return "File Name is not valid";
                         } else {
                           return null;
@@ -97,7 +97,7 @@ class EncryptDecryptController extends GetxController {
                     initialValue: fileName,
                     keyboardType: TextInputType.name,
                     onChanged: (value) {
-                      fileName = value;
+                      fileName = '$value.pdf';
                     },
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
