@@ -8,7 +8,7 @@ import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:open_as_default_adv/open_as_default_adv.dart';
-
+import 'package:filegram/app/core/extensions.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../core/helpers/ad_helper.dart';
@@ -94,7 +94,7 @@ class EncryptDecryptController extends GetxController {
                       }
                       return null;
                     },
-                    initialValue: fileName,
+                    initialValue: fileName.removeExtension,
                     keyboardType: TextInputType.name,
                     onChanged: (value) {
                       fileName = '$value.pdf';
