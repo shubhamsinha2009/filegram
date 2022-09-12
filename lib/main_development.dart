@@ -16,6 +16,7 @@ void main() async {
 
     await Firebase.initializeApp();
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
     await initServices();
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

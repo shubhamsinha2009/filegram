@@ -94,7 +94,7 @@ class EncryptDecryptController extends GetxController {
                       }
                       return null;
                     },
-                    initialValue: fileName.removeExtension,
+                    initialValue: fileName.removeExtensionPdf,
                     keyboardType: TextInputType.name,
                     onChanged: (value) {
                       fileName = '$value.pdf';

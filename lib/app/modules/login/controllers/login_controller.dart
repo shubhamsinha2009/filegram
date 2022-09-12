@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_carousel_widget/flutter_carousel_controller.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 import '../../no_internet/controllers/no_internet_controller.dart';
 

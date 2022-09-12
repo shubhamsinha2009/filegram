@@ -285,8 +285,9 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                   child: ListTile(
                                     trailing: sourceUrl != null
                                         ? IconButton(
-                                            icon: const Icon(Icons.link_rounded,
-                                                color: Colors.white),
+                                            icon: const Icon(
+                                              Icons.link_rounded,
+                                            ),
                                             onPressed: () async {
                                               try {
                                                 await launchUrlString(sourceUrl,

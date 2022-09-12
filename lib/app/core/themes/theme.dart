@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class Themes {
   static final ThemeData appDarkTheme = ThemeData(
+    primaryColorDark: Colors.black,
+    primaryColorLight: Colors.black,
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white,
     ),
@@ -17,6 +19,7 @@ class Themes {
         brightness: Brightness.dark),
     dividerColor: Colors.white,
     dividerTheme: const DividerThemeData(color: Colors.white),
+    // useMaterial3: true,
     inputDecorationTheme: const InputDecorationTheme(
       border: InputBorder.none,
       prefixIconColor: Colors.white,
@@ -45,6 +48,7 @@ class Themes {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     brightness: Brightness.dark,
     primaryColor: Colors.black,
+    colorScheme: const ColorScheme.dark(primary: Colors.black),
     canvasColor: Colors.black,
     scaffoldBackgroundColor: Colors.black,
     backgroundColor: Colors.black,
@@ -62,14 +66,14 @@ class Themes {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: TextButton.styleFrom(
-        primary: Colors.white70,
+        foregroundColor: Colors.white70,
         backgroundColor: Colors.white10,
         shadowColor: Colors.grey.shade900,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        primary: Colors.white70,
+        foregroundColor: Colors.white70,
       ),
     ),
     snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.black),
@@ -83,6 +87,8 @@ class Themes {
 
   static final ThemeData appLightTheme = ThemeData(
     brightness: Brightness.light,
+    // useMaterial3: true,
+    primaryColor: Colors.red,
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: Colors.blue,
     ),
