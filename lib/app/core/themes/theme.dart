@@ -56,7 +56,9 @@ class Themes {
       color: Colors.black,
     ),
     cardColor: Colors.black,
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(),
+    bottomNavigationBarTheme:
+        const BottomNavigationBarThemeData(backgroundColor: Colors.black),
+    navigationBarTheme: NavigationBarThemeData(backgroundColor: Colors.black),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
