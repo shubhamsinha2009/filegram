@@ -197,16 +197,16 @@ class EncryptedFileListController extends GetxController
   }
 
   void filterfileList(String fileName) {
-    List<DocumentModel> _documents = [];
-    _documents = documents
+    List<DocumentModel> documents = [];
+    documents = documents
         .where((element) => element.documentName!
             .toLowerCase()
             .contains(fileName.toLowerCase()))
         .toList();
-    if (_documents.isEmpty) {
+    if (documents.isEmpty) {
       change(null, status: RxStatus.empty());
     } else {
-      change(_documents, status: RxStatus.success());
+      change(documents, status: RxStatus.success());
     }
   }
 

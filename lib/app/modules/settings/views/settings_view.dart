@@ -57,7 +57,7 @@ class SettingsView extends GetView<SettingsController> {
             ),
           ),
           leading: const Icon(
-            Icons.whatsapp_outlined,
+            Icons.whatshot,
           ),
           onTap: () => Get.toNamed(Routes.whatsappChat),
         ),

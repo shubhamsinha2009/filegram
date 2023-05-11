@@ -36,7 +36,7 @@ class Themes {
         borderSide: BorderSide(color: Colors.white),
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
-      labelStyle: TextStyle(color: Colors.white),
+      labelStyle: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
     ),
     disabledColor: Colors.white,
     bottomSheetTheme: const BottomSheetThemeData(
@@ -51,14 +51,14 @@ class Themes {
     colorScheme: const ColorScheme.dark(primary: Colors.black),
     canvasColor: Colors.black,
     scaffoldBackgroundColor: Colors.black,
-    backgroundColor: Colors.black,
     appBarTheme: const AppBarTheme(
       color: Colors.black,
     ),
     cardColor: Colors.black,
     bottomNavigationBarTheme:
         const BottomNavigationBarThemeData(backgroundColor: Colors.black),
-    navigationBarTheme: NavigationBarThemeData(backgroundColor: Colors.black),
+    navigationBarTheme:
+        const NavigationBarThemeData(backgroundColor: Colors.black),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
@@ -79,12 +79,6 @@ class Themes {
       ),
     ),
     snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.black),
-    textTheme: const TextTheme(
-      headline6: TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
-      ),
-    ),
   );
 
   static final ThemeData appLightTheme = ThemeData(
@@ -97,12 +91,7 @@ class Themes {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.black,
     ),
-    textTheme: const TextTheme(
-      headline6: TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 25,
-      ),
-    ),
+
     inputDecorationTheme: const InputDecorationTheme(
       border: InputBorder.none,
       prefixIconColor: Colors.black,

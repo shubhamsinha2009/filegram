@@ -87,11 +87,12 @@ class NewVersionPlus {
 
   /// This checks the version status, then displays a platform-specific alert
   /// with buttons to dismiss the update alert, or go to the app store.
-  showAlertIfNecessary({required BuildContext context}) async {
-    final VersionStatus? versionStatus = await getVersionStatus();
-    if (versionStatus != null && versionStatus.canUpdate) {
-      showUpdateDialog(context: context, versionStatus: versionStatus);
-    }
+  showAlertIfNecessary({required BuildContext context}) {
+    getVersionStatus().then((versionStatus) {
+      if (versionStatus != null && versionStatus.canUpdate) {
+        showUpdateDialog(context: context, versionStatus: versionStatus);
+      }
+    });
   }
 
   /// This checks the version status and returns the information. This is useful

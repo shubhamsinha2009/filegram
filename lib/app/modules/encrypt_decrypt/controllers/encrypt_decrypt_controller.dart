@@ -59,13 +59,43 @@ class EncryptDecryptController extends GetxController {
     return ext.endsWith(".pdf");
   }
 
-  void confirmDialog(String? pickedFile) {
+  void confirmDialog(String? pickedFile, {bool? isPdf}) {
     String? sourceUrl;
     final result = pickedFile;
     if (result != null) {
       String fileName = result.split('/').last;
+      if (result.contains(".enc") || (isPdf != null && !isPdf)) {
+        doFileCopy(result).then((value) {
+          if (value != null) {
+            Get.showSnackbar(
+              GetSnackBar(
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('File Saved '),
+                duration: const Duration(seconds: 3),
+                snackPosition: SnackPosition.TOP,
+              ),
+            );
+            final ownerId = GetStorageDbService.getRead(key: value)?['ownerId'];
 
-      if (!result.contains('.enc')) {
+            // rewardedAdController.rewardedInterstitialAd.show(
+            //     onUserEarnedReward: (ad, reward) {
+            //   FirestoreData.updateSikka(_ownerId);
+
+            showInterstitialAd(uid: ownerId).catchError((e) {});
+            Get.toNamed(Routes.viewPdf, arguments: [value, true]);
+            // });
+          } else {
+            Get.showSnackbar(
+              GetSnackBar(
+                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
+                messageText: const Text('File Not Saved '),
+                duration: const Duration(seconds: 3),
+                snackPosition: SnackPosition.TOP,
+              ),
+            );
+          }
+        });
+      } else {
         Get.bottomSheet(
           WillPopScope(
             onWillPop: () async => false,
@@ -200,38 +230,6 @@ class EncryptDecryptController extends GetxController {
           ),
           isDismissible: false,
         );
-      } else {
-        encryptDecrypt(pickedFile).then((value) {
-          if (value != null) {
-            Get.showSnackbar(
-              GetSnackBar(
-                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
-                messageText: const Text('File Saved '),
-                duration: const Duration(seconds: 3),
-                snackPosition: SnackPosition.TOP,
-              ),
-            );
-            final ownerId = GetStorageDbService.getRead(key: value)?['ownerId'];
-
-            // rewardedAdController.rewardedInterstitialAd.show(
-            //     onUserEarnedReward: (ad, reward) {
-            //   FirestoreData.updateSikka(_ownerId);
-
-            showInterstitialAd(uid: ownerId).catchError((e) {});
-            Get.toNamed(Routes.viewPdf, arguments: [value, true]);
-            // });
-
-          } else {
-            Get.showSnackbar(
-              GetSnackBar(
-                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
-                messageText: const Text('File Not Saved '),
-                duration: const Duration(seconds: 3),
-                snackPosition: SnackPosition.TOP,
-              ),
-            );
-          }
-        });
       }
     }
   }
@@ -242,11 +240,7 @@ class EncryptDecryptController extends GetxController {
     String? fileOut;
     if (result != null) {
       try {
-        if (result.contains('.enc')) {
-          fileOut = await doFileCopy(result);
-        } else {
-          fileOut = await doEncryption(result, sourceUrl, fileName);
-        }
+        fileOut = await doEncryption(result, sourceUrl, fileName);
       } catch (e) {
         isLoading.value = false;
         Get.showSnackbar(GetSnackBar(
@@ -343,51 +337,40 @@ class EncryptDecryptController extends GetxController {
     }
   }
 
-  Future<String?> doFileCopy(
-    String result,
-  ) async {
-    try {
-      // _fileOut = '${await filesDocDir()}/$_filename';
-      final checkKey = await FileEncrypter.getFileIv(inFilename: result);
-      if (checkKey != null) {
-        final document = await FirestoreData.getSecretKey(
-          checkKey,
-          homeController.user.value.emailId,
-          homeController.user.value.id,
-        );
-        final secretKey = document?.secretKey;
-        if (secretKey != null) {
-          String fileOut = '${await filesDocDir()}/${document?.documentName}';
-          if (!File(fileOut).existsSync()) {
-            await File(result).copy(fileOut);
-            await FirestoreData.updateUploads(document?.documentId);
-            final Map<String, dynamic> pdfDetails = {
-              'photoUrl': document?.ownerPhotoUrl,
-              'ownerName': document?.ownerName,
-              'sourceUrl': document?.sourceUrl,
-              'ownerId': document?.ownerId,
-              'intialPageNumber': 0,
-            };
-            GetStorageDbService.getWrite(key: fileOut, value: pdfDetails);
-          }
-          return fileOut;
+  Future<String?> doFileCopy(String result) async {
+    // _fileOut = '${await filesDocDir()}/$_filename';
+    final checkKey = await FileEncrypter.getFileIv(inFilename: result);
+    if (checkKey != null) {
+      final document = await FirestoreData.getSecretKey(
+        checkKey,
+        homeController.user.value.emailId,
+        homeController.user.value.id,
+      );
+      final secretKey = document?.secretKey;
+      if (secretKey != null) {
+        String fileOut = '${await filesDocDir()}/${document?.documentName}';
+        if (!File(fileOut).existsSync()) {
+          await File(result).copy(fileOut);
+          await FirestoreData.updateUploads(document?.documentId);
+          final Map<String, dynamic> pdfDetails = {
+            'photoUrl': document?.ownerPhotoUrl,
+            'ownerName': document?.ownerName,
+            'sourceUrl': document?.sourceUrl,
+            'ownerId': document?.ownerId,
+            'intialPageNumber': 0,
+          };
+          GetStorageDbService.getWrite(key: fileOut, value: pdfDetails);
         }
-        return null;
-        // ! Use of Cloud Function
-        // *Using Cloud Firestore temporarily
+        return fileOut;
       }
       return null;
-    } on PlatformException catch (e) {
-      isLoading.value = false;
-      Get.showSnackbar(GetSnackBar(
-        backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
-        duration: const Duration(seconds: 5),
-        messageText: Text(e.message ?? e.details),
-        icon: const Icon(Icons.error_outline),
-        snackPosition: SnackPosition.TOP,
-      ));
-      return null;
+      // ! Use of Cloud Function
+      // *Using Cloud Firestore temporarily
     }
+    if (File(result).existsSync()) {
+      File(result).deleteSync();
+    }
+    return null;
   }
 
   String getFileSize({
@@ -407,7 +390,7 @@ class EncryptDecryptController extends GetxController {
         if (value.isNotEmpty) {
           //   print('Your file name ---------------------------------' +
           //     value.single.path);
-          confirmDialog(value.single.path);
+          confirmDialog(value.single.path, isPdf: true);
         }
       } on PlatformException catch (e) {
         Get.showSnackbar(GetSnackBar(
@@ -505,7 +488,7 @@ class EncryptDecryptController extends GetxController {
     OpenAsDefault.getFileIntent.then((value) {
       if (value != null) {
         try {
-          confirmDialog(value.path);
+          confirmDialog(value.path, isPdf: false);
         } on PlatformException catch (e) {
           Get.showSnackbar(GetSnackBar(
             backgroundColor: Get.theme.snackBarTheme.backgroundColor!,

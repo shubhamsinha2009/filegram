@@ -28,7 +28,6 @@ class LoginView extends GetView<LoginController> {
         ? Scaffold(
             body: SafeArea(
               child: FlutterCarousel(
-                carouselController: controller.buttonCarouselController,
                 options: CarouselOptions(
                     height: context.height - 200,
                     enableInfiniteScroll: false,
@@ -37,7 +36,7 @@ class LoginView extends GetView<LoginController> {
                     aspectRatio: 9 / 16,
                     showIndicator: false,
                     viewportFraction: 1,
-
+                    carouselController: controller.buttonCarouselController,
                     // enlargeCenterPage: true,
 
                     floatingIndicator: false,

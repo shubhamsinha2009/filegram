@@ -36,17 +36,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="*/*" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND_MULTIPLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="*/*" />
+                <data android:mimeType="application/pdf" />
             </intent-filter>
             <intent-filter>
             <action android:name="android.intent.action.VIEW" />
@@ -55,8 +45,8 @@
             <category android:name="android.intent.category.APP_BROWSER" />
 
             <data
-                android:mimeType="*/*" 
-                android:scheme="content" />
+                android:mimeType="application/octet-stream" 
+                android:scheme="content" />    
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

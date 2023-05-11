@@ -66,7 +66,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                 ad: controller.inlineBannerAd!),
                           );
                         } else {
-                          final DocumentModel? _document =
+                          final DocumentModel? document =
                               state?[controller.getListViewItemIndex(index)];
 
                           return Obx(() => AnimatedContainer(
@@ -123,7 +123,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                   // verticalDirection: VerticalDirection.down,
                                   children: [
                                     Text(
-                                      '${_document?.documentName?.removeExtension}',
+                                      '${document?.documentName?.removeExtension}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w300,
                                         letterSpacing: 1,
@@ -134,7 +134,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     ),
                                     Text(
                                       DateFormat.yMMMEd().add_jms().format(
-                                          _document?.createdOn ??
+                                          document?.createdOn ??
                                               DateTime.now()),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w300,
@@ -145,7 +145,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                       height: 2,
                                     ),
                                     Text(
-                                      '${_document?.documentSize}',
+                                      '${document?.documentSize}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w300,
                                         letterSpacing: 1,
@@ -162,7 +162,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                           //     .show(onUserEarnedReward: (ad, reward) {
                                           onPressed: () => Get.bottomSheet(
                                             DocumentPermissionBottomSheet(
-                                              document: _document!,
+                                              document: document!,
                                               controller: controller,
                                             ),
                                             backgroundColor: Get.isDarkMode
@@ -173,7 +173,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                           ),
                                           // }),
                                           child: Text(
-                                              '${_document?.documentPermission.name.capitalize}'),
+                                              '${document?.documentPermission.name.capitalize}'),
                                         ),
                                         OutlinedButton(
                                           onPressed: () async {
@@ -194,9 +194,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                             //               .rewardedInterstitialAd
                                             //               .show(onUserEarnedReward:
                                             //                   (ad, reward) async {
-                                            final _views = await FirestoreData
+                                            final views = await FirestoreData
                                                 .readViewsAndUploads(
-                                                    _document?.documentId);
+                                                    document?.documentId);
                                             // controller.adsController.rewardedAd.show(
                                             //   onUserEarnedReward: (ad, reward) {
                                             Get.dialog(
@@ -209,7 +209,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                 //   ' Number of Views',
                                                 // ),
                                                 content: Text(
-                                                  'Number of Views : ${_views.views} \n \n & \n \n  Number of Uploads : ${_views.numberOfUploads} ',
+                                                  'Number of Views : ${views.views} \n \n & \n \n  Number of Uploads : ${views.numberOfUploads} ',
                                                   textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.w800,
@@ -250,7 +250,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                   ? Colors.black
                                                   : Colors.white,
                                               title: Text(
-                                                '"Are you sure you wish to delete this file ${_document?.documentName?.removeExtension} forever from servers?',
+                                                '"Are you sure you wish to delete this file ${document?.documentName?.removeExtension} forever from servers?',
                                               ),
                                               content: const Text(
                                                   'After you delete your file, Nobody will be able to decrypt this file ever'),
@@ -294,12 +294,12 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                     // ! Sometimes due to async document gets deleted before views
                                                     FirestoreData
                                                             .deleteViewsAndUploads(
-                                                                _document
+                                                                document
                                                                     ?.documentId)
                                                         .then((value) =>
                                                             FirestoreData.deleteDocument(
                                                                     documentId:
-                                                                        _document
+                                                                        document
                                                                             ?.documentId)
                                                                 .then((value) {
                                                               controller
@@ -318,7 +318,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                                                     .snackBarTheme
                                                                     .backgroundColor!,
                                                                 messageText: Text(
-                                                                    'The File ${_document?.documentName} is deleted from server'),
+                                                                    'The File ${document?.documentName} is deleted from server'),
                                                                 icon: const Icon(
                                                                     Icons
                                                                         .delete_forever_rounded),
@@ -349,179 +349,180 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                           child: const Text('Delete'),
                                         ),
                                         OutlinedButton(
-                                            onPressed:
-                                                () => Get.bottomSheet(Container(
-                                                      color: Get.isDarkMode
-                                                          ? Colors.black
-                                                          : Colors.white,
-                                                      margin:
-                                                          const EdgeInsets.all(
-                                                              16),
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              16),
-                                                      child: Wrap(
-                                                        children: <Widget>[
-                                                          const Text(
-                                                            'Shared Link // Source Url',
-                                                            style: TextStyle(
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w800),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 50,
-                                                          ),
-                                                          TextFormField(
-                                                            autovalidateMode:
-                                                                AutovalidateMode
-                                                                    .onUserInteraction,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .url,
-                                                            onChanged: (value) =>
-                                                                controller
-                                                                        .sourceUrl =
-                                                                    value,
-                                                            initialValue:
-                                                                _document
-                                                                    ?.sourceUrl,
-                                                            decoration: const InputDecoration(
-                                                                border:
-                                                                    OutlineInputBorder(),
-                                                                helperText:
-                                                                    'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
-                                                                labelText:
-                                                                    'Source URL / Share Link to redirect',
-                                                                hintText:
-                                                                    'https://t.me/filegram_app',
-                                                                helperMaxLines:
-                                                                    3,
-                                                                isDense: true,
-                                                                prefixIcon:
-                                                                    Icon(Icons
-                                                                        .add_link_rounded),
-                                                                prefixIconColor:
-                                                                    Colors
-                                                                        .white54),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 30,
-                                                          ),
-                                                          ButtonBar(
-                                                            children: [
-                                                              OutlinedButton(
-                                                                onPressed: () {
-                                                                  if (Get
-                                                                      .isOverlaysOpen) {
-                                                                    Get.back();
-                                                                  }
-                                                                  Get.showSnackbar(
-                                                                    GetSnackBar(
-                                                                      backgroundColor: Get
-                                                                          .theme
-                                                                          .snackBarTheme
-                                                                          .backgroundColor!,
-                                                                      message:
-                                                                          'Cancelled',
-                                                                      // backgroundColor: Colors.amber,
-                                                                      duration: const Duration(
+                                            onPressed: () =>
+                                                Get.bottomSheet(Container(
+                                                  color: Get.isDarkMode
+                                                      ? Colors.black
+                                                      : Colors.white,
+                                                  margin:
+                                                      const EdgeInsets.all(16),
+                                                  padding:
+                                                      const EdgeInsets.all(16),
+                                                  child: Wrap(
+                                                    children: <Widget>[
+                                                      const Text(
+                                                        'Shared Link // Source Url',
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w800),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 50,
+                                                      ),
+                                                      TextFormField(
+                                                        autovalidateMode:
+                                                            AutovalidateMode
+                                                                .onUserInteraction,
+                                                        keyboardType:
+                                                            TextInputType.url,
+                                                        onChanged: (value) =>
+                                                            controller
+                                                                    .sourceUrl =
+                                                                value,
+                                                        initialValue:
+                                                            document?.sourceUrl,
+                                                        decoration: const InputDecoration(
+                                                            border:
+                                                                OutlineInputBorder(),
+                                                            helperText:
+                                                                'This Url feature helps users to identify the source of the file  i.e. From where the file was originated.',
+                                                            labelText:
+                                                                'Source URL / Share Link to redirect',
+                                                            hintText:
+                                                                'https://t.me/filegram_app',
+                                                            helperMaxLines: 3,
+                                                            isDense: true,
+                                                            prefixIcon: Icon(Icons
+                                                                .add_link_rounded),
+                                                            prefixIconColor:
+                                                                Colors.white54),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 30,
+                                                      ),
+                                                      ButtonBar(
+                                                        children: [
+                                                          OutlinedButton(
+                                                            onPressed: () {
+                                                              if (Get
+                                                                  .isOverlaysOpen) {
+                                                                Get.back();
+                                                              }
+                                                              Get.showSnackbar(
+                                                                GetSnackBar(
+                                                                  backgroundColor: Get
+                                                                      .theme
+                                                                      .snackBarTheme
+                                                                      .backgroundColor!,
+                                                                  message:
+                                                                      'Cancelled',
+                                                                  // backgroundColor: Colors.amber,
+                                                                  duration:
+                                                                      const Duration(
                                                                           seconds:
                                                                               3),
-                                                                      snackPosition:
-                                                                          SnackPosition
-                                                                              .TOP,
-                                                                    ),
-                                                                  );
-                                                                },
-                                                                child: const Text(
-                                                                    'Cancel'),
-                                                              ),
-                                                              OutlinedButton(
-                                                                onPressed: () {
-                                                                  // Get.dialog(AlertDialog(
-                                                                  //   title: const Text(
-                                                                  //       'Rewarded Feature'),
-                                                                  //   content: const Text(
-                                                                  //       'Please watch full rewarded ad to add source link '),
-                                                                  //   actions: [
-                                                                  //     OutlinedButton(
-                                                                  //         onPressed: () =>
-                                                                  //             Get.back(),
-                                                                  //         child:
-                                                                  //             const Text(
-                                                                  //                 'Back')),
-                                                                  //     OutlinedButton(
-                                                                  //         onPressed: () {
-                                                                  //           controller
-                                                                  //               .rewardedInterstitialAd
-                                                                  //               .show(onUserEarnedReward:
-                                                                  //                   (ad,
-                                                                  //                       reward) {
-                                                                  if (Get
-                                                                      .isOverlaysOpen) {
-                                                                    Get.back();
-                                                                  }
-                                                                  controller
-                                                                      .showInterstitialAd()
-                                                                      .catchError(
-                                                                          (e) {});
-                                                                  // await interstitialAdController
-                                                                  //     .showInterstitialAd();
+                                                                  snackPosition:
+                                                                      SnackPosition
+                                                                          .TOP,
+                                                                ),
+                                                              );
+                                                            },
+                                                            child: const Text(
+                                                                'Cancel'),
+                                                          ),
+                                                          OutlinedButton(
+                                                            onPressed: () {
+                                                              // Get.dialog(AlertDialog(
+                                                              //   title: const Text(
+                                                              //       'Rewarded Feature'),
+                                                              //   content: const Text(
+                                                              //       'Please watch full rewarded ad to add source link '),
+                                                              //   actions: [
+                                                              //     OutlinedButton(
+                                                              //         onPressed: () =>
+                                                              //             Get.back(),
+                                                              //         child:
+                                                              //             const Text(
+                                                              //                 'Back')),
+                                                              //     OutlinedButton(
+                                                              //         onPressed: () {
+                                                              //           controller
+                                                              //               .rewardedInterstitialAd
+                                                              //               .show(onUserEarnedReward:
+                                                              //                   (ad,
+                                                              //                       reward) {
+                                                              if (Get
+                                                                  .isOverlaysOpen) {
+                                                                Get.back();
+                                                              }
+                                                              controller
+                                                                  .showInterstitialAd()
+                                                                  .catchError(
+                                                                      (e) {});
+                                                              // await interstitialAdController
+                                                              //     .showInterstitialAd();
 
-                                                                  try {
-                                                                    FirestoreData.setSourceUrl(
-                                                                            documentId: _document
+                                                              try {
+                                                                FirestoreData.setSourceUrl(
+                                                                        documentId:
+                                                                            document
                                                                                 ?.documentId,
-                                                                            sourceUrl: controller
+                                                                        sourceUrl:
+                                                                            controller
                                                                                 .sourceUrl)
-                                                                        .then((value) =>
-                                                                            Get.showSnackbar(
-                                                                              GetSnackBar(
-                                                                                backgroundColor: Get.theme.snackBarTheme.backgroundColor!,
-                                                                                message: 'Link Changed',
-                                                                                // backgroundColor: Colors.amber,
-                                                                                duration: const Duration(seconds: 3),
-                                                                                snackPosition: SnackPosition.TOP,
-                                                                              ),
-                                                                            ));
-                                                                  } on Exception catch (e) {
-                                                                    Get.showSnackbar(
-                                                                      GetSnackBar(
-                                                                        backgroundColor: Get
-                                                                            .theme
-                                                                            .snackBarTheme
-                                                                            .backgroundColor!,
-                                                                        message:
-                                                                            e.toString(),
-                                                                        // backgroundColor: Colors.amber,
-                                                                        duration:
-                                                                            const Duration(seconds: 3),
-                                                                        snackPosition:
-                                                                            SnackPosition.TOP,
-                                                                      ),
-                                                                    );
-                                                                  }
-                                                                  //           });
-                                                                  //         },
-                                                                  //         child:
-                                                                  //             const Text(
-                                                                  //                 'OK'))
-                                                                  //   ],
-                                                                  //   backgroundColor:
-                                                                  //       Colors.black,
-                                                                  // ));
-                                                                },
-                                                                child:
-                                                                    const Text(
-                                                                        'Save'),
-                                                              ),
-                                                            ],
+                                                                    .then((value) =>
+                                                                        Get.showSnackbar(
+                                                                          GetSnackBar(
+                                                                            backgroundColor:
+                                                                                Get.theme.snackBarTheme.backgroundColor!,
+                                                                            message:
+                                                                                'Link Changed',
+                                                                            // backgroundColor: Colors.amber,
+                                                                            duration:
+                                                                                const Duration(seconds: 3),
+                                                                            snackPosition:
+                                                                                SnackPosition.TOP,
+                                                                          ),
+                                                                        ));
+                                                              } on Exception catch (e) {
+                                                                Get.showSnackbar(
+                                                                  GetSnackBar(
+                                                                    backgroundColor: Get
+                                                                        .theme
+                                                                        .snackBarTheme
+                                                                        .backgroundColor!,
+                                                                    message: e
+                                                                        .toString(),
+                                                                    // backgroundColor: Colors.amber,
+                                                                    duration: const Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .TOP,
+                                                                  ),
+                                                                );
+                                                              }
+                                                              //           });
+                                                              //         },
+                                                              //         child:
+                                                              //             const Text(
+                                                              //                 'OK'))
+                                                              //   ],
+                                                              //   backgroundColor:
+                                                              //       Colors.black,
+                                                              // ));
+                                                            },
+                                                            child: const Text(
+                                                                'Save'),
                                                           ),
                                                         ],
                                                       ),
-                                                    )),
+                                                    ],
+                                                  ),
+                                                )),
                                             child: const Text('Link')),
                                       ],
                                     )
