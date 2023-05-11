@@ -18,8 +18,6 @@ import '../modules/updatePhoneNumber/bindings/update_phone_number_binding.dart';
 import '../modules/updatePhoneNumber/views/update_phone_number_view.dart';
 import '../modules/view_pdf/bindings/view_pdf_binding.dart';
 import '../modules/view_pdf/views/view_pdf_view.dart';
-import '../modules/whatsapp_chat/bindings/whatsapp_chat_binding.dart';
-import '../modules/whatsapp_chat/views/whatsapp_chat_view.dart';
 
 part 'app_routes.dart';
 
@@ -59,12 +57,6 @@ class AppPages {
         ViewPdfBinding(),
         NoInternetBinding(),
       ],
-    ),
-    GetPage(
-      name: _Paths.whatsappChat,
-      page: () => const WhatsappChatView(),
-      binding: WhatsappChatBinding(),
-      transition: Transition.rightToLeftWithFade,
     ),
     GetPage(
       name: _Paths.gullak,

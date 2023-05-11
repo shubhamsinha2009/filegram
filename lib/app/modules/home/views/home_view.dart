@@ -33,7 +33,7 @@ class HomeView extends GetView<HomeController> {
                 titleSpacing: 0,
 
                 actions: [
-                  controller.selectedIndex.value == 0
+                  controller.selectedIndex.value != 2
                       ? IconButton(
                           onPressed: () {
                             Get.dialog(
@@ -99,6 +99,7 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ],
               ),
+              // drawer: const SettingsView(),
               persistentFooterButtons: [
                 controller.isBottomBannerAdLoaded.isTrue
                     ? SizedBox(

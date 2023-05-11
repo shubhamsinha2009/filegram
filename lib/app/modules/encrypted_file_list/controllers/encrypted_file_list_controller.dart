@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/helpers/ad_helper.dart';
 import '../../../data/enums/docpermission.dart';
@@ -197,19 +200,18 @@ class EncryptedFileListController extends GetxController
   }
 
   void filterfileList(String fileName) {
-    List<DocumentModel> documents = [];
-    documents = documents
+    List<DocumentModel> doc = [];
+    doc = documents
         .where((element) => element.documentName!
             .toLowerCase()
             .contains(fileName.toLowerCase()))
         .toList();
-    if (documents.isEmpty) {
+    if (doc.isEmpty) {
       change(null, status: RxStatus.empty());
     } else {
-      change(documents, status: RxStatus.success());
+      change(doc, status: RxStatus.success());
     }
   }
-
   // void createRewardedAd() {
   //   RewardedInterstitialAd.load(
   //     adUnitId: AdHelper.rewardedAdManage,
@@ -239,6 +241,10 @@ class EncryptedFileListController extends GetxController
   //     ),
   //   );
   // }
+
+  String getSubtitle({String? bytes, required DateTime time}) {
+    return '${DateFormat.yMMMMd('en_US').add_jm().format(time)} - $bytes';
+  }
 
   @override
   void onInit() {

@@ -57,7 +57,7 @@ class HomeController extends GetxController {
   // }
 
   String get info =>
-      '1. Swipe Left to Right to Rename\n2. Swipe Right to Left to Save & Share\n3. Dismiss in any direction to delete';
+      '1. Swipe Left to Right\n2. Swipe Right to Left \n3. Dismiss in any direction to delete';
 
   // Future<void> checkDevelopmentMode() async {
   //   bool developerMode;

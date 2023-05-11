@@ -18,25 +18,40 @@ class SettingsView extends GetView<SettingsController> {
     return ListView(
       padding: EdgeInsets.zero,
       children: [
-        Obx(
-          () => UserAccountsDrawerHeader(
-            accountName: Text(
-              '${controller.homeController.user.value.name}',
-            ),
-            accountEmail: Text(
-              '${controller.homeController.user.value.emailId}\n${controller.homeController.user.value.phoneNumber}',
-            ),
-            // otherAccountsPictures: const [Icon(Icons.edit)],
-            currentAccountPicture: CachedNetworkImage(
-              imageUrl: controller.homeController.user.value.photoUrl ??
-                  'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249__480.png',
-              errorWidget: (context, url, error) =>
-                  const Icon(Icons.account_box_rounded),
-            ),
+        // Obx(
+        //   () => Container(
+        //     accountName: Text(
+        //       '${controller.homeController.user.value.name}',
+        //     ),
+        //     accountEmail: Text(
+        //       '${controller.homeController.user.value.emailId}\n${controller.homeController.user.value.phoneNumber}',
+        //     ),
+        //     // otherAccountsPictures: const [Icon(Icons.edit)],
+        //     currentAccountPicture: CachedNetworkImage(
+        //       imageUrl: controller.homeController.user.value.photoUrl ??
+        //           'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249__480.png',
+        //       errorWidget: (context, url, error) =>
+        //           const Icon(Icons.account_box_rounded),
+        //     ),
 
-            // onDetailsPressed: () => Get.toNamed(Routes.profile),
-          ),
-        ),
+        //     // onDetailsPressed: () => Get.toNamed(Routes.profile),
+        //   ),
+        // ),
+        Obx(() => ListTile(
+              // tileColor: Colors.blueGrey.shade500,
+              title: Text(
+                '${controller.homeController.user.value.name}',
+              ),
+              subtitle: Text(
+                '${controller.homeController.user.value.emailId}\n${controller.homeController.user.value.phoneNumber}',
+              ),
+              leading: CachedNetworkImage(
+                imageUrl: controller.homeController.user.value.photoUrl ??
+                    'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249__480.png',
+                errorWidget: (context, url, error) =>
+                    const Icon(Icons.account_box_rounded),
+              ),
+            )),
         // ListTile(
         //   title: const Text(
         //     'Update Phone Number',
@@ -49,17 +64,17 @@ class SettingsView extends GetView<SettingsController> {
         //   ),
         //   onTap: () => Get.toNamed(Routes.updatePhoneNumber),
         // ),
-        ListTile(
-          title: const Text(
-            'Whatsapp Click to Chat',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          leading: const Icon(
-            Icons.whatshot,
-          ),
-          onTap: () => Get.toNamed(Routes.whatsappChat),
+        Obx(
+          () => controller.isSettingsBannerAdLoaded.isTrue
+              ? SizedBox(
+                  height: controller.settingsBannerAd?.size.height.toDouble(),
+                  width: controller.settingsBannerAd?.size.width.toDouble(),
+                  child: controller.adWidget(ad: controller.settingsBannerAd!),
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
         ),
         ListTile(
           title: const Text(
@@ -73,18 +88,7 @@ class SettingsView extends GetView<SettingsController> {
           ),
           onTap: () => Get.toNamed(Routes.gullak),
         ),
-        Obx(
-          () => controller.isSettingsBannerAdLoaded.isTrue
-              ? SizedBox(
-                  height: controller.settingsBannerAd?.size.height.toDouble(),
-                  width: controller.settingsBannerAd?.size.width.toDouble(),
-                  child: controller.adWidget(ad: controller.settingsBannerAd!),
-                )
-              : const SizedBox(
-                  height: 0,
-                  width: 0,
-                ),
-        ),
+
         ListTile(
             title: const Text(
               'Rate Us',

@@ -313,7 +313,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                           )
                                         : null,
                                     isThreeLine: true,
-                                    dense: true,
+                                    // dense: true,
                                     visualDensity:
                                         VisualDensity.adaptivePlatformDensity,
                                     title: Text(
