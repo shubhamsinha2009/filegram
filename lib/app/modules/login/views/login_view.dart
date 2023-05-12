@@ -1,4 +1,3 @@
-import 'package:filegram/app/modules/login/widgets/click_to_chat.dart';
 import 'package:filegram/app/modules/login/widgets/no_cloud.dart';
 import 'package:filegram/app/modules/login/widgets/passwordless.dart';
 import 'package:filegram/app/modules/login/widgets/pocket_pdf.dart';
@@ -20,7 +19,6 @@ class LoginView extends GetView<LoginController> {
       Gullak(controller: controller),
       NoCloud(controller: controller),
       PasswordlessEncryption(controller: controller),
-      ClicktoChat(controller: controller),
       GoogleLogin(controller: controller),
     ];
     final lastpage = items.length - 1;

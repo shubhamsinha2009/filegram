@@ -19,7 +19,8 @@ class SettingsView extends GetView<SettingsController> {
       padding: EdgeInsets.zero,
       children: [
         // Obx(
-        //   () => Container(
+        //   () => UserAccountsDrawerHeader(
+
         //     accountName: Text(
         //       '${controller.homeController.user.value.name}',
         //     ),
@@ -37,33 +38,21 @@ class SettingsView extends GetView<SettingsController> {
         //     // onDetailsPressed: () => Get.toNamed(Routes.profile),
         //   ),
         // ),
-        Obx(() => ListTile(
-              // tileColor: Colors.blueGrey.shade500,
-              title: Text(
+        ListTile(
+          // tileColor: Colors.blueGrey.shade500,
+          title: Obx(() => Text(
                 '${controller.homeController.user.value.name}',
-              ),
-              subtitle: Text(
+              )),
+          subtitle: Obx(() => Text(
                 '${controller.homeController.user.value.emailId}\n${controller.homeController.user.value.phoneNumber}',
-              ),
-              leading: CachedNetworkImage(
-                imageUrl: controller.homeController.user.value.photoUrl ??
-                    'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249__480.png',
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.account_box_rounded),
-              ),
-            )),
-        // ListTile(
-        //   title: const Text(
-        //     'Update Phone Number',
-        //     style: TextStyle(
-        //       fontWeight: FontWeight.w500,
-        //     ),
-        //   ),
-        //   leading: const Icon(
-        //     Icons.phone_android_outlined,
-        //   ),
-        //   onTap: () => Get.toNamed(Routes.updatePhoneNumber),
-        // ),
+              )),
+          leading: CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(
+              controller.homeController.user.value.photoUrl ??
+                  'https://cdn.pixabay.com/photo/2016/08/31/11/54/user-1633249__480.png',
+            ),
+          ),
+        ),
         Obx(
           () => controller.isSettingsBannerAdLoaded.isTrue
               ? SizedBox(
@@ -76,6 +65,19 @@ class SettingsView extends GetView<SettingsController> {
                   width: 0,
                 ),
         ),
+        ListTile(
+          title: const Text(
+            'Update Phone Number',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          leading: const Icon(
+            Icons.phone_android_outlined,
+          ),
+          onTap: () => Get.toNamed(Routes.updatePhoneNumber),
+        ),
+
         ListTile(
           title: const Text(
             'Gullak',
@@ -114,6 +116,7 @@ class SettingsView extends GetView<SettingsController> {
                 ));
               }
             }),
+
         ListTile(
           title: const Text(
             'Share Filegram',
