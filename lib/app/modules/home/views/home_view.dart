@@ -5,7 +5,6 @@ import 'package:filegram/app/modules/files_device/views/files_device_view.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../coins/controllers/coins_controller.dart';
-import '../../coins/views/coins_view.dart';
 import '../../encrypt_decrypt/views/encrypt_decrypt_view.dart';
 import '../../encrypted_file_list/views/encrypted_file_list_view.dart';
 import '../../no_internet/views/no_internet_view.dart';
