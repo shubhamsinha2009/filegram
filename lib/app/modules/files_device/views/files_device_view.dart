@@ -75,7 +75,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                             } else {
                               final currentfile = controller.filesList[
                                   controller.getListViewItemIndex(index)];
-                              final Map<String, dynamic>? pdfDetails =
+                              final Map? pdfDetails =
                                   Hive.box("pdf").get(currentfile.path);
                               final photoUrl = pdfDetails?['photoUrl'] ??
                                   'https://source.unsplash.com/random';

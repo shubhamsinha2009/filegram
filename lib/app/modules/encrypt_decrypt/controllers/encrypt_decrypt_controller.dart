@@ -313,7 +313,7 @@ class EncryptDecryptController extends GetxController {
       _documentModel(await FirestoreData.getDocument(documentReference));
       await FirestoreData.createViewsAndUploads(
           _documentModel.value.documentId);
-      final Map<String, dynamic> pdfDetails = {
+      final Map pdfDetails = {
         'photoUrl': ownerPhotoUrl,
         'ownerName': ownerName,
         'sourceUrl': sourceUrl,
@@ -321,7 +321,7 @@ class EncryptDecryptController extends GetxController {
         'intialPageNumber': 0,
       };
 
-      Hive.box("pdf").put(fileOut, pdfDetails);
+      await Hive.box("pdf").put(fileOut, pdfDetails);
       return fileOut;
     } on PlatformException {
       isLoading.value = false;
