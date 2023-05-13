@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:alh_pdf_view/controller/alh_pdf_view_controller.dart';
-import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:wakelock/wakelock.dart';
@@ -247,8 +247,7 @@ class ViewPdfController extends GetxController {
       );
     }
 
-    final Map<String, dynamic>? pdfDetails =
-        GetStorageDbService.getRead(key: filePath);
+    final Map<dynamic, dynamic>? pdfDetails = Hive.box("pdf").get(filePath);
     intialPageNumber = pdfDetails?['intialPageNumber'] ?? 0;
     pagesChanged.add(intialPageNumber);
 
@@ -313,6 +312,6 @@ class ViewPdfController extends GetxController {
       'ownerId': ownerId,
       'sourceUrl': sourceUrl,
     };
-    GetStorageDbService.getWrite(key: filePath, value: pdfDetails);
+    Hive.box("pdf").put(filePath, pdfDetails);
   }
 }

@@ -13,14 +13,6 @@ class AdHelper {
     return dotenv.get('viewPdf');
   }
 
-  static String get openPdf {
-    return dotenv.get('openPdf');
-  }
-
-  static String get appOpenAdUnitId {
-    return dotenv.get('appOpenAd');
-  }
-
   static String get libraryBanner {
     return dotenv.get('libraryBanner');
   }
@@ -41,31 +33,7 @@ class AdHelper {
     return dotenv.get('viewPdfBanner');
   }
 
-  static String get bookBanner {
-    return dotenv.get('bookBanner');
-  }
-
-  static String get viewBookPdf {
-    return dotenv.get('viewBookPdf');
-  }
-
-  static String get bookBottom {
-    return dotenv.get('bookBottom');
-  }
-
-  static String get downloadReward {
-    return dotenv.get('downloadReward');
-  }
-
-  static String get downloadBodyBanner {
-    return dotenv.get('downloadBodyBanner');
-  }
-
-  static String get downoadInlineBanner {
-    return dotenv.get('downoadInlineBanner');
-  }
-
-  static String get downoadBottomBanner {
-    return dotenv.get('downoadBottomBanner');
+  static String get rewardedgreencoins {
+    return dotenv.get('rewardedgreencoins');
   }
 }

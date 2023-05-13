@@ -5,15 +5,13 @@ import 'dart:math';
 import 'package:filegram/app/core/extensions.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../core/helpers/ad_helper.dart';
-import '../../../core/services/getstorage.dart';
-import '../../../data/provider/firestore_data.dart';
-import '../../home/controllers/home_controller.dart';
 
 class FilesDeviceController extends GetxController {
   final rename = ''.obs;
@@ -59,9 +57,8 @@ class FilesDeviceController extends GetxController {
     var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
     var newPath = path.substring(0, lastSeparator + 1) + rename.value;
 
-    GetStorageDbService.getWrite(
-        key: newPath, value: GetStorageDbService.getRead(key: filePath));
-    GetStorageDbService.getRemove(key: filePath);
+    Hive.box("pdf").put(newPath, Hive.box("pdf").get(filePath));
+    Hive.box("pdf").delete(filePath);
     return await File(filePath).rename(newPath);
   }
 
@@ -104,57 +101,8 @@ class FilesDeviceController extends GetxController {
     }
   }
 
-  Future<void> createInterstitialAd() async {
-    try {
-      await InterstitialAd.load(
-        adUnitId: AdHelper.openPdf,
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            interstitialAd = ad;
-            interstitialLoadAttempts = 0;
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            interstitialLoadAttempts += 1;
-            interstitialAd = null;
-            if (interstitialLoadAttempts <= maxFailedLoadAttempts) {
-              createInterstitialAd();
-            }
-          },
-        ),
-      );
-    } on Exception catch (e) {
-      // TODO
-    }
-  }
-
   AdWidget adWidget({required AdWithView ad}) {
     return AdWidget(ad: ad);
-  }
-
-  Future<void> showInterstitialAd({String? uid}) async {
-    try {
-      if (interstitialAd != null) {
-        interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (InterstitialAd ad) {
-          ad.dispose();
-          adDismissed.value = true;
-          createInterstitialAd();
-        }, onAdFailedToShowFullScreenContent:
-                (InterstitialAd ad, AdError error) {
-          ad.dispose();
-          createInterstitialAd();
-        }, onAdShowedFullScreenContent: (InterstitialAd ad) {
-          if ((uid != null) &&
-              (Get.find<HomeController>().user.value.id != uid)) {
-            FirestoreData.updateSikka(uid);
-          }
-        });
-        interstitialAd!.show();
-      }
-    } on Exception catch (e) {
-      // TODO
-    }
   }
 
   void _createInlineBannerAd() {
@@ -198,7 +146,6 @@ class FilesDeviceController extends GetxController {
 
   @override
   void onInit() async {
-    createInterstitialAd();
     await onInitialisation();
     _createInlineBannerAd();
 

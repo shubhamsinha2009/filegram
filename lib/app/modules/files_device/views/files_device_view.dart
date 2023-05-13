@@ -1,17 +1,19 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:filegram/app/core/extensions.dart';
-import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:filegram/app/modules/files_device/local_widgets/btm_sheet.dart';
 import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../coins/controllers/coins_controller.dart';
+import '../../coins/views/coins_view.dart';
 import '../controllers/files_device_controller.dart';
 
 class FilesDeviceView extends GetView<FilesDeviceController> {
@@ -74,8 +76,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                               final currentfile = controller.filesList[
                                   controller.getListViewItemIndex(index)];
                               final Map<String, dynamic>? pdfDetails =
-                                  GetStorageDbService.getRead(
-                                      key: currentfile.path);
+                                  Hive.box("pdf").get(currentfile.path);
                               final photoUrl = pdfDetails?['photoUrl'] ??
                                   'https://source.unsplash.com/random';
                               final ownerName =
@@ -121,8 +122,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                       },
                                       onDismissed: () async {
                                         await currentfile.delete();
-                                        GetStorageDbService.getRemove(
-                                            key: currentfile.path);
+                                        Hive.box("pdf")
+                                            .delete(currentfile.path);
                                         controller.onInitialisation();
                                         // await controller.analytics.logEvent(
                                         //     name: 'file_deleted',
@@ -229,8 +230,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                       },
                                       onDismissed: () async {
                                         await currentfile.delete();
-                                        GetStorageDbService.getRemove(
-                                            key: currentfile.path);
+                                        Hive.box("pdf")
+                                            .delete(currentfile.path);
                                         controller.onInitialisation();
                                         // await controller.analytics.logEvent(
                                         //     name: 'file_deleted',
@@ -335,12 +336,32 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                       //     .rewardedAdController.rewardedInterstitialAd
                                       //     .show(onUserEarnedReward: (ad, reward) {
                                       //   FirestoreData.updateSikka(_ownerId);
+                                      if (Get.find<CoinsController>()
+                                              .coins
+                                              .value >
+                                          0) {
+                                        Get.find<CoinsController>()
+                                            .coins
+                                            .value--;
+                                        Hive.box('user').put(
+                                            'coins',
+                                            Get.find<CoinsController>()
+                                                .coins
+                                                .value);
+                                        Get.toNamed(Routes.viewPdf, arguments: [
+                                          currentfile.path,
+                                          false
+                                        ]);
+                                      } else {
+                                        showModalBottomSheet(
+                                          isDismissible: true,
+                                          context: context,
+                                          builder: (context) {
+                                            return const CoinsView();
+                                          },
+                                        );
+                                      }
 
-                                      controller
-                                          .showInterstitialAd(uid: ownerId)
-                                          .catchError((e) {});
-                                      Get.toNamed(Routes.viewPdf,
-                                          arguments: [currentfile.path, false]);
                                       // });
                                       // } catch (e) {
                                       //   controller.interstitialAdController

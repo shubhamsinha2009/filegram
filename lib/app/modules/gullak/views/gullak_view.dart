@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../coins/controllers/coins_controller.dart';
+import '../../coins/views/coins_view.dart';
 import '../controllers/gullak_controller.dart';
 
 class GullakView extends GetView<GullakController> {
@@ -24,6 +26,24 @@ class GullakView extends GetView<GullakController> {
                   Text('Gullak'),
                 ],
               ),
+              actions: [
+                Obx(() => ActionChip(
+                      onPressed: () => showModalBottomSheet(
+                        isDismissible: true,
+                        context: context,
+                        builder: (context) {
+                          return const CoinsView();
+                        },
+                      ),
+                      avatar: const Icon(Icons.circle, color: Colors.green),
+                      label: Text('${Get.find<CoinsController>().coins.value}'),
+                      shape: const StadiumBorder(),
+                      labelPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    )),
+                const SizedBox(
+                  width: 30,
+                ),
+              ],
               // leading: const Icon(Icons.savings_rounded,
               //     color: Color.fromARGB(255, 194, 103, 70)),
             ),

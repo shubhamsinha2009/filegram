@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../modules/coins/bindings/coins_binding.dart';
 import '../modules/encrypt_decrypt/bindings/encrypt_decrypt_binding.dart';
 import '../modules/encrypted_file_list/bindings/encrypted_file_list_binding.dart';
 import '../modules/files_device/bindings/files_device_binding.dart';
@@ -38,6 +39,7 @@ class AppPages {
         EncryptedFileListBinding(),
         NoInternetBinding(),
         FilesDeviceBinding(),
+        CoinsBinding(),
       ],
       middlewares: [HomeMiddleware()],
     ),
@@ -56,6 +58,7 @@ class AppPages {
       bindings: [
         ViewPdfBinding(),
         NoInternetBinding(),
+        CoinsBinding(),
       ],
     ),
     GetPage(
@@ -64,6 +67,7 @@ class AppPages {
       bindings: [
         GullakBinding(),
         NoInternetBinding(),
+        CoinsBinding(),
       ],
       transition: Transition.rightToLeftWithFade,
       middlewares: [GullakMiddleware()],

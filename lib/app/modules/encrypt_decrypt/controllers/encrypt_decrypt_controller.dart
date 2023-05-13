@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'package:filegram/app/core/services/getstorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:open_as_default_adv/open_as_default_adv.dart';
 import 'package:filegram/app/core/extensions.dart';
 import 'package:path_provider/path_provider.dart';
@@ -75,8 +75,7 @@ class EncryptDecryptController extends GetxController {
                 snackPosition: SnackPosition.TOP,
               ),
             );
-            final ownerId = GetStorageDbService.getRead(key: value)?['ownerId'];
-
+            final ownerId = Hive.box("pdf").get(value)['ownerId'];
             // rewardedAdController.rewardedInterstitialAd.show(
             //     onUserEarnedReward: (ad, reward) {
             //   FirestoreData.updateSikka(_ownerId);
@@ -321,7 +320,8 @@ class EncryptDecryptController extends GetxController {
         'ownerId': userId,
         'intialPageNumber': 0,
       };
-      GetStorageDbService.getWrite(key: fileOut, value: pdfDetails);
+
+      Hive.box("pdf").put(fileOut, pdfDetails);
       return fileOut;
     } on PlatformException {
       isLoading.value = false;
@@ -359,7 +359,8 @@ class EncryptDecryptController extends GetxController {
             'ownerId': document?.ownerId,
             'intialPageNumber': 0,
           };
-          GetStorageDbService.getWrite(key: fileOut, value: pdfDetails);
+
+          Hive.box("pdf").put(fileOut, pdfDetails);
         }
         return fileOut;
       }

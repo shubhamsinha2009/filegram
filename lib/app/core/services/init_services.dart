@@ -1,10 +1,8 @@
-import 'package:filegram/app/core/services/getstorage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> initServices() async {
-  // await AnalyticsService.analytics.logAppOpen();
-  // await AnalyticsService.analytics.setDefaultEventParameters({
-  //   'version': '1.0.1+1',
-  // });
-
-  await GetStorageDbService.init();
+  await Hive.initFlutter();
+  await Hive.openBox('settings');
+  await Hive.openBox('user');
+  await Hive.openBox('pdf');
 }
