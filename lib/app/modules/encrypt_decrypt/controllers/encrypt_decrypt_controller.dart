@@ -16,6 +16,8 @@ import '../../../core/services/firebase_analytics.dart';
 import '../../../data/model/documents_model.dart';
 import '../../../data/provider/firestore_data.dart';
 import '../../../routes/app_pages.dart';
+import '../../coins/controllers/coins_controller.dart';
+import '../../coins/views/coins_view.dart';
 import '../../home/controllers/controllers.dart';
 import '../services/file_encrypter.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
@@ -80,8 +82,22 @@ class EncryptDecryptController extends GetxController {
             //     onUserEarnedReward: (ad, reward) {
             //   FirestoreData.updateSikka(_ownerId);
 
-            showInterstitialAd(uid: ownerId).catchError((e) {});
-            Get.toNamed(Routes.viewPdf, arguments: [value, true]);
+            if (Get.find<CoinsController>().coins.value > 0) {
+              Get.find<CoinsController>().coins.value--;
+              Hive.box('user')
+                  .put('coins', Get.find<CoinsController>().coins.value);
+              showInterstitialAd(uid: ownerId).catchError((e) {});
+              Get.toNamed(Routes.viewPdf, arguments: [value, true]);
+            } else {
+              showModalBottomSheet(
+                isDismissible: true,
+                context: Get.context!,
+                builder: (context) {
+                  return const CoinsView();
+                },
+              );
+            }
+
             // });
           } else {
             Get.showSnackbar(
@@ -214,8 +230,21 @@ class EncryptDecryptController extends GetxController {
                                   ),
                                 );
                               }
-                              Get.toNamed(Routes.viewPdf,
-                                  arguments: [fileOut, true]);
+                              if (Get.find<CoinsController>().coins.value > 0) {
+                                Get.find<CoinsController>().coins.value--;
+                                Hive.box('user').put('coins',
+                                    Get.find<CoinsController>().coins.value);
+                                Get.toNamed(Routes.viewPdf,
+                                    arguments: [fileOut, true]);
+                              } else {
+                                showModalBottomSheet(
+                                  isDismissible: true,
+                                  context: Get.context!,
+                                  builder: (context) {
+                                    return const CoinsView();
+                                  },
+                                );
+                              }
                             });
                           }
                         },

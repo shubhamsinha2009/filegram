@@ -361,17 +361,6 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                           },
                                         );
                                       }
-
-                                      // });
-                                      // } catch (e) {
-                                      //   controller.interstitialAdController
-                                      //       .showInterstitialAd(uid: _ownerId);
-                                      //   Get.toNamed(Routes.viewPdf,
-                                      //       arguments: _currentfile.path);
-                                      //   // ?.then((value) => controller
-                                      //   //     .interstitialAdController
-                                      //   //     .showInterstitialAd());
-                                      // }
                                     },
                                     subtitle: Text(
                                       ownerName +

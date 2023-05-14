@@ -1,5 +1,8 @@
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../data/provider/firestore_data.dart';
+import '../../coins/controllers/coins_controller.dart';
+import '../../coins/views/coins_view.dart';
 import '../encrypted_file_list.dart';
 import '../localwidgets/document_bottom_sheet.dart';
 import 'package:lottie/lottie.dart';
@@ -107,123 +110,121 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     );
                                   },
                                   onDismissed: () {
-                                    // Get.dialog(AlertDialog(
-                                    //   title: const Text(
-                                    //       'Rewarded Feature'),
-                                    //   content: const Text(
-                                    //       'Please watch full rewarded ad to delete '),
-                                    //   actions: [
-                                    //     OutlinedButton(
-                                    //         onPressed: () =>
-                                    //             Get.back(),
-                                    //         child:
-                                    //             const Text('Back')),
-                                    //     OutlinedButton(
-                                    //         onPressed: () {
-                                    //           controller
-                                    //               .rewardedInterstitialAd
-                                    //               .show(
-                                    //                   onUserEarnedReward:
-                                    //                       (ad,
-                                    //                           reward) {
-                                    controller
-                                        .showInterstitialAd()
-                                        .catchError((e) {});
-                                    if (Get.isOverlaysOpen) {
-                                      Get.back(closeOverlays: true);
-                                    }
-                                    // ! Sometimes due to async document gets deleted before views
-                                    FirestoreData.deleteViewsAndUploads(
-                                            document?.documentId)
-                                        .then((value) =>
-                                            FirestoreData.deleteDocument(
-                                                    documentId:
-                                                        document?.documentId)
-                                                .then((value) {
-                                              controller.documents.clear();
-                                              controller.getFirstData = false;
-                                              controller
-                                                  .findAllEncryptedFiles();
+                                    if (Get.find<CoinsController>()
+                                            .coins
+                                            .value >
+                                        0) {
+                                      Get.find<CoinsController>().coins.value--;
+                                      Hive.box('user').put(
+                                          'coins',
+                                          Get.find<CoinsController>()
+                                              .coins
+                                              .value);
+                                      controller
+                                          .showInterstitialAd()
+                                          .catchError((e) {});
+                                      if (Get.isOverlaysOpen) {
+                                        Get.back(closeOverlays: true);
+                                      }
+                                      // ! Sometimes due to async document gets deleted before views
+                                      FirestoreData.deleteViewsAndUploads(
+                                              document?.documentId)
+                                          .then((value) =>
+                                              FirestoreData.deleteDocument(
+                                                      documentId:
+                                                          document?.documentId)
+                                                  .then((value) {
+                                                controller.documents.clear();
+                                                controller.getFirstData = false;
+                                                controller
+                                                    .findAllEncryptedFiles();
 
-                                              Get.showSnackbar(GetSnackBar(
-                                                backgroundColor: Get
-                                                    .theme
-                                                    .snackBarTheme
-                                                    .backgroundColor!,
-                                                messageText: Text(
-                                                    'The File ${document?.documentName} is deleted from server'),
-                                                icon: const Icon(Icons
-                                                    .delete_forever_rounded),
-                                                snackPosition:
-                                                    SnackPosition.TOP,
-                                                duration:
-                                                    const Duration(seconds: 3),
-                                              ));
-                                            }));
-                                    //   });
-                                    //         },
-                                    //         child:
-                                    //             const Text('Delete'))
-                                    //   ],
-                                    //   backgroundColor: Colors.black,
-                                    // ));
+                                                Get.showSnackbar(GetSnackBar(
+                                                  backgroundColor: Get
+                                                      .theme
+                                                      .snackBarTheme
+                                                      .backgroundColor!,
+                                                  messageText: Text(
+                                                      'The File ${document?.documentName} is deleted from server'),
+                                                  icon: const Icon(Icons
+                                                      .delete_forever_rounded),
+                                                  snackPosition:
+                                                      SnackPosition.TOP,
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                ));
+                                              }));
+                                    } else {
+                                      showModalBottomSheet(
+                                        isDismissible: true,
+                                        context: Get.context!,
+                                        builder: (context) {
+                                          return const CoinsView();
+                                        },
+                                      );
+                                    }
                                   }),
                               motion: const BehindMotion(),
                               children: [
                                 SlidableAction(
                                   onPressed: (context) async {
-                                    controller
-                                        .showInterstitialAd()
-                                        .catchError((e) {});
-                                    // Get.dialog(AlertDialog(
-                                    //   title: const Text('Rewarded Feature'),
-                                    //   content: const Text(
-                                    //       'Please watch full rewarded ad to see number of views and uploads '),
-                                    //   actions: [
-                                    //     OutlinedButton(
-                                    //         onPressed: () => Get.back(),
-                                    //         child: const Text('Back')),
-                                    //     OutlinedButton(
-                                    //         onPressed: () {
-                                    //           controller
-                                    //               .rewardedInterstitialAd
-                                    //               .show(onUserEarnedReward:
-                                    //                   (ad, reward) async {
-                                    final views =
-                                        await FirestoreData.readViewsAndUploads(
-                                            document?.documentId);
-                                    // controller.adsController.rewardedAd.show(
-                                    //   onUserEarnedReward: (ad, reward) {
-                                    Get.dialog(
-                                      AlertDialog(
-                                        alignment: Alignment.center,
-                                        backgroundColor: Get.isDarkMode
-                                            ? Colors.black
-                                            : Colors.white,
-                                        // title: const Text(
-                                        //   ' Number of Views',
-                                        // ),
-                                        content: Text(
-                                          'Number of Views : ${views.views} \n \n & \n \n  Number of Uploads : ${views.numberOfUploads} ',
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 20,
+                                    if (Get.find<CoinsController>()
+                                            .coins
+                                            .value >
+                                        0) {
+                                      Get.find<CoinsController>().coins.value--;
+                                      Hive.box('user').put(
+                                          'coins',
+                                          Get.find<CoinsController>()
+                                              .coins
+                                              .value);
+                                      controller
+                                          .showInterstitialAd()
+                                          .catchError((e) {});
+                                      final views = await FirestoreData
+                                          .readViewsAndUploads(
+                                              document?.documentId);
+                                      // controller.adsController.rewardedAd.show(
+                                      //   onUserEarnedReward: (ad, reward) {
+                                      Get.dialog(
+                                        AlertDialog(
+                                          alignment: Alignment.center,
+                                          backgroundColor: Get.isDarkMode
+                                              ? Colors.black
+                                              : Colors.white,
+                                          // title: const Text(
+                                          //   ' Number of Views',
+                                          // ),
+                                          content: Text(
+                                            'Number of Views : ${views.views} \n \n & \n \n  Number of Uploads : ${views.numberOfUploads} ',
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 20,
+                                            ),
                                           ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () async {
+                                                if (Get.isOverlaysOpen) {
+                                                  Get.back();
+                                                }
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
                                         ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () async {
-                                              if (Get.isOverlaysOpen) {
-                                                Get.back();
-                                              }
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      ),
-                                      barrierDismissible: false,
-                                    );
+                                        barrierDismissible: false,
+                                      );
+                                    } else {
+                                      showModalBottomSheet(
+                                        isDismissible: true,
+                                        context: Get.context!,
+                                        builder: (context) {
+                                          return const CoinsView();
+                                        },
+                                      );
+                                    }
                                   },
                                   // });
                                   //         },
@@ -276,66 +277,59 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                     );
                                   },
                                   onDismissed: () {
-                                    // Get.dialog(AlertDialog(
-                                    //   title: const Text(
-                                    //       'Rewarded Feature'),
-                                    //   content: const Text(
-                                    //       'Please watch full rewarded ad to delete '),
-                                    //   actions: [
-                                    //     OutlinedButton(
-                                    //         onPressed: () =>
-                                    //             Get.back(),
-                                    //         child:
-                                    //             const Text('Back')),
-                                    //     OutlinedButton(
-                                    //         onPressed: () {
-                                    //           controller
-                                    //               .rewardedInterstitialAd
-                                    //               .show(
-                                    //                   onUserEarnedReward:
-                                    //                       (ad,
-                                    //                           reward) {
-                                    controller
-                                        .showInterstitialAd()
-                                        .catchError((e) {});
-                                    if (Get.isOverlaysOpen) {
-                                      Get.back(closeOverlays: true);
-                                    }
-                                    // ! Sometimes due to async document gets deleted before views
-                                    FirestoreData.deleteViewsAndUploads(
-                                            document?.documentId)
-                                        .then((value) =>
-                                            FirestoreData.deleteDocument(
-                                                    documentId:
-                                                        document?.documentId)
-                                                .then((value) {
-                                              controller.documents.clear();
-                                              controller.getFirstData = false;
-                                              controller
-                                                  .findAllEncryptedFiles();
+                                    if (Get.find<CoinsController>()
+                                            .coins
+                                            .value >
+                                        0) {
+                                      Get.find<CoinsController>().coins.value--;
+                                      Hive.box('user').put(
+                                          'coins',
+                                          Get.find<CoinsController>()
+                                              .coins
+                                              .value);
+                                      controller
+                                          .showInterstitialAd()
+                                          .catchError((e) {});
+                                      if (Get.isOverlaysOpen) {
+                                        Get.back(closeOverlays: true);
+                                      }
+                                      // ! Sometimes due to async document gets deleted before views
+                                      FirestoreData.deleteViewsAndUploads(
+                                              document?.documentId)
+                                          .then((value) =>
+                                              FirestoreData.deleteDocument(
+                                                      documentId:
+                                                          document?.documentId)
+                                                  .then((value) {
+                                                controller.documents.clear();
+                                                controller.getFirstData = false;
+                                                controller
+                                                    .findAllEncryptedFiles();
 
-                                              Get.showSnackbar(GetSnackBar(
-                                                backgroundColor: Get
-                                                    .theme
-                                                    .snackBarTheme
-                                                    .backgroundColor!,
-                                                messageText: Text(
-                                                    'The File ${document?.documentName} is deleted from server'),
-                                                icon: const Icon(Icons
-                                                    .delete_forever_rounded),
-                                                snackPosition:
-                                                    SnackPosition.TOP,
-                                                duration:
-                                                    const Duration(seconds: 3),
-                                              ));
-                                            }));
-                                    //   });
-                                    //         },
-                                    //         child:
-                                    //             const Text('Delete'))
-                                    //   ],
-                                    //   backgroundColor: Colors.black,
-                                    // ));
+                                                Get.showSnackbar(GetSnackBar(
+                                                  backgroundColor: Get
+                                                      .theme
+                                                      .snackBarTheme
+                                                      .backgroundColor!,
+                                                  messageText: Text(
+                                                      'The File ${document?.documentName} is deleted from server'),
+                                                  icon: const Icon(Icons
+                                                      .delete_forever_rounded),
+                                                  snackPosition:
+                                                      SnackPosition.TOP,
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                ));
+                                              }));
+                                    } else {
+                                      showModalBottomSheet(
+                                        isDismissible: true,
+                                        context: Get.context!,
+                                        builder: (context) {
+                                          return const CoinsView();
+                                        },
+                                      );
+                                    }
                                   }),
                               motion: const BehindMotion(),
                               children: [
@@ -408,84 +402,78 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                             ),
                                             OutlinedButton(
                                               onPressed: () {
-                                                // Get.dialog(AlertDialog(
-                                                //   title: const Text(
-                                                //       'Rewarded Feature'),
-                                                //   content: const Text(
-                                                //       'Please watch full rewarded ad to add source link '),
-                                                //   actions: [
-                                                //     OutlinedButton(
-                                                //         onPressed: () =>
-                                                //             Get.back(),
-                                                //         child:
-                                                //             const Text(
-                                                //                 'Back')),
-                                                //     OutlinedButton(
-                                                //         onPressed: () {
-                                                //           controller
-                                                //               .rewardedInterstitialAd
-                                                //               .show(onUserEarnedReward:
-                                                //                   (ad,
-                                                //                       reward) {
                                                 if (Get.isOverlaysOpen) {
                                                   Get.back();
                                                 }
-                                                controller
-                                                    .showInterstitialAd()
-                                                    .catchError((e) {});
-                                                // await interstitialAdController
-                                                //     .showInterstitialAd();
+                                                if (Get.find<CoinsController>()
+                                                        .coins
+                                                        .value >
+                                                    0) {
+                                                  Get.find<CoinsController>()
+                                                      .coins
+                                                      .value--;
+                                                  Hive.box('user').put(
+                                                      'coins',
+                                                      Get.find<
+                                                              CoinsController>()
+                                                          .coins
+                                                          .value);
+                                                  controller
+                                                      .showInterstitialAd()
+                                                      .catchError((e) {});
 
-                                                try {
-                                                  FirestoreData.setSourceUrl(
-                                                          documentId: document
-                                                              ?.documentId,
-                                                          sourceUrl: controller
-                                                              .sourceUrl)
-                                                      .then((value) =>
-                                                          Get.showSnackbar(
-                                                            GetSnackBar(
-                                                              backgroundColor: Get
-                                                                  .theme
-                                                                  .snackBarTheme
-                                                                  .backgroundColor!,
-                                                              message:
-                                                                  'Link Changed',
-                                                              // backgroundColor: Colors.amber,
-                                                              duration:
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          3),
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .TOP,
-                                                            ),
-                                                          ));
-                                                } on Exception catch (e) {
-                                                  Get.showSnackbar(
-                                                    GetSnackBar(
-                                                      backgroundColor: Get
-                                                          .theme
-                                                          .snackBarTheme
-                                                          .backgroundColor!,
-                                                      message: e.toString(),
-                                                      // backgroundColor: Colors.amber,
-                                                      duration: const Duration(
-                                                          seconds: 3),
-                                                      snackPosition:
-                                                          SnackPosition.TOP,
-                                                    ),
+                                                  try {
+                                                    FirestoreData.setSourceUrl(
+                                                            documentId: document
+                                                                ?.documentId,
+                                                            sourceUrl:
+                                                                controller
+                                                                    .sourceUrl)
+                                                        .then((value) =>
+                                                            Get.showSnackbar(
+                                                              GetSnackBar(
+                                                                backgroundColor: Get
+                                                                    .theme
+                                                                    .snackBarTheme
+                                                                    .backgroundColor!,
+                                                                message:
+                                                                    'Link Changed',
+                                                                // backgroundColor: Colors.amber,
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            3),
+                                                                snackPosition:
+                                                                    SnackPosition
+                                                                        .TOP,
+                                                              ),
+                                                            ));
+                                                  } on Exception catch (e) {
+                                                    Get.showSnackbar(
+                                                      GetSnackBar(
+                                                        backgroundColor: Get
+                                                            .theme
+                                                            .snackBarTheme
+                                                            .backgroundColor!,
+                                                        message: e.toString(),
+                                                        // backgroundColor: Colors.amber,
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 3),
+                                                        snackPosition:
+                                                            SnackPosition.TOP,
+                                                      ),
+                                                    );
+                                                  }
+                                                } else {
+                                                  showModalBottomSheet(
+                                                    isDismissible: true,
+                                                    context: Get.context!,
+                                                    builder: (context) {
+                                                      return const CoinsView();
+                                                    },
                                                   );
                                                 }
-                                                //           });
-                                                //         },
-                                                //         child:
-                                                //             const Text(
-                                                //                 'OK'))
-                                                //   ],
-                                                //   backgroundColor:
-                                                //       Colors.black,
-                                                // ));
                                               },
                                               child: const Text('Save'),
                                             ),

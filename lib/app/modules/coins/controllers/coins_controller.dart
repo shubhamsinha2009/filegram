@@ -2,17 +2,12 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../core/helpers/ad_helper.dart';
+
 class CoinsController extends GetxController {
-  final coins = (Hive.box('user').get('coins', defaultValue: 10) as int).obs;
+  final coins = (Hive.box('user').get('coins', defaultValue: 5) as int).obs;
   RewardedAd? _rewardedAd;
 
-// if (songeetCoins.value > 0) {
-//             songeetCoins.value = songeetCoins.value - 1;
-//             Hive.box('user').put('songeetCoins', songeetCoins.value);
-//             playSong(value);
-//           } else {
-//             coinBottomSheet(context);
-//           }
   void showRewardedAd() {
     if (coins.value < 40) {
       if (_rewardedAd != null) {
@@ -44,7 +39,7 @@ class CoinsController extends GetxController {
 
   void _createRewardedAd() {
     RewardedAd.load(
-      adUnitId: "ca-app-pub-7429449747123334/3196440488",
+      adUnitId: AdHelper.rewardedgreencoins,
       request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(onAdLoaded: (ad) {
         _rewardedAd = ad;
