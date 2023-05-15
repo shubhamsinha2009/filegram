@@ -26,19 +26,6 @@ class FilesDeviceController extends GetxController {
   final isInlineBannerAdLoaded = false.obs;
   Directory? _mydir;
   final isLoading = true.obs;
-// final analytics = AnalyticsService.analytics;
-  // AppUpdateInfo? _updateInfo;
-  //FirebaseInAppMessaging fiam = FirebaseInAppMessaging.instance;
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  // Future<void> checkForUpdate() async {
-  //   // await analytics.logEvent(name: 'app_update_check');
-  //   InAppUpdate.checkForUpdate().then((info) {
-  //     _updateInfo = info;
-  //   }).catchError((e) {
-  //     Get.snackbar('Error', e.toString());
-  //   });
-  // }
 
   String getSubtitle({required int bytes, required DateTime time}) {
     if (bytes <= 0) return "0 B";

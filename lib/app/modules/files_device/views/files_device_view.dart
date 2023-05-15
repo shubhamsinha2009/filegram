@@ -82,7 +82,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                               final ownerName =
                                   pdfDetails?['ownerName'] ?? 'Unknown';
                               final sourceUrl = pdfDetails?['sourceUrl'];
-                              final ownerId = pdfDetails?['ownerId'];
+                              // final ownerId = pdfDetails?['ownerId'];
                               if (currentfile is File) {
                                 return Slidable(
                                   key: UniqueKey(),
@@ -157,41 +157,6 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                         label: 'Rename',
                                         spacing: 10,
                                       ),
-                                      // TODO: Decrypt
-                                      // SlidableAction(
-                                      //   onPressed: (context) =>
-                                      //       controller.save(_currentfile.path),
-                                      //   backgroundColor: Colors.orange,
-                                      //   foregroundColor: Colors.black,
-                                      //   icon: Icons.save_alt_rounded,
-                                      //   autoClose: true,
-                                      //   label: 'Decrypt',
-                                      //   spacing: 10,
-                                      // ),
-                                      // SlidableAction(
-                                      //   onPressed: (context) {
-                                      //     _currentfile.deleteSync();
-                                      //     GetStorageDbService.getRemove(
-                                      //         key: _currentfile.path);
-                                      //     controller.onInitialisation();
-                                      //     // await controller.analytics.logEvent(
-                                      //     //     name: 'file_deleted',
-                                      //     //     parameters: {'deleted_file': _currentfile.path});
-
-                                      //     Get.showSnackbar(const GetSnackBar(
-                                      //       messageText: Text('Your File is Deleted'),
-                                      //       icon: Icon(Icons.delete_forever_rounded),
-                                      //       snackPosition: SnackPosition.TOP,
-                                      //       duration: Duration(seconds: 3),
-                                      //     ));
-                                      //   },
-                                      //   backgroundColor: Colors.orange,
-                                      //   foregroundColor: Colors.black,
-                                      //   icon: Icons.delete,
-                                      //   autoClose: true,
-                                      //   spacing: 10,
-                                      //   label: 'Delete',
-                                      // ),
                                     ],
                                   ),
                                   endActionPane: ActionPane(
