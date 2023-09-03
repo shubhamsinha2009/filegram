@@ -34,7 +34,7 @@ class LoginView extends GetView<LoginController> {
                     aspectRatio: 9 / 16,
                     showIndicator: false,
                     viewportFraction: 1,
-                    carouselController: controller.buttonCarouselController,
+                    controller: controller.buttonCarouselController,
                     // enlargeCenterPage: true,
 
                     floatingIndicator: false,

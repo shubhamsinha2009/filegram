@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import '../controllers/view_pdf_controller.dart';
 import 'package:alh_pdf_view/lib.dart';
 
@@ -35,20 +34,18 @@ class ViewPdfView extends GetView<ViewPdfController> {
                 //  Obx(() => Text('${controller.countdownTimer.value}')),
 
                 IconButton(
-                    onPressed: () async => await Share.shareFiles(
-                          [controller.filePath],
+                    onPressed: () async => await Share.shareXFiles(
+                          [XFile(controller.filePath)],
                           text:
                               'Download Filegram to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
                         ),
                     icon: const Icon(Icons.share)),
                 Obx(() => IconButton(
                     onPressed: () {
-                      Get.changeThemeMode(
-                          Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
-                      controller.homeController.changeTheme.toggle();
+                      controller.changeTheme.toggle();
                     },
                     icon: Icon(
-                      controller.homeController.changeTheme.isTrue
+                      controller.changeTheme.isTrue
                           ? Icons.light_mode
                           : Icons.dark_mode,
                     ))),
@@ -68,49 +65,9 @@ class ViewPdfView extends GetView<ViewPdfController> {
                         child:
                             controller.adWidget(ad: controller.bottomBannerAd!),
                       )
-                    : SizedBox(
-                        height: 50,
-                        width: double.infinity,
-                        child: GestureDetector(
-                          onTap: () async {
-                            try {
-                              await launchUrlString(
-                                  "https://play.google.com/store/apps/details?id=com.sks.songeet",
-                                  mode:
-                                      LaunchMode.externalNonBrowserApplication);
-                            } on PlatformException catch (e) {
-                              Get.showSnackbar(GetSnackBar(
-                                backgroundColor:
-                                    Get.theme.snackBarTheme.backgroundColor!,
-                                messageText: Text(e.message ?? e.details),
-                                icon: const Icon(Icons.error_outline),
-                                snackPosition: SnackPosition.TOP,
-                                duration: const Duration(seconds: 3),
-                              ));
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Image.asset(
-                                  "assets/songeet.png",
-                                ),
-                              ),
-                              const FittedBox(
-                                child: Text(
-                                  'Download Songeet App - Made In India\nListen song from youtube (Ad) ',
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                    : const SizedBox(
+                        height: 0,
+                        width: 0,
                       ),
               ),
             ],
@@ -237,9 +194,9 @@ class ViewPdfView extends GetView<ViewPdfController> {
                       autoSpacing: false,
                       pageFling: false,
                       pageSnap: false,
-                      nightMode: controller.homeController.changeTheme.value,
+                      nightMode: controller.changeTheme.value,
                       fitEachPage: true,
-                      fitPolicy: FitPolicy.width,
+                      fitPolicy: FitPolicy.both,
                       defaultPage: controller.intialPageNumber,
                       minZoom: 1,
                       maxZoom: 5,

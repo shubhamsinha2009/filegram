@@ -48,7 +48,7 @@ class ViewPdfController extends GetxController {
   List<int> pagesChanged = [];
   int? gotopage;
   int pageTimer = 0;
-  final homeController = Get.find<HomeController>();
+  final changeTheme = false.obs;
 
   Future<bool> doDecryption(String fileIn) async {
     try {
@@ -101,7 +101,7 @@ class ViewPdfController extends GetxController {
           },
         ),
       );
-    } on Exception catch (e) {
+    } on Exception {
       // TODO
     }
   }
@@ -166,13 +166,13 @@ class ViewPdfController extends GetxController {
 
   void handleTapPreviousPage() {
     if (pdfViewController != null && currentPage.value != 0) {
-      pdfViewController!.setPageWithAnimation(page: currentPage.value - 1);
+      pdfViewController!.goToPreviousPage();
     }
   }
 
   void handleTapNextPage() {
     if (pdfViewController != null && currentPage.value != totalPages.value) {
-      pdfViewController!.setPageWithAnimation(page: currentPage.value + 1);
+      pdfViewController!.goToNextPage();
     }
   }
 
@@ -257,7 +257,9 @@ class ViewPdfController extends GetxController {
         if (countdownTimer.value == 0) {
           showInterstitialAd(uid: ownerId)
               .then((value) => countdownTimer.value = 300)
-              .catchError((e) {});
+              .catchError((e) {
+            return e;
+          });
         } else {
           countdownTimer.value--;
         }
@@ -280,7 +282,7 @@ class ViewPdfController extends GetxController {
     try {
       createInterstitialAd();
       _createBottomBannerAd();
-    } on Exception catch (e) {
+    } on Exception {
       // TODO
     }
     Wakelock.toggle(enable: true);
