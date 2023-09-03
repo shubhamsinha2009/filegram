@@ -9,7 +9,9 @@ class NoInternetController extends GetxController {
     isInternetConnected.bindStream(simpleConnectionChecker.onConnectionChange);
     SimpleConnectionChecker.isConnectedToInternet()
         .then((value) => isInternetConnected.value = value)
-        .catchError((e) {});
+        .catchError((e) {
+      return e;
+    });
     super.onInit();
   }
 
