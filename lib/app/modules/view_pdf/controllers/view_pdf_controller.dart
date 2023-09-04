@@ -49,6 +49,7 @@ class ViewPdfController extends GetxController {
   int? gotopage;
   int pageTimer = 0;
   final changeTheme = false.obs;
+  final hideAppBar = true.obs;
 
   Future<bool> doDecryption(String fileIn) async {
     try {
