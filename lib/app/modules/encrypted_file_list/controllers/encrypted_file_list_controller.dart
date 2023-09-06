@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 
@@ -43,6 +46,23 @@ class EncryptedFileListController extends GetxController
 
   AdWidget adWidget({required AdWithView ad}) {
     return AdWidget(ad: ad);
+  }
+
+  Future<void> pickFile() async {
+    final result = await FlutterFileDialog.pickFile(
+        params: const OpenFileDialogParams(
+      mimeTypesFilter: [
+        'text/plain',
+        'text/tab-separated-values',
+      ],
+    ));
+
+    if (result != null) {
+      String contents = await File(result).readAsString();
+      sharedEmailIds.assignAll(contents.split('\n'));
+    } else {
+      // User canceled the file picking.
+    }
   }
 
   Future<void> createInterstitialAd() async {

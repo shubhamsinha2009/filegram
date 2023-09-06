@@ -73,25 +73,42 @@ class DocumentPermissionBottomSheet extends StatelessWidget {
                 },
               ),
               _controller.groupValue.value == DocumentPermission.shared
-                  ? ListView.builder(
-                      itemCount: _controller.sharedEmailIds.length,
-                      padding: const EdgeInsets.only(bottom: 10),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => ListTile(
-                          visualDensity: VisualDensity.adaptivePlatformDensity,
-                          enabled: true,
-                          horizontalTitleGap: 0,
-                          trailing: index != 0
-                              ? IconButton(
-                                  icon: const Icon(Icons.clear),
-                                  onPressed: () => _controller.sharedEmailIds
-                                      .removeAt(index),
-                                )
-                              : null,
-                          dense: true,
-                          title: Text(
-                            _controller.sharedEmailIds[index],
-                          )),
+                  ? ElevatedButton(
+                      onPressed: _controller.pickFile,
+                      child: const Text('Upload Emails Tab-Separated File'),
+                    )
+                  : const SizedBox(
+                      height: 0,
+                      width: 0,
+                    ),
+              _controller.groupValue.value == DocumentPermission.shared
+                  ? SizedBox(
+                      height: 100,
+                      child: Expanded(
+                        child: ListView.builder(
+                          itemCount: _controller.sharedEmailIds.length,
+                          padding: const EdgeInsets.only(bottom: 10),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => ListTile(
+                              leading: Text('${index + 1}'),
+                              visualDensity:
+                                  VisualDensity.adaptivePlatformDensity,
+                              enabled: true,
+                              horizontalTitleGap: 0,
+                              trailing: index != 0
+                                  ? IconButton(
+                                      icon: const Icon(Icons.clear),
+                                      onPressed: () => _controller
+                                          .sharedEmailIds
+                                          .removeAt(index),
+                                    )
+                                  : null,
+                              dense: true,
+                              title: Text(
+                                _controller.sharedEmailIds[index],
+                              )),
+                        ),
+                      ),
                     )
                   : const SizedBox(
                       height: 0,
@@ -159,11 +176,11 @@ class DocumentPermissionBottomSheet extends StatelessWidget {
                       //         onPressed: () {
                       //           _controller.rewardedInterstitialAd.show(
                       //               onUserEarnedReward: (ad, reward) async {
-                      const _isList = DeepCollectionEquality.unordered();
+                      const isList = DeepCollectionEquality.unordered();
                       if (DocumentPermission.values
                                   .byName(_document.documentPermission.name) !=
                               _controller.groupValue.value ||
-                          !_isList.equals(_controller.sharedEmailIds,
+                          !isList.equals(_controller.sharedEmailIds,
                               _document.sharedEmailIds)) {
                         await FirestoreData.updateDocumentPermission(
                             documentId: _document.documentId,

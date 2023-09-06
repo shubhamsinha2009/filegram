@@ -335,7 +335,7 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                             time:
                                                 currentfile.lastModifiedSync(),
                                           ),
-                                      maxLines: 2,
+                                      maxLines: 3,
                                       softWrap: true,
                                     ),
                                   ),

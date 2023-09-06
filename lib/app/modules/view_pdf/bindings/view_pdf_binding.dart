@@ -5,8 +5,6 @@ import '../controllers/view_pdf_controller.dart';
 class ViewPdfBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ViewPdfController>(
-      () => ViewPdfController(),
-    );
+    Get.lazyPut<ViewPdfController>(() => ViewPdfController());
   }
 }

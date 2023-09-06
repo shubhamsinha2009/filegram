@@ -82,8 +82,10 @@ class CoinsView extends GetView<CoinsController> {
                   Navigator.pop(context, false);
                 });
               },
-              child: const Text(
-                "Watch Rewarded Ads to get more coins",
+              child: const FittedBox(
+                child: Text(
+                  "Watch Rewarded Ads to get more coins",
+                ),
               ),
             ),
           ],
