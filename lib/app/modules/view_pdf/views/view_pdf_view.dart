@@ -9,7 +9,8 @@ import '../controllers/view_pdf_controller.dart';
 
 import 'widgets/bookmark.dart';
 import 'widgets/bottombar.dart';
-import 'widgets/hiddenAppBar.dart';
+
+import 'widgets/hiddenappbar.dart';
 import 'widgets/nextpage.dart';
 import 'widgets/previouspage.dart';
 import 'widgets/toggleappbar.dart';
