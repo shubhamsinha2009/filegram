@@ -233,8 +233,8 @@ class FilesDeviceView extends GetView<FilesDeviceController> {
                                           //   'file_path': _currentfile.path,
                                           // });
                                           // TODO: Add text and subject app link and more
-                                          await Share.shareFiles(
-                                            [currentfile.path],
+                                          await Share.shareXFiles(
+                                            [XFile(currentfile.path)],
                                             text:
                                                 'Download Filegram to open this file 🔓- https://play.google.com/store/apps/details?id=com.sks.filegram',
                                           );

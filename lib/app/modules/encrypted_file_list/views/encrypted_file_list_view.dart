@@ -492,6 +492,7 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                 SlidableAction(
                                   onPressed: (context) async {
                                     Get.bottomSheet(
+                                      enableDrag: true,
                                       DocumentPermissionBottomSheet(
                                         document: document!,
                                         controller: controller,

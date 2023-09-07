@@ -20,7 +20,7 @@ A new Flutter project.
 - [] UI Designers
 - [x] share url
 - [x] night mode pdf
-- [] Get ota update feature
+- [x] Get ota update feature
 - [x] Themes Flutter
 - [x] Wake Lock
 - [] Feature Discovery/ShowCaseView
@@ -66,6 +66,8 @@ A new Flutter project.
 - [] Premium Features
 - [] Decypt pdf
 - [] Multiple Selection Options
+- [] Promotions Tab
+- [] Add Notes and Bookmarks
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)

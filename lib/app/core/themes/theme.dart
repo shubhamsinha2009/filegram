@@ -7,7 +7,8 @@ class Themes {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Colors.white,
     ),
-
+    // sliderTheme:
+    //     const SliderThemeData(showValueIndicator: ShowValueIndicator.always),
     chipTheme: const ChipThemeData(
       // backgroundColor: Colors.white,
       // disabledColor: Colors.transparent,
@@ -124,7 +125,8 @@ class Themes {
 
     //  secondaryLabelStyle: TextStyle(color: Colors.white),
     // ),
-
+    // sliderTheme:
+    //     const SliderThemeData(showValueIndicator: ShowValueIndicator.always),
     navigationBarTheme: const NavigationBarThemeData(elevation: 0),
     colorScheme: const ColorScheme.light().copyWith(outline: Colors.black),
     dividerColor: Colors.black,

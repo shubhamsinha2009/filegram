@@ -20,8 +20,8 @@ import '../../no_internet/controllers/no_internet_controller.dart';
 class ViewPdfController extends GetxController {
   final isInternetConnected =
       Get.find<NoInternetController>().isInternetConnected;
-  final swipehorizontal = true.obs;
-  final totalPages = 0.obs;
+  // final swipehorizontal = true.obs;
+  final totalPages = 1.obs;
   final isDecryptionDone = false.obs;
   final isVisible = true.obs;
   late final String filePath;
@@ -50,6 +50,7 @@ class ViewPdfController extends GetxController {
   int pageTimer = 0;
   final changeTheme = false.obs;
   final hideAppBar = true.obs;
+  final bookmarks = <int>{}.obs;
 
   Future<bool> doDecryption(String fileIn) async {
     try {
@@ -250,6 +251,8 @@ class ViewPdfController extends GetxController {
 
     final Map<dynamic, dynamic>? pdfDetails = Hive.box("pdf").get(filePath);
     intialPageNumber = pdfDetails?['intialPageNumber'] ?? 0;
+    bookmarks.assignAll(pdfDetails?['bookmarks'] ?? []);
+    currentPage.value = intialPageNumber;
     pagesChanged.add(intialPageNumber);
 
     _timer1 = Timer.periodic(
@@ -299,13 +302,12 @@ class ViewPdfController extends GetxController {
 
   @override
   void onClose() async {
+    // if (File(fileOut).existsSync() && filePath.contains('.enc')) {
+    //   File(fileOut).deleteSync();
+    // }
     _timer1?.cancel();
     interstitialAd?.dispose();
     bottomBannerAd?.dispose();
-
-    if (File(fileOut).existsSync() && filePath.contains('.enc')) {
-      await File(fileOut).delete();
-    }
 
     await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
     final Map<String, dynamic> pdfDetails = {
@@ -314,6 +316,7 @@ class ViewPdfController extends GetxController {
       'intialPageNumber': intialPageNumber,
       'ownerId': ownerId,
       'sourceUrl': sourceUrl,
+      'bookmarks': bookmarks.toList(),
     };
     Hive.box("pdf").put(filePath, pdfDetails);
   }

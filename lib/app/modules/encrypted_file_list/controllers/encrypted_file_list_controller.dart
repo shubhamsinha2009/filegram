@@ -59,7 +59,9 @@ class EncryptedFileListController extends GetxController
 
     if (result != null) {
       String contents = await File(result).readAsString();
-      sharedEmailIds.assignAll(contents.split('\n'));
+      Set<String> uniqueIds = Set<String>.from(sharedEmailIds);
+      uniqueIds.addAll(contents.split('\n'));
+      sharedEmailIds.assignAll(uniqueIds);
     } else {
       // User canceled the file picking.
     }

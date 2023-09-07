@@ -348,6 +348,7 @@ class EncryptDecryptController extends GetxController {
         'sourceUrl': sourceUrl,
         'ownerId': userId,
         'intialPageNumber': 0,
+        'bookmarks': <int>[],
       };
 
       await Hive.box("pdf").put(fileOut, pdfDetails);
@@ -387,6 +388,7 @@ class EncryptDecryptController extends GetxController {
             'sourceUrl': document?.sourceUrl,
             'ownerId': document?.ownerId,
             'intialPageNumber': 0,
+            'bookmarks': <int>[],
           };
 
           Hive.box("pdf").put(fileOut, pdfDetails);
