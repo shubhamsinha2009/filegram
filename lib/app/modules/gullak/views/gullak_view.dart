@@ -16,8 +16,8 @@ class GullakView extends GetView<GullakController> {
     return Obx(() => controller.isInternetConnected.isTrue
         ? Scaffold(
             appBar: AppBar(
-              title: Row(
-                children: const [
+              title: const Row(
+                children: [
                   Icon(Icons.savings_rounded,
                       color: Color.fromARGB(255, 194, 103, 70)),
                   SizedBox(

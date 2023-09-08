@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
 import '../modules/coins/bindings/coins_binding.dart';
+import '../modules/docpermission/bindings/docpermission_binding.dart';
+import '../modules/docpermission/views/docpermission_view.dart';
 import '../modules/encrypt_decrypt/bindings/encrypt_decrypt_binding.dart';
 import '../modules/encrypted_file_list/bindings/encrypted_file_list_binding.dart';
 import '../modules/files_device/bindings/files_device_binding.dart';
@@ -14,7 +16,6 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/no_internet/bindings/no_internet_binding.dart';
 import '../modules/settings/bindings/settings_binding.dart';
-
 import '../modules/updatePhoneNumber/bindings/update_phone_number_binding.dart';
 import '../modules/updatePhoneNumber/views/update_phone_number_view.dart';
 import '../modules/view_pdf/bindings/view_pdf_binding.dart';
@@ -80,6 +81,11 @@ class AppPages {
         NoInternetBinding(),
       ],
       transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: _Paths.docpermission,
+      page: () => const DocpermissionView(),
+      binding: DocpermissionBinding(),
     ),
   ];
 }

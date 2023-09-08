@@ -18,9 +18,11 @@ class NoCloud extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            'All Files On Your Device Only',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          const FittedBox(
+            child: Text(
+              'All Files On Your Device Only',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+            ),
           ),
           Expanded(
             child: Padding(

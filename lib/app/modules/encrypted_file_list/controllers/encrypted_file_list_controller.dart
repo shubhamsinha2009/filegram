@@ -1,13 +1,6 @@
-import 'dart:io';
-
-import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
-
 import '../../../core/helpers/ad_helper.dart';
-import '../../../data/enums/docpermission.dart';
-import 'package:flutter/cupertino.dart';
-
 import '../../../data/model/documents_model.dart';
 import '../../../data/provider/firestore_data.dart';
 import '../../home/controllers/home_controller.dart';
@@ -21,10 +14,9 @@ class EncryptedFileListController extends GetxController
   int page = 1;
   bool lastPage = false;
   final homeController = Get.find<HomeController>();
-  final sharedEmailIds = <String>[].obs;
+
   String? sourceUrl;
-  final TextEditingController textEditingController = TextEditingController();
-  final groupValue = DocumentPermission.public.obs;
+
   final inlineAdIndex = 1;
   BannerAd? inlineBannerAd;
   final isInlineBannerAdLoaded = false.obs;
@@ -46,25 +38,6 @@ class EncryptedFileListController extends GetxController
 
   AdWidget adWidget({required AdWithView ad}) {
     return AdWidget(ad: ad);
-  }
-
-  Future<void> pickFile() async {
-    final result = await FlutterFileDialog.pickFile(
-        params: const OpenFileDialogParams(
-      mimeTypesFilter: [
-        'text/plain',
-        'text/tab-separated-values',
-      ],
-    ));
-
-    if (result != null) {
-      String contents = await File(result).readAsString();
-      Set<String> uniqueIds = Set<String>.from(sharedEmailIds);
-      uniqueIds.addAll(contents.split('\n'));
-      sharedEmailIds.assignAll(uniqueIds);
-    } else {
-      // User canceled the file picking.
-    }
   }
 
   Future<void> createInterstitialAd() async {
@@ -283,7 +256,6 @@ class EncryptedFileListController extends GetxController
 
   @override
   void onClose() {
-    textEditingController.dispose();
     inlineBannerAd?.dispose();
     interstitialAd?.dispose();
     // topBannerAd.dispose();

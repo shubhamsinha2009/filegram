@@ -35,8 +35,6 @@ class ViewPdfView extends GetView<ViewPdfController> {
                     : AlhPdfView(
                         key: ValueKey(controller.changeTheme.value),
                         filePath: controller.fileOut,
-
-                        // pdfData: File(controller.fileOut).readAsBytesSync(),
                         enableSwipe: true,
                         swipeHorizontal: true,
                         autoSpacing: true,
@@ -49,9 +47,7 @@ class ViewPdfView extends GetView<ViewPdfController> {
                         minZoom: 0.5,
                         maxZoom: 5,
                         enableDefaultScrollHandle: false,
-
                         enableDoubleTap: true,
-
                         onRender: (pages) {
                           controller.totalPages.value = pages;
                         },
@@ -102,7 +98,6 @@ class ViewPdfView extends GetView<ViewPdfController> {
                           Get.put(ViewPdfController()).pdfViewController =
                               pdfViewController;
                         },
-
                         onPageChanged: (int? page, int? total) {
                           if (page != null && total != null) {
                             controller.intialPageNumber = page;

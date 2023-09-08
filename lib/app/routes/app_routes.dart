@@ -9,6 +9,7 @@ abstract class Routes {
 
   static const gullak = _Paths.gullak;
   static const updatePhoneNumber = _Paths.updatePhoneNumber;
+  static const docpermission = _Paths.docpermission;
 }
 
 abstract class _Paths {
@@ -20,4 +21,5 @@ abstract class _Paths {
 
   static const gullak = '/gullak';
   static const updatePhoneNumber = '/update-phone-number';
+  static const docpermission = '/docpermission';
 }

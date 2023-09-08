@@ -18,9 +18,11 @@ class Gullak extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        const Text(
-          'Gullak - Earn Sikka as a Reward',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+        const FittedBox(
+          child: Text(
+            'Gullak - Earn Sikka as a Reward',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          ),
         ),
         Expanded(
           child: Lottie.asset(

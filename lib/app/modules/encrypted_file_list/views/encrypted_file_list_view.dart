@@ -1,10 +1,10 @@
+import 'package:filegram/app/routes/app_pages.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../data/provider/firestore_data.dart';
 import '../../coins/controllers/coins_controller.dart';
 import '../../coins/views/coins_view.dart';
 import '../encrypted_file_list.dart';
-import '../localwidgets/document_bottom_sheet.dart';
 import 'package:lottie/lottie.dart';
 import 'package:filegram/app/core/extensions.dart';
 import '../../../data/model/documents_model.dart';
@@ -490,19 +490,9 @@ class EncryptedFileListView extends GetView<EncryptedFileListController> {
                                   spacing: 10,
                                 ),
                                 SlidableAction(
-                                  onPressed: (context) async {
-                                    Get.bottomSheet(
-                                      enableDrag: true,
-                                      DocumentPermissionBottomSheet(
-                                        document: document!,
-                                        controller: controller,
-                                      ),
-                                      backgroundColor: Get.isDarkMode
-                                          ? Colors.black
-                                          : Colors.white,
-                                      isDismissible: true,
-                                      isScrollControlled: true,
-                                    );
+                                  onPressed: (context) {
+                                    Get.toNamed(Routes.docpermission,
+                                        arguments: document);
                                   },
                                   backgroundColor: Colors.orange,
                                   foregroundColor: Colors.black,
